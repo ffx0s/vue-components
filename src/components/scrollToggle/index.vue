@@ -15,7 +15,7 @@
 </template>
 
 <script>
-// utils
+// utils，下面的方法可保存到公共文件里，提供给其他模块复用
 
 // 是否支持 passive 属性
 export let supportsPassive = false
