@@ -1,4 +1,4 @@
-<!-- 元素上滑收起，下滑显示 -->
+<!-- 元素上滑显示，下滑隐藏 -->
 <template>
 <div class="scroll-toggle-wrap" :style="style">
   <div class="scroll-toggle"
