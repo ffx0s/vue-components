@@ -2,7 +2,7 @@
 <div>
   <ScrollToggle>
     <header
-      style="width:100%;height:45px;line-height:45px;border-bottom:1px solid #eaeaea;background:#fff;"
+      class="nav"
     >
       <strong>ScrollToggle top</strong>
     </header>
@@ -10,7 +10,7 @@
 
   <ScrollToggle position="bottom" style="z-index: 5">
     <header
-      style="width:100%;height:45px;line-height:45px;border-top:1px solid #eaeaea;background:#fff;"
+      class="nav"
     >
       <strong>ScrollToggle bottom</strong>
     </header>
@@ -27,3 +27,13 @@ export default {
   }
 }
 </script>
+
+<style>
+.nav {
+  width:100%;
+  height:45px;
+  line-height:45px;
+  color:#fff;
+  background:#409eff;
+}
+</style>

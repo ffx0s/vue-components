@@ -6,6 +6,23 @@
 </template>
 
 <script>
+function getValue (key, obj) {
+  return key.split('.').reduce((o, i) => o[i], obj)
+}
+function initData (model, rules) {
+  const error = {}
+  const newModel = {}
+  Object.keys(rules).forEach(field => {
+    error[field] = ''
+  })
+  Object.keys(model).forEach(field => {
+    newModel[field] = typeof model[field] === 'object'
+      ? JSON.parse(JSON.stringify(model[field]))
+      : model[field]
+  })
+  return [error, newModel]
+}
+
 export default {
   props: {
     // 表单数据对象
@@ -20,18 +37,20 @@ export default {
     }
   },
   data () {
-    const error = {}
-    Object.keys(this.model).forEach(field => {
-      error[field] = ''
-    })
+    const [error, originalModel] = initData(this.model, this.rules)
     return {
-      error
+      error,
+      originalModel
     }
   },
   methods: {
     check (field) {
-      this.rules[field].some((rule, index) => {
-        const value = this.model[field]
+      const currentRule = this.rules[field]
+
+      if (!currentRule) return true
+
+      currentRule.some((rule, index) => {
+        const value = getValue(field, this.model)
 
         if (
           ( // 验证非空
@@ -39,7 +58,9 @@ export default {
               // 字符串类型
               (typeof value === 'string' && !value.trim()) ||
               // 布尔类型
-              (typeof value === 'boolean' && !value)
+              (typeof value === 'boolean' && !value) ||
+              // 数组类型
+              (Array.isArray(value) && !value.length)
             )
           ) ||
           ( // 验证长度
@@ -47,7 +68,7 @@ export default {
             (value.length < rule.min || value.length > rule.max)
           )
         ) {
-          this.error[field] = this.rules[field][index].message
+          this.error[field] = currentRule[index].message || `The ${field} field is required`
           return true
         }
 
@@ -67,7 +88,7 @@ export default {
       let valid = true
       let error = []
 
-      Object.keys(this.model).forEach(field => {
+      Object.keys(this.rules).forEach(field => {
         this.check(field)
         if (this.error[field]) {
           valid = false
@@ -78,6 +99,16 @@ export default {
       error[0] && cb && cb(error)
 
       return valid
+    },
+    reset () {
+      Object.keys(this.originalModel).forEach(field => {
+        this.model[field] = typeof this.originalModel[field] === 'object'
+        ? JSON.parse(JSON.stringify(this.originalModel[field]))
+        : this.originalModel[field]
+      })
+      Object.keys(this.rules).forEach(field => {
+        this.error[field] = ''
+      })
     }
   }
 }

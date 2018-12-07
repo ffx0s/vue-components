@@ -3,7 +3,7 @@
 <div class="scroll-toggle-wrap" :style="style">
   <div class="scroll-toggle"
     :class="{
-      'toggle': show,
+      'scroll-show': show,
       'fixed': status,
       'position-top': status && position === 'top',
       'position-bottom': status && position === 'bottom'
@@ -82,9 +82,6 @@ export default {
       style: {}
     }
   },
-  created () {
-    this.bind()
-  },
   mounted () {
     const style = {
       height: (this.height || this.$el.firstChild.getBoundingClientRect().height) + 'px'
@@ -94,6 +91,7 @@ export default {
       style.bottom = 0
     }
     this.style = style
+    this.bind()
   },
   activated () {
     this.bind()
@@ -118,21 +116,20 @@ export default {
       if (this.disabled) return
 
       const scrollTop = getScrollTop()
-      const dis = 3
 
-      if (Math.abs(scrollTop - this.lastScrollTop) > dis) {
-        if (scrollTop > this.lastScrollTop) {
-          this.status = 'down'
-          this.show = false
-        } else {
-          this.status = 'up'
-          this.show = true
-        }
+      if (scrollTop > this.lastScrollTop) {
+        this.status = 'down'
+        this.show = false
+      } else {
+        this.status = 'up'
+        this.show = true
       }
+
       if (scrollTop <= 0) {
         this.show = false
         this.status = ''
       }
+
       this.lastScrollTop = scrollTop
     }
   }
@@ -140,6 +137,9 @@ export default {
 </script>
 
 <style scoped>
+.scroll-toggle {
+  transition: .3s transform;
+}
 .scroll-toggle-wrap {
   width: 100%;
 }
@@ -155,10 +155,9 @@ export default {
   position: fixed;
   left: 0;
   width: 100%;
-  transition: .3s transform;
   z-index: 5;
 }
-.scroll-toggle.toggle {
+.scroll-toggle.scroll-show {
   transform: translate3d(0, 0, 0);
 }
 </style>

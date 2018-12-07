@@ -3,18 +3,22 @@
   <h4>Form validator</h4>
   <Validator ref="form" :model="form" :rules="rules">
     <template slot-scope="{ error, check }">
+      
       <div class="row">
         <input v-model="form.username" @blur="check('username')" type="text" placeholder="用户名">
         <p class="error-info">{{error.username}}</p>
       </div>
+      
       <div class="row">
         <input v-model="form.password" @blur="check('password')" type="password" placeholder="密码" autocomplete>
         <p class="error-info">{{error.password}}</p>
       </div>
+      
       <div class="row">
         <input v-model="form.password2" @blur="check('password2')" type="password" placeholder="确认密码" autocomplete>
         <p class="error-info">{{error.password2}}</p>
       </div>
+      
       <div class="row">
         <select v-model="form.type" @change="check('type')">
           <option value="">会员类型</option>
@@ -24,13 +28,28 @@
         </select>
         <p class="error-info">{{error.type}}</p>
       </div>
+      
+      <div class="row">
+        <input v-model="form.idCard.number" @blur="check('idCard.number')" type="text" placeholder="身份证号码">
+        <p class="error-info">{{error['idCard.number']}}</p>
+      </div>
+
+      <div class="row">
+        <input v-model="form.idCard.name" @blur="check('idCard.name')" type="text" placeholder="真实姓名">
+        <p class="error-info">{{error['idCard.name']}}</p>
+      </div>
+
       <div class="row">
         <input type="checkbox" v-model="form.checked" @change="check('checked')">我已阅读和接受xxx
         <p class="error-info">{{error.checked}}</p>
       </div>
+      
       <div class="row">
         <button @click="submit">注册</button>
+        &#12288;
+        <button class="reset" @click="$refs.form.reset()">还原</button>
       </div>
+
     </template>
   </Validator>
 </div>
@@ -50,11 +69,15 @@ export default {
     }
     return {
       form: {
-        username: '',
+        username: 'zhangsan',
         password: '',
         password2: '',
-        type: '',
-        checked: false
+        type: 1,
+        checked: false,
+        idCard: {
+          number: '',
+          name: ''
+        }
       },
       rules: {
         username: [
@@ -72,7 +95,13 @@ export default {
         ],
         checked: [
           { required: true, message: '请阅读并同意注册条款' }
-        ]
+        ],
+        'idCard.number': [
+          { required: true, message: '请填写身份证号码' },
+        ],
+        'idCard.name': [
+          { required: true, message: '请填写真实姓名' },
+        ],
       },
       options: [
         { name: '黄金会员', value: 1 },
@@ -111,9 +140,12 @@ export default {
   height: 30px;
   line-height: 30px;
   text-align: center;
-  background: #409eff;
   color: #fff;
+  background: #409eff;
   border: none;
+}
+.row .reset {
+  opacity: 0.5;
 }
 .error-info {
   position: absolute;
