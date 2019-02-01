@@ -1,58 +1,35 @@
-<!-- 元素上滑显示，下滑隐藏 -->
 <template>
-<div class="scroll-toggle-wrap" :style="style">
-  <div class="scroll-toggle"
-    :class="{
-      'scroll-show': show,
-      'fixed': status,
-      'position-top': status && position === 'top',
-      'position-bottom': status && position === 'bottom'
-    }"
+  <div
+    class="v-scroll-toggle-wrap"
+    :class="[
+      { 'v-scroll-toggle-visible': visible },
+      'v-scroll-toggle-' + position
+    ]"
+    :style="{ height: this.containerHeight + 'px' }"
   >
-    <slot></slot>
+    <div
+      class="v-scroll-toggle"
+      :class="[
+        initialClass,
+        toggleClass && transitionClass,
+        toggleClass,
+        { 'v-scroll-toggle-notransition': noTransition }
+      ]"
+      ref="scrollToggle"
+    >
+      <slot />
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-// utils，下面的方法可保存到公共文件里，提供给其他模块复用
-
-// 是否支持 passive 属性
-export let supportsPassive = false
-
-try {
-  const options = Object.defineProperty({}, 'passive', {
-    get: function () {
-      supportsPassive = true
-    }
-  })
-  window.addEventListener('testPassive', null, options)
-  window.removeEventListener('testPassive', null, options)
-} catch (err) {
-  // ...
-}
-
-function addListener (element, type, fn, options) {
-  element.addEventListener(
-    type,
-    fn,
-    supportsPassive ? {
-      capture: false,
-      passive: true,
-      once: false,
-      ...options
-    }
-      : !!options
-  )
-}
-
-function removeListener (element, type, fn, options) {
-  element.removeEventListener(type, fn, options)
-}
-
-function getScrollTop () {
-  return document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
-}
+import Debouncer from '../../utils/debouncer'
+import {
+  addListener,
+  removeListener,
+  getScrollTop,
+  getScrollEventTarget
+} from '../../utils/shared'
 
 export default {
   name: 'ScrollToggle',
@@ -69,95 +46,145 @@ export default {
     },
     // 元素高度
     height: {
-      type: [Number, String],
+      type: Number,
       default: 0
+    },
+    // 滚动时的阻力
+    resistance: {
+      type: Number,
+      default: 10
+    },
+    visible: {
+      type: Boolean,
+      default: true
+    },
+    pinnedClass: {
+      type: String,
+      default: 'v-scroll-toggle-pinned'
+    },
+    unpinnedClass: {
+      type: String,
+      default: 'v-scroll-toggle-unpinned'
+    },
+    transitionClass: {
+      type: String,
+      default: 'v-scroll-toggle-fixed'
+    },
+    initialClass: {
+      type: String,
+      default: 'v-scroll-toggle-initial'
     }
   },
-  data () {
+  data() {
+    const isTop = this.position === 'top'
     return {
-      show: false,
-      status: '',
+      isTop,
+      noTransition: isTop,
       isBind: false,
+      toggleClass: '',
       lastScrollTop: 0,
-      style: {}
+      containerHeight: this.height
     }
   },
-  mounted () {
-    const style = {
-      height: (this.height || this.$el.firstChild.getBoundingClientRect().height) + 'px'
-    }
-    if (this.position === 'bottom') {
-      style.position = 'fixed'
-      style.bottom = 0
-    }
-    this.style = style
+  mounted() {
+    this.containerHeight =
+      this.height || this.$refs.scrollToggle.firstChild.offsetHeight
     this.bind()
   },
-  activated () {
+  activated() {
     this.bind()
   },
-  deactivated () {
+  deactivated() {
     this.unbind()
   },
-  destroyed () {
+  beforeDestroy() {
     this.unbind()
   },
   methods: {
-    bind () {
+    bind() {
       if (this.isBind) return
+      this.$nextTick(() => {
+        this.scrollEl = getScrollEventTarget(this.$el)
+        this.onscroll = new Debouncer(this.scrollHandler)
+        addListener(this.scrollEl, 'scroll', this.onscroll)
+      })
       this.isBind = true
-      addListener(window, 'scroll', (this.scrollHandle = this.scrollHandle.bind(this)))
     },
-    unbind () {
+    unbind() {
+      removeListener(this.scrollEl, 'scroll', this.onscroll)
       this.isBind = false
-      removeListener(window, 'scroll', this.scrollHandle)
+      this.scrollEl = null
     },
-    scrollHandle () {
+    scrollHandler() {
       if (this.disabled) return
-
-      const scrollTop = getScrollTop()
-
-      if (scrollTop > this.lastScrollTop) {
-        this.status = 'down'
-        this.show = false
-      } else {
-        this.status = 'up'
-        this.show = true
+      const scrollTop = getScrollTop(this.scrollEl)
+      if (scrollTop <= 0) return this.restore()
+      if (
+        scrollTop < this.containerHeight &&
+        this.toggleClass === this.unpinnedClass
+      ) {
+        this.pinned()
+      } else if (
+        Math.abs(this.lastScrollTop - scrollTop) >= this.resistance &&
+        scrollTop > this.containerHeight
+      ) {
+        const action = scrollTop > this.lastScrollTop ? 'unpinned' : 'pinned'
+        this[action]()
       }
-
-      if (scrollTop <= 0) {
-        this.show = false
-        this.status = ''
-      }
-
       this.lastScrollTop = scrollTop
+    },
+    pinned() {
+      this.toggleClass = this.pinnedClass
+      this.noTransition = false
+    },
+    unpinned() {
+      this.toggleClass = this.unpinnedClass
+    },
+    restore() {
+      this.toggleClass = ''
+      this.noTransition = this.isTop
     }
   }
 }
 </script>
 
-<style scoped>
-.scroll-toggle {
-  transition: .3s transform;
-}
-.scroll-toggle-wrap {
+<style lang="postcss">
+.v-scroll-toggle-wrap {
   width: 100%;
+  z-index: 99996;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
-.scroll-toggle.position-top {
-  top: 0;
-  transform: translate3d(0, -100%, 0);
+.v-scroll-toggle-visible {
+  opacity: 1;
 }
-.scroll-toggle.position-bottom {
+.v-scroll-toggle-pinned {
+  transform: translateZ(0) translateY(0);
+}
+.v-scroll-toggle-top {
+  position: relative;
+}
+.v-scroll-toggle-bottom {
+  position: fixed;
   bottom: 0;
-  transform: translate3d(0, 100%, 0);
+  transform: translateZ(0);
+  & .v-scroll-toggle-unpinned {
+    transform: translateZ(0) translateY(100%);
+  }
 }
-.scroll-toggle.fixed {
+.v-scroll-toggle-top {
+  & .v-scroll-toggle-unpinned {
+    transform: translateZ(0) translateY(-100%);
+  }
+}
+.v-scroll-toggle-fixed {
   position: fixed;
   left: 0;
   width: 100%;
   z-index: 5;
+  transition: 0.3s transform ease-in-out;
 }
-.scroll-toggle.scroll-show {
-  transform: translate3d(0, 0, 0);
+.v-scroll-toggle-notransition {
+  transition-duration: 0s;
 }
 </style>

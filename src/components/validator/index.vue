@@ -1,29 +1,40 @@
-<!-- 表单验证组件 -->
 <template>
-<form class="validator" @submit.prevent>
-  <slot :error="error" :check="check"></slot>
-</form>
+  <form class="v-validator" @submit.prevent>
+    <slot :error="error" :check="check"></slot>
+  </form>
 </template>
 
 <script>
-function getValue (key, obj) {
+import { isNumber } from '../../utils/shared'
+
+function getValue(key, obj) {
   return key.split('.').reduce((o, i) => o[i], obj)
 }
-function initData (model, rules) {
+
+function initData(model, rules) {
   const error = {}
   const newModel = {}
   Object.keys(rules).forEach(field => {
     error[field] = ''
   })
   Object.keys(model).forEach(field => {
-    newModel[field] = typeof model[field] === 'object'
-      ? JSON.parse(JSON.stringify(model[field]))
-      : model[field]
+    newModel[field] =
+      typeof model[field] === 'object'
+        ? JSON.parse(JSON.stringify(model[field]))
+        : model[field]
   })
   return [error, newModel]
 }
 
+// 验证数据的长度
+function verifyLength(minLength, maxLength, value) {
+  if (!isNumber(minLength) || !isNumber(maxLength)) return true
+  if (isNumber(value)) value = '' + value
+  return value.length >= minLength && value.length <= maxLength
+}
+
 export default {
+  name: 'Validator',
   props: {
     // 表单数据对象
     model: {
@@ -36,7 +47,7 @@ export default {
       default: () => {}
     }
   },
-  data () {
+  data() {
     const [error, originalModel] = initData(this.model, this.rules)
     return {
       error,
@@ -44,47 +55,40 @@ export default {
     }
   },
   methods: {
-    check (field) {
+    check(field) {
       const currentRule = this.rules[field]
+      let hasError = false
 
-      if (!currentRule) return true
+      if (!currentRule) return !hasError
 
       currentRule.some((rule, index) => {
         const value = getValue(field, this.model)
-
-        if (
-          ( // 验证非空
-            rule.required && (
-              // 字符串类型
-              (typeof value === 'string' && !value.trim()) ||
-              // 布尔类型
-              (typeof value === 'boolean' && !value) ||
-              // 数组类型
-              (Array.isArray(value) && !value.length)
-            )
-          ) ||
-          ( // 验证长度
-            (rule.min || rule.max) &&
-            (value.length < rule.min || value.length > rule.max)
-          )
-        ) {
-          this.error[field] = currentRule[index].message || `The ${field} field is required`
-          return true
-        }
 
         // 自定义验证
         if (rule.validator) {
           const result = rule.validator(rule, value)
           if (typeof result === 'string') {
             this.error[field] = result
-            return true
+            hasError = true
+            return hasError
           }
+        }
+
+        if (
+          (rule.required && this.isEmptyValue(value)) ||
+          !verifyLength(rule.min, rule.max, value)
+        ) {
+          this.error[field] =
+            currentRule[index].message || `The ${field} field is required`
+          hasError = true
+          return hasError
         }
 
         this.error[field] = ''
       })
+      return !hasError
     },
-    checkAll (cb) {
+    checkAll(cb) {
       let valid = true
       let error = []
 
@@ -100,15 +104,24 @@ export default {
 
       return valid
     },
-    reset () {
+    reset() {
       Object.keys(this.originalModel).forEach(field => {
-        this.model[field] = typeof this.originalModel[field] === 'object'
-        ? JSON.parse(JSON.stringify(this.originalModel[field]))
-        : this.originalModel[field]
+        this.model[field] =
+          typeof this.originalModel[field] === 'object'
+            ? JSON.parse(JSON.stringify(this.originalModel[field]))
+            : this.originalModel[field]
       })
       Object.keys(this.rules).forEach(field => {
         this.error[field] = ''
       })
+    },
+    isEmptyValue(value) {
+      if (typeof value === 'string') {
+        return !value.trim()
+      }
+      if (value === 0) return false
+      if (value === Infinity) return true
+      return !value
     }
   }
 }

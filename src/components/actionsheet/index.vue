@@ -1,0 +1,185 @@
+<template>
+  <Popup v-model="show" :lazy="lazy" :overlayClick="overlayClick">
+    <div class="v-actionsheet">
+      <slot name="header">
+        <header
+          v-if="title || describe"
+          class="v-actionsheet-header v-bd-y-bottom"
+        >
+          <h4 class="v-actionsheet-title">{{ title }}</h4>
+          <p class="v-actionsheet-describe">{{ describe }}</p>
+        </header>
+      </slot>
+      <slot>
+        <ul class="v-actionsheet-default">
+          <li
+            class="v-actionsheet-item v-bd-y-top"
+            v-for="(action, index) in actions"
+            :key="index"
+            :class="[
+              'v-actionsheet-align-' + align,
+              'v-actionsheet-item-' + (action.type || 'default'),
+              { 'v-actionsheet-item-disabled': action.loading },
+              action.className
+            ]"
+            @click="clickHandler(action)"
+          >
+            <Loading size="22" v-if="action.loading" />
+            <span v-else>{{ action.name }}</span>
+          </li>
+          <li
+            class="v-actionsheet-item v-actionsheet-align-center v-actionsheet-cancel"
+            v-if="cancelText"
+            @click="cancel"
+          >
+            取消
+          </li>
+        </ul>
+      </slot>
+    </div>
+  </Popup>
+</template>
+
+<script>
+import Popup from '../../components/popup'
+import Loading from '../../components/loading'
+
+export default {
+  name: 'Actionsheet',
+  components: {
+    Popup,
+    Loading
+  },
+  props: {
+    value: {
+      type: Boolean,
+      required: true
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    describe: {
+      type: String,
+      default: ''
+    },
+    actions: {
+      type: Array,
+      default: () => []
+    },
+    cancelText: {
+      type: String,
+      default: '取消'
+    },
+    overlayClick: {
+      type: Boolean,
+      default: true
+    },
+    lazy: {
+      type: Boolean,
+      default: true
+    },
+    align: {
+      type: String,
+      default: 'center'
+    }
+  },
+  computed: {
+    show: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+      }
+    }
+  },
+  methods: {
+    clickHandler(action) {
+      if (action.type === 'disabled' || action.loading) return
+      this.$emit('click', action)
+    },
+    cancel() {
+      this.$emit('input', false)
+      this.$emit('cancel')
+    }
+  }
+}
+</script>
+
+<style lang="postcss">
+.v-actionsheet {
+  background-color: var(--background);
+  color: var(--textPrimary);
+}
+
+.v-actionsheet-header {
+  padding: 12px;
+  background-color: white;
+  text-align: center;
+}
+.v-actionsheet-title {
+  font-size: 17px;
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+}
+.v-actionsheet-describe {
+  margin: 0;
+  color: var(--textRegular);
+  font-size: 14px;
+}
+
+.v-actionsheet-default {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.v-actionsheet-item {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  height: 48px;
+  font-size: 16px;
+  background-color: #fff;
+  &:first-child.v-bd-y-top:before {
+    display: none;
+  }
+  &:active {
+    background-color: var(--gray);
+  }
+}
+
+.v-actionsheet-item-default {
+  color: var(--textPrimary);
+}
+
+.v-actionsheet-item-primary {
+  color: var(--primary);
+}
+
+.v-actionsheet-item-warning {
+  color: var(--error);
+}
+
+.v-actionsheet-item-disabled {
+  color: var(--textSecondary);
+  &:active {
+    background-color: #fff;
+  }
+}
+
+.v-actionsheet-align-center {
+  justify-content: center;
+}
+
+.v-actionsheet-align-left {
+  justify-content: left;
+}
+
+.v-actionsheet-cancel {
+  margin-top: 10px;
+}
+</style>

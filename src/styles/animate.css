@@ -1,0 +1,8 @@
+.v-fade-enter-active,
+.v-fade-leave-active {
+  transition: opacity 500ms;
+}
+.v-fade-enter,
+.v-fade-leave-to {
+  opacity: 0;
+}
