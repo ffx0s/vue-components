@@ -117,6 +117,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+body.hide-scrollbar {
+  & .animated-route-view::-webkit-scrollbar,
+  & .v-swipe-item-content::-webkit-scrollbar,
+  & .v-scroll-view-scroller::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .text-center {
   text-align: center;
 }

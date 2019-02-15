@@ -1,14 +1,14 @@
 <template>
   <div class="v-tab">
     <ScrollView
-      class="v-tab-bar v-bd-y-bottom"
+      class="v-tab-title v-bd-y-bottom"
       :style="tabBarStyle"
       :scrollable="scrollable"
       :scrollBar="false"
       flex
       ref="tabBar"
     >
-      <dl class="v-tab-bar-inner" :class="{ 'v-tab-scrollable': scrollable }">
+      <dl class="v-tab-title-inner" :class="{ 'v-tab-scrollable': scrollable }">
         <dt
           :class="{ 'v-tab-active': index === value }"
           v-for="(tabBarItem, index) in tabBarItems"
@@ -196,27 +196,6 @@ export default {
       this.tabBarScrollTo(index)
       this.$emit('input', index)
       this.$emit('change', index)
-    },
-    pointerdown(event) {
-      this.lastY = event.touches[0].clientY
-    },
-    // 解决 safari 回弹效果没有停止导致滚动不了的 bug
-    pointermove(event) {
-      const moveY = event.touches[0].clientY
-      const pullDownAction = this.lastY < moveY
-      const pullUpAction = !pullDownAction
-      const scroller = this.tabs[this.value].$refs.swipeItemContent
-
-      if (
-        (pullDownAction && scroller.scrollTop <= 10) ||
-        (pullUpAction &&
-          Math.floor(scroller.scrollHeight - view.getHeight()) <=
-            scroller.scrollTop)
-      ) {
-        event.cancelable && event.preventDefault()
-      }
-
-      this.lastY = moveY
     }
   }
 }
@@ -227,7 +206,7 @@ export default {
   position: relative;
   height: 100%;
 }
-.v-tab-bar-inner {
+.v-tab-title-inner {
   display: flex;
   position: relative;
   left: -8px;

@@ -179,11 +179,39 @@ export function getVMParent(current, name) {
   return parent
 }
 
+export function loadJS(url) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script')
+    script.src = url
+    script.async = 'async'
+    script.onload = resolve
+    script.onerror = reject
+    document.getElementsByTagName('head')[0].appendChild(script)
+  })
+}
+
+export function jsonp(url, options) {
+  return new Promise((resolve, reject) => {
+    const callbackKey = 'callback'
+    const callbackName = 'jsonp_' + Date.now()
+    options = Object.assign({ callbackKey, callbackName }, options)
+    url += `${url.split('?')[1] ? '&' : '?'}${options.callbackKey}=${
+      options.callbackName
+    }`
+    window[callbackName] = function(data) {
+      resolve(data)
+      setTimeout(() => {
+        window[callbackName] = null
+      })
+    }
+    loadJS(url).catch(reject)
+  })
+}
+
 export const view = {
   _width: undefined,
   _height: undefined,
   _timer: null,
-  _isBind: false,
   width() {
     this.getWidth()
     this.width = () => this._width
@@ -203,7 +231,7 @@ export const view = {
     return this._height
   },
   bind() {
-    if (process.server || this._isBind) return
+    if (process.server) return
     const self = this
     addListener(window, 'resize', () => {
       clearTimeout(self._timer)
@@ -212,7 +240,6 @@ export const view = {
         self.getHeight()
       }, 300)
     })
-    self._isBind = true
   }
 }
 

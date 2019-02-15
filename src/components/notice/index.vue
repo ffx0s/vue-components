@@ -92,6 +92,7 @@ export default {
   font-size: 12px;
   color: #fff;
   box-sizing: border-box;
+  overflow: hidden;
 }
 .v-notice-default-warning {
   background-color: var(--warning);

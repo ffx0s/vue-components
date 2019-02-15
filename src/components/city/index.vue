@@ -17,6 +17,7 @@
 <script>
 import Picker from '../picker'
 import Popup from '../popup'
+import { jsonp } from '../../utils/shared'
 
 const cities = {}
 
@@ -135,37 +136,20 @@ export default {
       this.loadCity(index, item.id)
     },
     getChildrenList(id) {
+      const query =
+        'key=UTRBZ-XNYKR-BCBWB-WKH4C-BDBNQ-LEF5Q&output=jsonp' +
+        (id ? `&id=${id}` : '')
       return cities[id]
         ? Promise.resolve(cities[id])
-        : new Promise((resolve, reject) => {
-            const xhr = new XMLHttpRequest()
-            const query =
-              'key=UTRBZ-XNYKR-BCBWB-WKH4C-BDBNQ-LEF5Q' +
-              (id ? `&id=${id}` : '')
-
-            xhr.timeout = 10000
-            xhr.open('GET', `/district/v1/getchildren?${query}`)
-            xhr.onerror = function() {
-              reject()
-            }
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState === 4) {
-                if (xhr.status === 200) {
-                  const data = JSON.parse(xhr.responseText)
-                  if (data.status == 0) {
-                    const result = data.result[0].map(item => ({
-                      id: item.id,
-                      fullname: item.fullname
-                    }))
-                    if (id) cities[id] = result
-                    resolve(result)
-                  }
-                } else {
-                  reject()
-                }
-              }
-            }
-            xhr.send()
+        : jsonp(
+            `https://apis.map.qq.com/ws/district/v1/getchildren?${query}`
+          ).then(data => {
+            const result = data.result[0].map(item => ({
+              id: item.id,
+              fullname: item.fullname
+            }))
+            if (id) cities[id] = result
+            return result
           })
     }
   }

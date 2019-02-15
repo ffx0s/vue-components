@@ -56,5 +56,6 @@ export default class Debouncer {
 
   cancel() {
     cancelAnimationFrame(this.timer)
+    this.ticking = false
   }
 }

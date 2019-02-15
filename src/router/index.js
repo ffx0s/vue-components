@@ -168,6 +168,24 @@ const routes = [
     component: loadRoute('notice')
   },
   {
+    path: '/virtualList',
+    name: 'virtualList',
+    meta: { title: 'virtualList' },
+    component: loadRoute('virtualList')
+  },
+  {
+    path: '/virtualList/variable',
+    name: 'virtualList/variable',
+    meta: { title: 'virtualList' },
+    component: loadRoute('virtualList/variable')
+  },
+  {
+    path: '/virtualList/loadMore',
+    name: 'virtualList/loadMore',
+    meta: { title: 'virtualList' },
+    component: loadRoute('virtualList/loadMore')
+  },
+  {
     path: '/404',
     name: '404',
     meta: { title: '404' },

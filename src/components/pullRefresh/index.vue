@@ -60,7 +60,7 @@ export default {
     },
     threshold: {
       type: Number,
-      default: 50
+      default: 40
     },
     failed: {
       type: Boolean,
@@ -85,6 +85,10 @@ export default {
     failedClass: {
       type: String,
       default: 'v-pull-refresh-failed'
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -110,7 +114,7 @@ export default {
   watch: {
     value: {
       handler: function(isLoading) {
-        isLoading ? this.loading() : this.loaded()
+        isLoading ? this.load() : this.loaded()
       },
       immediate: true
     }
@@ -124,27 +128,28 @@ export default {
     })
   },
   mounted() {
-    this.$nextTick(() => {
-      this.scrollEl = getScrollEventTarget(this.$el)
-    })
+    this.scrollEl = getScrollEventTarget(this.$el)
   },
   beforeDestroy() {
     this.handler = null
   },
   methods: {
     pointerdown(event) {
+      if (this.disabled) return
       this.duration = 0
       this.handler.start(event)
     },
     pointermove(event) {
+      if (this.disabled) return
       this.scrollTop = getScrollTop(this.scrollEl)
       this.handler.move(event)
     },
     pointerup() {
+      if (this.disabled) return
       this.handler.up()
       if (!this.shouldUpdate()) return
       if (this.sholudLoad) {
-        this.loading()
+        this.load()
         this.duration = this.animationDuration
       } else {
         this.reset()
@@ -167,11 +172,11 @@ export default {
       this.pullRefreshClass = this.sholudLoad ? this.upClass : this.downClass
       this.translateY += y / 2
     },
-    async loading() {
+    async load() {
       if (this.isLoading) return
+      this.isLoading = true
       this.translateY = this.threshold
       this.pullRefreshClass = this.loadingClass
-      this.isLoading = true
       await sleep(this.loadingDuration)
       this.$emit('input', true)
       this.$emit('refresh', this.loaded)

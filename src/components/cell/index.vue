@@ -105,11 +105,9 @@ export default {
 .v-cell {
   position: relative;
   padding-left: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   font-size: 16px;
   word-break: break-all;
+  display: flex;
 }
 .v-cell-clickable {
   user-select: none;
@@ -155,7 +153,12 @@ export default {
   align-items: center;
 }
 .v-cell-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin-right: 14px;
+  min-width: 25px;
+  font-size: 22px;
 }
 .v-cell-arrow {
   margin-left: 6px;

@@ -12,11 +12,6 @@ const propsMap = {
 
 export class Handler {
   constructor(props) {
-    this.lastX = 0
-    this.lastY = 0
-    this.action = ''
-    this.lock = ''
-    this.moved = false
     this.touchDelay = 3
     this.delay = this.touchDelay
     this.isPreventDefault = () => false
@@ -30,37 +25,34 @@ export class Handler {
     const point = getPoint(event)
     this.lastX = point.clientX
     this.lastY = point.clientY
-    this.delay = this.touchDelay
-    this.moved = false
-    this.debouncer.ticking = false
-    this.lock = ''
     this.action = ''
+    this.lock = ''
+    this.moved = false
+    this.delay = this.touchDelay
   }
   move(event) {
     const point = getPoint(event)
-    const moveX = point.clientX
-    const moveY = point.clientY
-    this.dx = moveX - this.lastX
-    this.dy = moveY - this.lastY
+    this.vx = point.clientX - this.lastX
+    this.vy = point.clientY - this.lastY
 
     // 每次从按下移动到抬起的过程都只锁定一个方向
     if (this.lock === 'horizontal') {
-      this._setAction(moveX, this.lastX)
+      this._setAction(this.vx)
     } else if (this.lock === 'vertical') {
-      this._setAction(moveY, this.lastY)
-    } else if (this.dx !== 0 || this.dy !== 0) {
-      const isHorizontal = Math.abs(this.dx) > Math.abs(this.dy)
+      this._setAction(this.vy)
+    } else if (this.vx !== 0 || this.vy !== 0) {
+      const isHorizontal = Math.abs(this.vx) > Math.abs(this.vy)
       if (isHorizontal) {
         this.lock = 'horizontal'
-        this._setAction(moveX, this.lastX)
+        this._setAction(this.vx)
       } else {
         this.lock = 'vertical'
-        this._setAction(moveY, this.lastY)
+        this._setAction(this.vy)
       }
     }
 
-    this.lastX = moveX
-    this.lastY = moveY
+    this.lastX = point.clientX
+    this.lastY = point.clientY
 
     if (this.isPreventDefault()) {
       event.cancelable && event.preventDefault()
@@ -85,13 +77,13 @@ export class Handler {
     this.debouncer.cancel()
   }
   update() {
-    this[`on${this.action}`](this.dx, this.dy)
+    this[`on${this.action}`](this.vx, this.vy)
   }
   is(action) {
     return this.action === action
   }
-  _setAction(value, lastValue) {
-    this.action = propsMap[this.lock][value < lastValue ? 0 : 1]
+  _setAction(vector) {
+    this.action = propsMap[this.lock][vector <= 0 ? 0 : 1]
   }
 }
 

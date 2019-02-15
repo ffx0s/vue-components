@@ -65,7 +65,7 @@
         tag="router-link"
         iconClass="far fa-address-book"
         activeClass="v-tab-bar-item-active"
-        badge=""
+        badge
       />
       <TabBarItem
         title="收藏夹"

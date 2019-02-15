@@ -69,11 +69,6 @@ import animate from '../../utils/animate'
 export default {
   name: 'ScrollView',
   props: {
-    // 水平滚动
-    horizontal: {
-      type: Boolean,
-      default: true
-    },
     // 垂直滚动
     vertical: {
       type: Boolean,
@@ -112,7 +107,7 @@ export default {
       return this.flex ? { width: '100%' } : { float: 'left' }
     },
     scrollProps() {
-      return this.horizontal ? 'scrollLeft' : 'scrollTop'
+      return this.vertical ? 'scrollTop' : 'scrollLeft'
     }
   },
   methods: {

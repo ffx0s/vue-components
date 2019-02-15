@@ -1,9 +1,11 @@
 <template>
-  <PullRefresh
+  <component
+    :is="pullRefresh ? 'PullRefresh' : 'div'"
+    :failed="failed"
+    :disabled="isLoading"
     ref="pullRefresh"
     v-model="refreshing"
     @refresh="refresh"
-    :failed="failed"
   >
     <div class="v-infinite-scroll" ref="container"><slot /></div>
     <!-- 加载中 -->
@@ -23,20 +25,29 @@
       </slot>
     </div>
     <!-- 加载失败 -->
-    <div class="v-infinite-scroll-footer" v-show="failed" @click="reload">
+    <div class="v-infinite-scroll-footer" v-show="failed" @click="load">
       <slot name="failed">加载失败,点击重试</slot>
     </div>
-  </PullRefresh>
+  </component>
 </template>
 
 <script>
 import PullRefresh from '../../components/pullRefresh'
 import Loading from '../../components/loading'
 import Debouncer from '../../utils/debouncer'
-import { addListener, removeListener, view } from '../../utils/shared'
+import {
+  addListener,
+  removeListener,
+  getScrollEventTarget,
+  view
+} from '../../utils/shared'
 
 export default {
   name: 'InfiniteScroll',
+  components: {
+    PullRefresh,
+    Loading
+  },
   props: {
     value: {
       type: Boolean,
@@ -60,11 +71,12 @@ export default {
     offset: {
       type: Number,
       default: 300
+    },
+    // 是否内置下拉刷新功能
+    pullRefresh: {
+      type: Boolean,
+      default: true
     }
-  },
-  components: {
-    PullRefresh,
-    Loading
   },
   data() {
     return {
@@ -74,14 +86,13 @@ export default {
   },
   watch: {
     value: {
-      handler: function(isLoading) {
-        isLoading && this.loading()
+      handler: function(value) {
+        value && this.load()
       },
       immediate: true
     }
   },
   mounted() {
-    if (this.immediate) this.loading()
     this.bind()
   },
   activated() {
@@ -98,7 +109,9 @@ export default {
       if (this.isBind) return
       this.$nextTick(() => {
         this.onscroll = new Debouncer(this.scrollHandler)
-        this.scrollEl = this.$refs.pullRefresh.scrollEl
+        this.scrollEl = this.pullRefresh
+          ? this.$refs.pullRefresh.scrollEl
+          : getScrollEventTarget(this.$el)
         this.container = this.$refs.container
         addListener(this.scrollEl, 'scroll', this.onscroll)
       })
@@ -109,10 +122,11 @@ export default {
       this.isBind = false
       this.scrollEl = null
       this.container = null
+      this.onscroll = null
     },
     scrollHandler() {
       if (this.shouldLoadMore()) {
-        this.loading()
+        this.load()
       }
     },
     shouldLoadMore() {
@@ -120,27 +134,25 @@ export default {
       const bottom = this.container.getBoundingClientRect().bottom
       return bottom - view.height() <= this.offset
     },
-    loading() {
+    load() {
       if (this.finished) {
-        this.$emit('input', false)
+        this.done()
         return
       }
-      if (this.isLoading) return
+      // 保证有序加载，同一时间只执行一个操作
+      if (this.isLoading || this.refreshing) return
       this.isLoading = true
       this.$emit('input', true)
-      this.$emit('load', () => {
-        this.$nextTick(() => {
-          this.$emit('input', false)
-          this.isLoading = false
-        })
-      })
+      this.$emit('load', this.done)
     },
     refresh(done) {
-      this.$emit('input', false)
       this.$emit('refresh', done)
     },
-    reload() {
-      this.loading()
+    done() {
+      this.$nextTick(() => {
+        this.$emit('input', false)
+        this.isLoading = false
+      })
     }
   }
 }

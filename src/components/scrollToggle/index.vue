@@ -103,12 +103,10 @@ export default {
   methods: {
     bind() {
       if (this.isBind) return
-      this.$nextTick(() => {
-        this.scrollEl = getScrollEventTarget(this.$el)
-        this.onscroll = new Debouncer(this.scrollHandler)
-        addListener(this.scrollEl, 'scroll', this.onscroll)
-      })
       this.isBind = true
+      this.scrollEl = getScrollEventTarget(this.$el)
+      this.onscroll = new Debouncer(this.scrollHandler)
+      addListener(this.scrollEl, 'scroll', this.onscroll)
     },
     unbind() {
       removeListener(this.scrollEl, 'scroll', this.onscroll)
@@ -128,8 +126,7 @@ export default {
         Math.abs(this.lastScrollTop - scrollTop) >= this.resistance &&
         scrollTop > this.containerHeight
       ) {
-        const action = scrollTop > this.lastScrollTop ? 'unpinned' : 'pinned'
-        this[action]()
+        this[scrollTop > this.lastScrollTop ? 'unpinned' : 'pinned']()
       }
       this.lastScrollTop = scrollTop
     },

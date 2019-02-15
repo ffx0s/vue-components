@@ -213,9 +213,6 @@ export default {
   }
 }
 .demo-form-code-cell {
-  & .v-cell-right {
-    margin-right: 0;
-  }
   & .v-cell-content {
     padding-right: 0;
     padding-top: 5px;
@@ -223,6 +220,7 @@ export default {
   }
   & .demo-form-code {
     display: flex;
+    flex: 1;
     align-items: center;
     & input {
       display: block;
@@ -230,6 +228,7 @@ export default {
     }
     & .v-button {
       display: block;
+      margin-right: -14px;
     }
   }
   & .error-info {

@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="./dist/favicon.ico">
   <title>vue-components</title>
   <style>
     body {
@@ -33,8 +34,14 @@
 
 <body>
   <div class="simulator">
-    <iframe src="./dist/index.html" class="simulator-content"></iframe>
-    <!-- <iframe src="https://ffx0s.github.io/vue-components/dist/index.html" class="simulator-content"></iframe> -->
+    <iframe src="./dist/index.html" class="simulator-content" id="simulator"></iframe>
+    <script>
+      if (navigator.userAgent.indexOf('Mac') === -1) {
+        document.getElementById('simulator').onload = function () {
+          this.contentWindow.document.body.className += 'hide-scrollbar'
+        }
+      }
+    </script>
   </div>
 </body>
 

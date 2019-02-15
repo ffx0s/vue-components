@@ -105,9 +105,9 @@ export default {
     },
     bind(el) {
       if (this.isBind) return
+      this.isBind = true
       addListener(el, 'transitionend', this.transitionend)
       addListener(el, 'webkitTransitionEnd', this.transitionend)
-      this.isBind = true
     },
     unbind(el) {
       removeListener(el, 'transitionend', this.transitionend)

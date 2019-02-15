@@ -40,6 +40,19 @@
       <Cell title="TabBar" to="/tabBar" isLink />
       <Cell title="Badge" to="/badge" isLink />
       <Cell title="Notice" to="/notice" isLink />
+      <Cell title="VirtualList" to="/virtualList" isLink value="Height" />
+      <Cell
+        title="VirtualList"
+        to="/virtualList/variable"
+        isLink
+        value="Variable"
+      />
+      <Cell
+        title="VirtualList"
+        to="/virtualList/loadMore"
+        isLink
+        value="Variable + LoadMore"
+      />
     </Group>
 
     <Group title="表单">
