@@ -55,7 +55,6 @@ export default {
     if (this.data.length) {
       this.debouncer.requestTick()
     }
-    window.sl = this
   },
   activated() {
     this.bind()

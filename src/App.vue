@@ -125,6 +125,22 @@ body.hide-scrollbar {
   }
 }
 
+body.custom-scrollbar {
+  & .animated-route-view,
+  & .v-swipe-item-content,
+  & .v-scroll-view-scroller {
+    &::-webkit-scrollbar {
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #ddd;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: #666;
+    }
+  }
+}
+
 .text-center {
   text-align: center;
 }
