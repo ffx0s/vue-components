@@ -1,9 +1,9 @@
 <template>
   <div class="v-navbar-wrap">
     <div
-      class="v-navbar v-bd-y-bottom"
-      :class="{ 'v-navbar-fixed': fixed }"
-      :style="{ backgroundColor: background, height: height + 'px' }"
+      class="v-navbar"
+      :class="{ 'v-navbar-fixed': fixed, 'v-bd-y-bottom': border }"
+      :style="{ backgroundColor: backgroundColor, height: height + 'px' }"
     >
       <div class="v-navbar-left v-navbar-center">
         <slot name="left">
@@ -48,19 +48,22 @@ export default {
       type: Boolean,
       default: false
     },
+    border: {
+      type: Boolean,
+      default: true
+    },
     title: {
       type: String,
       required: false
     },
     titleColor: {
-      type: String,
-      default: properties.textPrimary
+      type: String
     },
     backIconColor: {
       type: String,
       default: properties.primary
     },
-    background: {
+    backgroundColor: {
       type: String
     },
     height: {
@@ -79,13 +82,15 @@ export default {
 <style lang="postcss">
 .v-navbar-wrap {
   position: relative;
+  color: var(--textPrimary);
+  background-color: #fff;
 }
 .v-navbar {
   width: 100%;
   height: 46px;
   box-sizing: border-box;
   font-size: 17px;
-  background-color: #fff;
+  background-color: inherit;
   & .v-navbar-back-icon {
     width: 22px;
     height: 22px;
