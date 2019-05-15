@@ -121,7 +121,7 @@ export default {
 
 <style lang="postcss">
 :root {
-  --duration: 420ms;
+  --duration: 400ms;
 }
 
 /*ios <= 9 bug fixed*/
@@ -283,7 +283,7 @@ body {
 .animated-android-out-leave-to,
 .animated-android-in-enter {
   opacity: 0;
-  transform: translate3d(0, 30px, 0);
+  transform: translate3d(0, 46px, 0);
 }
 .animated-android-out-leave,
 .animated-android-in-enter-to {

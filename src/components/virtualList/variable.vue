@@ -43,10 +43,10 @@ export default {
         this.getItemRect(this.end - 1).offset
       ) {
         this.start = index
-        this.debouncer.requestTick()
+        this.updateVisibleData()
       } else if (index < this.start) {
         this.start = Math.max(index - 1, 0)
-        this.debouncer.requestTick()
+        this.updateVisibleData()
       }
     },
     getStartIndex(offset) {

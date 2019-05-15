@@ -186,6 +186,18 @@ const routes = [
     component: loadRoute('virtualList/loadMore')
   },
   {
+    path: '/imageViewer',
+    name: 'imageViewer',
+    meta: { title: 'imageViewer' },
+    component: loadRoute('imageViewer')
+  },
+  {
+    path: '/ring',
+    name: 'ring',
+    meta: { title: 'ring' },
+    component: loadRoute('ring')
+  },
+  {
     path: '/404',
     name: '404',
     meta: { title: '404' },

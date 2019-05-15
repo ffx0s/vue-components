@@ -7,44 +7,53 @@ function $(selector) {
   return document.body
 }
 
-function transfer(target, parentSelector, hasMovedOut) {
-  const parentNode = target.parentNode
-  if (parentNode) {
-    parentNode.replaceChild(document.createComment(''), target)
-  }
-  $(parentSelector).appendChild(target)
-  if (hasMovedOut) {
-    target.__originalParentNode = parentNode
-  } else {
-    destory(target)
+function transfer(el, targetSelector) {
+  if (!el.__data || !el.__data.transfer) {
+    const parentNode = el.parentNode
+    el.__data = {}
+    if (parentNode) {
+      // 用占位节点替换掉当前节点
+      el.__data.placeNode = document.createComment('')
+      parentNode.replaceChild(el.__data.placeNode, el)
+    }
+    // 将当前节点插入到目标节点/body里
+    $(targetSelector).appendChild(el)
+    // 标记已移出状态和记录原来的父节点
+    el.__data.transfer = true
+    el.__data.originalParentNode = parentNode
   }
 }
 
-function destory(target) {
-  delete target.__originalParentNode
+function restore(el, isDelete = true) {
+  if (!el.__data) return
+  if (el.__data.originalParentNode && el.parentNode) {
+    el.__data.originalParentNode.replaceChild(el, el.__data.placeNode)
+    el.__data.transfer = false
+  }
+  if (isDelete) {
+    delete el.__data
+  }
 }
 
 export default {
-  inserted: function(el, { value }) {
-    if (value !== false) {
-      const hasMovedOut = true
-      transfer(el, value, hasMovedOut)
+  inserted: function(el, { value: targetSelector }) {
+    if (targetSelector !== false) {
+      transfer(el, targetSelector)
     }
   },
-  componentUpdated: function(el, { value, oldValue }) {
-    if (value !== oldValue) {
-      const hasMovedOut = !!value
-      if (value !== false) {
-        transfer(el, value, hasMovedOut)
+  componentUpdated: function(
+    el,
+    { value: targetSelector, oldValue: oldTargetSelector }
+  ) {
+    if (targetSelector !== oldTargetSelector) {
+      if (targetSelector === false) {
+        restore(el, false)
       } else {
-        transfer(el, el.__originalParentNode, hasMovedOut)
+        transfer(el, targetSelector)
       }
     }
   },
   unbind: function(el) {
-    if (el.__originalParentNode) {
-      transfer(el, el.__originalParentNode, false)
-    }
-    destory(el)
+    restore(el)
   }
 }

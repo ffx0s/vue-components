@@ -53,6 +53,8 @@
         isLink
         value="Variable + LoadMore"
       />
+      <Cell title="ImageViewer" to="/imageViewer" isLink />
+      <Cell title="Ring" to="/ring" isLink />
     </Group>
 
     <Group title="表单">

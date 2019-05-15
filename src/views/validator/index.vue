@@ -10,7 +10,7 @@
         </Cell>
       </Group>
       <Validator ref="form" :model="form" :rules="rules">
-        <template slot-scope="{ error, check }">
+        <template v-slot="{ error, check }">
           <Group
             labelAlign="left"
             labelWidth="80"

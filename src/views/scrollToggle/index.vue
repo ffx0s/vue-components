@@ -1,6 +1,7 @@
 <template>
   <div>
-    <ScrollToggle :visible="visible">
+    <div class="page-scrollToggle-space"></div>
+    <ScrollToggle :visible="visible" v-transfer-dom="transfer">
       <Navbar title="ScrollToggle">
         <VButton
           slot="right"
@@ -36,6 +37,7 @@
 
     <ScrollToggle
       :visible="visible"
+      v-transfer-dom="transfer"
       position="bottom"
       initialClass="demo-scrollToTop-initial"
       pinnedClass="demo-scrollToTop-pinned"
@@ -46,7 +48,11 @@
       <div class="demo-scrollToTop">↑</div>
     </ScrollToggle>
 
-    <ScrollToggle :visible="visible" position="bottom" style="z-index:5">
+    <ScrollToggle
+      :visible="visible"
+      v-transfer-dom="transfer"
+      position="bottom"
+    >
       <VButton class="demo-scrollToggle-bottom" block type="primary">
         Bottom
       </VButton>
@@ -66,7 +72,8 @@ export default {
   },
   data() {
     return {
-      visible: false
+      visible: false,
+      transfer: true
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -78,6 +85,10 @@ export default {
     this.$animatedRoute.$once('afterEnter', function() {
       self.visible = true
     })
+    this.transfer = true
+  },
+  deactivated() {
+    this.transfer = false
   }
 }
 </script>
@@ -107,5 +118,9 @@ export default {
 }
 .demo-scrollToggle-bottom {
   border-radius: 0;
+}
+
+.page-scrollToggle-space {
+  height: 46px;
 }
 </style>

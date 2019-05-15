@@ -25,10 +25,10 @@ export default {
       const index = Math.max(Math.floor(offset / this.itemSize), 0)
       if (index + this.visibleCount >= this.end) {
         this.start = index
-        this.debouncer.requestTick()
+        this.updateVisibleData()
       } else if (index < this.start) {
         this.start = Math.max(index - this.visibleCount, 0)
-        this.debouncer.requestTick()
+        this.updateVisibleData()
       }
     },
     updateVisibleData() {

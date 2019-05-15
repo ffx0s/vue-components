@@ -1,14 +1,21 @@
 <template>
   <div>
     <h4 class="text-center">Swpie 横向</h4>
-    <Swipe v-model="index" class="demo-swipe" @change="change">
-      <SwipeItem v-for="(img, index) in imgs" :key="index">
+    <Swipe v-model="index" class="demo-swipe" @change="change" preload>
+      <SwipeItem v-for="(img, index) in imgs" :key="index" lazy>
         <img class="img" :src="img" />
       </SwipeItem>
     </Swipe>
     <h4 class="text-center">Swpie 垂直</h4>
-    <Swipe v-model="index2" class="demo-swipe" @change="change" vertical>
-      <SwipeItem v-for="img in imgs" :key="img">
+    <Swipe
+      v-model="index2"
+      class="demo-swipe"
+      @change="change"
+      vertical
+      optimization
+      preload
+    >
+      <SwipeItem v-for="img in imgs" :key="img" lazy>
         <img class="img" :src="img" />
       </SwipeItem>
     </Swipe>

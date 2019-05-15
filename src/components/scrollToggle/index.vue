@@ -23,8 +23,8 @@
 </template>
 
 <script>
-import Debouncer from '../../utils/debouncer'
 import {
+  rAFThrottle,
   addListener,
   removeListener,
   getScrollTop,
@@ -100,20 +100,22 @@ export default {
   beforeDestroy() {
     this.unbind()
   },
+  destroyed() {
+    this.scrollEl = null
+  },
   methods: {
     bind() {
       if (this.isBind) return
       this.isBind = true
       this.scrollEl = getScrollEventTarget(this.$el)
-      this.onscroll = new Debouncer(this.scrollHandler)
+      this.onscroll = rAFThrottle(this.update)
       addListener(this.scrollEl, 'scroll', this.onscroll)
     },
     unbind() {
       removeListener(this.scrollEl, 'scroll', this.onscroll)
       this.isBind = false
-      this.scrollEl = null
     },
-    scrollHandler() {
+    update() {
       if (this.disabled) return
       const scrollTop = getScrollTop(this.scrollEl)
       if (scrollTop <= 0) return this.restore()
@@ -133,13 +135,16 @@ export default {
     pinned() {
       this.toggleClass = this.pinnedClass
       this.noTransition = false
+      this.$emit('pinned')
     },
     unpinned() {
       this.toggleClass = this.unpinnedClass
+      this.$emit('unpinned')
     },
     restore() {
       this.toggleClass = ''
       this.noTransition = this.isTop
+      this.$emit('restore')
     }
   }
 }

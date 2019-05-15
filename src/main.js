@@ -7,6 +7,7 @@ import VButton from '@/components/button'
 import Toast from '@/components/toast/plugin'
 import Modal from '@/components/modal/plugin'
 import transferDom from '@/directives/transferDom/index'
+import './utils/rAF'
 
 Vue.component('Navbar', Navbar)
 Vue.component('VButton', VButton)

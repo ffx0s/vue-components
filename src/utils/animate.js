@@ -48,7 +48,6 @@ export default function(options) {
     const changeTime = now()
     const scale = 1 - (Math.max(0, startTime - changeTime + time) / time || 0)
     const value = []
-
     targets.forEach(target => {
       const currentValue =
         target[0] === target[1]

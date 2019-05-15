@@ -1,11 +1,11 @@
 import {
   view,
+  throttle,
   getScrollEventTarget,
   addListener,
   removeListener,
   setScrollTop
 } from '../../utils/shared'
-import Debouncer from '../../utils/debouncer'
 
 export default {
   props: {
@@ -53,7 +53,7 @@ export default {
   mounted() {
     this.bind()
     if (this.data.length) {
-      this.debouncer.requestTick()
+      this.updateVisibleData()
     }
   },
   activated() {
@@ -70,7 +70,7 @@ export default {
       if (this.isBind) return
       this.isBind = true
       this.scrollEl = getScrollEventTarget(this.$el)
-      this.debouncer = new Debouncer(this.updateVisibleData)
+      this.scrollHandler = throttle(this.scrollHandler, 50)
       addListener(this.scrollEl, 'scroll', this.scrollHandler)
     },
     unbind() {

@@ -55,15 +55,6 @@ export function getTransform(el) {
   }
 }
 
-export function intersects(rectA, rectB) {
-  return !(
-    rectA.left + rectA.width <= rectB.left ||
-    rectB.left + rectB.width <= rectA.left ||
-    rectA.top + rectA.height <= rectB.top ||
-    rectB.top + rectB.height <= rectA.top
-  )
-}
-
 // 是否支持 passive 属性
 let supportsPassive = () => {
   let support = false
@@ -83,7 +74,7 @@ let supportsPassive = () => {
   return support
 }
 
-export function addListener(element, type, fn, options) {
+export function addListener(element, type, fn, options = { capture: false }) {
   element.addEventListener(
     type,
     fn,
@@ -94,12 +85,17 @@ export function addListener(element, type, fn, options) {
           once: false,
           ...options
         }
-      : !!options
+      : options.capture
   )
 }
 
-export function removeListener(element, type, fn, options) {
-  element.removeEventListener(type, fn, options)
+export function removeListener(
+  element,
+  type,
+  fn,
+  options = { capture: false }
+) {
+  element.removeEventListener(type, fn, options.capture)
 }
 
 export function getScrollTop(el) {
@@ -208,10 +204,123 @@ export function jsonp(url, options) {
   })
 }
 
+export const slice = Array.prototype.slice
+
+/**
+ * 类数组对象转数组
+ * @param {Object} object 类数组对象
+ */
+export function makeArray(object) {
+  return slice.call(object)
+}
+
+export function noop() {}
+
+/**
+ * 防抖
+ * @param {Function} fn 执行函数
+ * @param {Number} delay 延迟
+ * @param {Number} ms 每隔多少毫秒至少执行一次
+ */
+export function debounce(fn, delay = 200, ms = 500) {
+  let timer
+  let lastTime
+  const debounced = function() {
+    let context = this
+    let args = arguments
+    const nowTime = Date.now()
+    const later = function() {
+      fn.apply(context, args)
+      lastTime = null
+    }
+    clearTimeout(timer)
+    if (!lastTime) lastTime = nowTime
+    if (nowTime - lastTime >= ms) {
+      fn.apply(context, args)
+      lastTime = nowTime
+    } else {
+      timer = setTimeout(later, delay)
+    }
+  }
+  debounced.calcel = function() {
+    clearTimeout(timer)
+  }
+  return debounced
+}
+
+/**
+ * 节流
+ * @see https://github.com/jashkenas/underscore/blob/master/underscore.js#L842
+ */
+export function throttle(func, wait = 350, options = {}) {
+  var timeout, context, args, result
+  var previous = 0
+
+  var later = function() {
+    previous = options.leading === false ? 0 : Date.now()
+    timeout = null
+    result = func.apply(context, args)
+    if (!timeout) context = args = null
+  }
+
+  var throttled = function() {
+    var now = Date.now()
+    if (!previous && options.leading === false) previous = now
+    var remaining = wait - (now - previous)
+    context = this
+    args = arguments
+    if (remaining <= 0 || remaining > wait) {
+      if (timeout) {
+        clearTimeout(timeout)
+        timeout = null
+      }
+      previous = now
+      result = func.apply(context, args)
+      if (!timeout) context = args = null
+    } else if (!timeout && options.trailing !== false) {
+      timeout = setTimeout(later, remaining)
+    }
+    return result
+  }
+
+  throttled.cancel = function() {
+    clearTimeout(timeout)
+    previous = 0
+    timeout = context = args = null
+  }
+
+  return throttled
+}
+
+/**
+ * 基于 requestAnimationFrame 的节流
+ * @param {Function} fn 执行函数
+ */
+export function rAFThrottle(fn) {
+  let timer
+  let ticking = false
+  const throttled = function() {
+    if (!ticking) {
+      const context = this
+      const args = arguments
+      const update = function() {
+        fn.apply(context, args)
+        ticking = false
+      }
+      ticking = true
+      timer = requestAnimationFrame(update)
+    }
+  }
+  throttled.cancel = function() {
+    cancelAnimationFrame(timer)
+    ticking = false
+  }
+  return throttled
+}
+
 export const view = {
   _width: undefined,
   _height: undefined,
-  _timer: null,
   width() {
     this.getWidth()
     this.width = () => this._width
@@ -232,14 +341,11 @@ export const view = {
   },
   bind() {
     if (process.server) return
-    const self = this
-    addListener(window, 'resize', () => {
-      clearTimeout(self._timer)
-      self._timer = setTimeout(() => {
-        self.getWidth()
-        self.getHeight()
-      }, 300)
+    const onResize = debounce(() => {
+      this.getWidth()
+      this.getHeight()
     })
+    addListener(window, 'resize', onResize)
   }
 }
 

@@ -1,22 +1,22 @@
 <template>
   <div class="v-swipe-item">
-    <div class="v-swipe-item-content" ref="swipeItemContent" v-show="show">
-      <slot />
-    </div>
+    <div class="v-swipe-item-content" v-if="loaded" v-show="show"><slot /></div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'SwipeItem',
-  data() {
-    return {
-      show: true
+  props: {
+    lazy: {
+      type: Boolean,
+      default: false
     }
   },
-  created() {
-    if (this.$parent.optimization) {
-      this.show = false
+  data() {
+    return {
+      show: !this.$parent.optimization,
+      loaded: !this.lazy
     }
   }
 }

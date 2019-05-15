@@ -14,7 +14,7 @@
           v-for="(tabBarItem, index) in tabBarItems"
           :key="index"
           :style="{ color: index === value ? activeTextColor : null }"
-          @click="change(index)"
+          @click="tabClick(index)"
           ref="tabBarItem"
         >
           <span class="v-tab-title" v-if="tabBarItem.title">
@@ -36,9 +36,9 @@
       :stopPropagation="false"
       optimization
       v-model="swipeIndex"
-      @beforeSlide="beforeSlide"
-      @sliding="sliding"
-      @slideStop="$emit('slideStop', value)"
+      :touchmove="touchmove"
+      @change="slideChange"
+      @stop="$emit('stop', value)"
     >
       <SwipeItem
         class="v-tab-item"
@@ -142,7 +142,7 @@ export default {
     this.$nextTick(() => {
       setTimeout(() => {
         this.tabBarScrollTo(this.value, false)
-        this.lineSlideTo(this.value, false)
+        this.lineScrollTo(this.value, false)
         this.tabBarItems[this.value].load()
       })
     })
@@ -171,7 +171,7 @@ export default {
       const tabBar = this.$refs.tabBar
       tabBar.scrollTo(scrollValue, transition)
     },
-    lineSlideTo(index, transition = true) {
+    lineScrollTo(index, transition = true) {
       const width = this.getBarItemWidth()
       const textWidth = this.getBarItemTextWidth(index)
       const value = (width - textWidth) / 2
@@ -179,19 +179,19 @@ export default {
       this.duration = transition ? this.lineAnimationDuration : 0
       this.translate = index * width + value
     },
-    beforeSlide(index) {
-      this.lineSlideTo(index)
+    slideChange(index) {
+      this.lineScrollTo(index)
       this.tabBarItems[index].load()
       if (index !== this.value) {
         this.tabBarScrollTo(index)
         this.$emit('change', index)
       }
     },
-    sliding(targetValue, x) {
+    touchmove(targetValue, x) {
       this.duration = 0
       this.translate -= x * 0.1
     },
-    change(index) {
+    tabClick(index) {
       if (index === this.value) return
       this.tabBarScrollTo(index)
       this.$emit('input', index)

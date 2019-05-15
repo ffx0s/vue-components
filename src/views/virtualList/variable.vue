@@ -8,7 +8,7 @@
       :scrollOffset="46"
       ref="list"
     >
-      <template slot-scope="{ visibleData }">
+      <template v-slot="{ visibleData }">
         <div
           class="image-list-item v-bd-y-bottom"
           v-for="(item, index) in visibleData"

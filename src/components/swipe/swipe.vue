@@ -18,7 +18,7 @@
     </div>
     <ul class="v-swipe-dots" v-if="dot">
       <li
-        :class="{ 'v-swipe-dots-active': index === value }"
+        :class="{ 'v-swipe-dots-active': index === currentIndex }"
         v-for="(i, index) in items.length"
         :key="i"
       />
@@ -28,7 +28,7 @@
 
 <script>
 import { Handler, mouseMove } from '../../utils/event'
-import { isTouchDevice, intersects } from '../../utils/shared'
+import { debounce, noop } from '../../utils/shared'
 
 export default {
   name: 'Swipe',
@@ -37,18 +37,19 @@ export default {
       type: Number,
       default: 0
     },
-    type: {
-      type: String,
-      default: 'easeOutStrong'
-    },
     animationDuration: {
       type: Number,
-      default: 500
+      default: 350
     },
     // 快速切换阀值
     threshold: {
       type: Number,
       default: 10
+    },
+    // 滑动的距离，超过这个值切换下一张
+    distance: {
+      type: Number,
+      default: 30
     },
     friction: {
       type: Number,
@@ -77,14 +78,36 @@ export default {
     stopPropagation: {
       type: Boolean,
       default: true
+    },
+    // 预加载
+    preload: {
+      type: Boolean,
+      default: false
+    },
+    touchmove: {
+      type: Function,
+      required: false
+    },
+    showPrev: {
+      type: Function,
+      required: false
+    },
+    showNext: {
+      type: Function,
+      required: false
+    },
+    // 滑动的偏移量
+    offset: {
+      type: Number,
+      default: 0
     }
   },
   data() {
     return {
       translate: 0,
       duration: 0,
-      sliding: false,
-      items: []
+      items: [],
+      currentIndex: this.value
     }
   },
   computed: {
@@ -113,10 +136,9 @@ export default {
     }
   },
   watch: {
-    value(index, prevIndex) {
+    value(index) {
       if (!this.isChange) {
         if (this.isVaildIndex(index)) {
-          this.showPrevNextItem(this.getVaildIndex(prevIndex), index)
           this.slide(index)
         } else {
           this.$emit('input', this.getVaildIndex(index))
@@ -131,7 +153,10 @@ export default {
     }
   },
   created() {
+    this.sliding = false
     this.items = this.$children
+    this.resize = debounce(this.resize)
+    this.removeMouseEvents = noop
   },
   mounted() {
     this.handler = new Handler({
@@ -141,30 +166,33 @@ export default {
     })
     this.addActions()
     this.showCurrentItem()
+    this.preloadItem(this.currentIndex)
     this.$nextTick(() => {
-      this.setTranslate(this.value)
+      this.setTranslate(this.currentIndex)
     })
+    this.bindResizeEvent()
   },
   activated() {
+    this.bindResizeEvent()
     this.autoPlay && this.play()
   },
   deactivated() {
     clearTimeout(this.playTimer)
+    this.removeResizeEvent()
   },
   beforeDestroy() {
     clearTimeout(this.playTimer)
+    this.removeResizeEvent()
     this.handler = null
   },
   methods: {
     pointerdown(event) {
-      this.handler.start(event)
       clearTimeout(this.playTimer)
-      if (this.sliding) {
-        this.sliding = false
-        this.duration = 0
-      }
-      this.startTranslate = this.translate
+      this.handler.start(event)
       this.vector = 0
+      this.duration = 0
+      this.sliding = false
+      this.startTranslate = this.translate
     },
     pointermove(event) {
       this.handler.move(event)
@@ -172,16 +200,16 @@ export default {
     pointerup() {
       this.handler.up()
       const action = this.shouldSliding()
+      this.$emit('up', action)
       if (!action) return
-      if (action.restore) return this.slide(this.value)
+      if (action.restore) return this.slide(this.currentIndex)
       if (action.swipeNext) return this.swipeNext()
       if (action.swipePrev) return this.swipePrev()
     },
     onMousedown(event) {
-      if (isTouchDevice()) return
       event.preventDefault()
       this.pointerdown(event)
-      mouseMove(this.pointermove, this.pointerup)
+      this.removeMouseEvents = mouseMove(this.pointermove, this.pointerup)
     },
     isPrevOrNextAction() {
       return (
@@ -202,22 +230,26 @@ export default {
       const vector = this.vertical ? y : x
       const value = vector * friction
 
-      this.showAdjacentItems()
+      this.showAdjacentItem()
 
       this.vector = vector
       this.translate += value
-      this.$emit('sliding', this.translate, value)
+
+      this.touchmove && this.touchmove(this.translate, value)
     },
     slide(nextIndex) {
       nextIndex = this.getVaildIndex(nextIndex)
       this.sliding = true
-      this.isChange = nextIndex !== this.value
-
-      this.$emit('beforeSlide', nextIndex)
+      this.isChange = nextIndex !== this.currentIndex
 
       if (this.isChange) {
-        this.showPrevNextItem(this.value, nextIndex)
+        this.$emit('beforeChange', nextIndex)
+        this.showItem(nextIndex)
+        this.preloadItem(nextIndex)
         this.$emit('input', nextIndex)
+        this.$emit('change', nextIndex)
+        this.currentIndex = nextIndex
+        this.isChange = false
       }
 
       this.duration = this.animationDuration
@@ -226,23 +258,18 @@ export default {
     transitionend() {
       this.showCurrentItem()
       this.sliding = false
-      this.duration = 0
-
-      if (this.isChange) {
-        this.$emit('change', this.value)
-        this.isChange = false
-      }
       this.autoPlay && this.play()
-      this.$emit('slideStop', this.value)
+      this.$emit('stop', this.currentIndex)
     },
     setTranslate(index) {
-      this.translate = -index * this.getSwipeRect()[this.propsMap.size]
+      this.translate =
+        -index * (this.getSwipeRect()[this.propsMap.size] + this.offset)
     },
     swipeNext() {
-      this.slide(this.value + 1)
+      this.slide(this.currentIndex + 1)
     },
     swipePrev() {
-      this.slide(this.value - 1)
+      this.slide(this.currentIndex - 1)
     },
     shouldSliding() {
       const isPrev = this.handler.is(this.propsMap.prevAction)
@@ -260,9 +287,8 @@ export default {
         }
       }
 
-      const minSlideDistance = this.getSwipeRect()[this.propsMap.size] / 4
       const slideDistance = this.translate - this.startTranslate
-      const restore = Math.abs(slideDistance) < minSlideDistance
+      const restore = Math.abs(slideDistance) < this.distance
       const swipeNext = this.translate < this.startTranslate
 
       return {
@@ -282,75 +308,86 @@ export default {
         this.swipeRect || (this.swipeRect = this.$el.getBoundingClientRect())
       )
     },
-    getItemRect(index) {
-      const wrapRect = this.getSwipeRect()
-      const rect = {
-        width: wrapRect.width,
-        height: wrapRect.height
-      }
-      if (this.vertical) {
-        rect.left = wrapRect.left
-        rect.top = index * wrapRect.height + this.translate + wrapRect.top
-      } else {
-        rect.left = index * wrapRect.width + this.translate + wrapRect.left
-        rect.top = wrapRect.top
-      }
-      return rect
-    },
     hasPrevNext(isNext) {
-      const hasPrev = this.value - 1 >= 0
-      const hasNext = this.value + 1 < this.items.length
+      const hasPrev = this.currentIndex - 1 >= 0
+      const hasNext = this.currentIndex + 1 < this.items.length
       return (!isNext && hasPrev) || (isNext && hasNext)
     },
     play() {
       clearTimeout(this.playTimer)
       this.playTimer = setTimeout(() => {
-        const isLastItem = this.value === this.items.length - 1
-        isLastItem ? this.$emit('input', 0) : this.swipeNext()
+        const isLastItem = this.currentIndex === this.items.length - 1
+        isLastItem ? this.slide(0) : this.swipeNext()
       }, this.playInterval)
     },
     addActions() {
+      const options = this.handler.options
       if (this.vertical) {
-        this.handler.onLeft = null
-        this.handler.onRight = null
+        options.onLeft = null
+        options.onRight = null
       } else {
-        this.handler.onUp = null
-        this.handler.onDown = null
+        options.onUp = null
+        options.onDown = null
       }
-      this.handler[`on${this.propsMap.prevAction}`] = this.update
-      this.handler[`on${this.propsMap.nextAction}`] = this.update
+      options[`on${this.propsMap.prevAction}`] = this.update
+      options[`on${this.propsMap.nextAction}`] = this.update
     },
-    showPrevNextItem(prevIndex, nextIndex) {
-      if (!this.optimization) return
-      this.items[nextIndex].show = true
-      this.items[prevIndex].show = true
+    preloadItem(mid) {
+      if (this.preload) {
+        const prevItem = this.items[mid - 1]
+        const nextItem = this.items[mid + 1]
+        if (prevItem) prevItem.loaded = true
+        if (nextItem) nextItem.loaded = true
+      }
+    },
+    showItem(index) {
+      const item = this.items[index]
+      item.loaded = item.show = true
     },
     showCurrentItem() {
-      if (!this.optimization) return
-      this.items.forEach((item, i) => {
-        item.show = i == this.value
-      })
+      this.items[this.currentIndex].loaded = true
+      if (this.optimization) {
+        this.items.forEach((item, i) => {
+          item.show = i == this.currentIndex
+        })
+      }
     },
     showAllItems() {
-      this.items.forEach(item => (item.show = true))
+      this.items.forEach(item => {
+        item.show = true
+      })
     },
-    showAdjacentItems() {
-      if (!this.optimization) return
-      const prevIndex = this.value - 1
-      const nextIndex = this.value + 1
-      const prevItem = this.items[prevIndex]
-      const nextItem = this.items[nextIndex]
-      let showPrevItem =
-        prevItem && intersects(this.getSwipeRect(), this.getItemRect(prevIndex))
-      let showNextItem =
-        nextItem && intersects(this.getSwipeRect(), this.getItemRect(nextIndex))
-
-      if (showPrevItem) {
-        prevItem.show = true
+    showAdjacentItem() {
+      if (this.handler.is(this.propsMap.prevAction)) {
+        const index = this.currentIndex - 1
+        const prevItem = this.items[index]
+        if (prevItem) {
+          this.showPrev && this.showPrev(index)
+          prevItem.loaded = prevItem.show = true
+        }
+      } else if (this.handler.is(this.propsMap.nextAction)) {
+        const index = this.currentIndex + 1
+        const nextItem = this.items[index]
+        if (nextItem) {
+          this.showNext && this.showNext(index)
+          nextItem.loaded = nextItem.show = true
+        }
       }
-      if (showNextItem) {
-        nextItem.show = true
-      }
+    },
+    bindResizeEvent() {
+      if (this.isBindResize) return
+      window.addEventListener('resize', this.resize)
+      this.isBindResize = true
+    },
+    removeResizeEvent() {
+      window.removeEventListener('resize', this.resize)
+      this.isBindResize = false
+    },
+    resize() {
+      this.swipeRect = null
+      this.getSwipeRect()
+      this.setTranslate(this.currentIndex)
+      this.$emit('resize')
     }
   }
 }
@@ -369,6 +406,7 @@ export default {
   display: flex;
   height: 100%;
   transition-property: transform;
+  transition-timing-function: ease;
 }
 
 .v-swipe-dots {

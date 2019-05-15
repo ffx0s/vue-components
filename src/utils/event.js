@@ -1,25 +1,13 @@
-import Debouncer from './debouncer'
-import { addListener, removeListener } from './shared'
+import { addListener, removeListener, rAFThrottle } from './shared'
 
 function getPoint(event) {
   return event.touches ? event.touches[0] : event
 }
 
-const propsMap = {
-  horizontal: ['Left', 'Right'],
-  vertical: ['Up', 'Down']
-}
-
 export class Handler {
-  constructor(props) {
-    this.touchDelay = 3
-    this.delay = this.touchDelay
-    this.isPreventDefault = () => false
-    this.isStopPropagation = () => false
-    this.debouncer = new Debouncer(this.update.bind(this))
-    if (props) {
-      Object.assign(this, props)
-    }
+  constructor(options) {
+    this.update = rAFThrottle(this.update)
+    this.options = Object.assign({}, Handler.defaultOptions, options)
   }
   start(event) {
     const point = getPoint(event)
@@ -28,7 +16,7 @@ export class Handler {
     this.action = ''
     this.lock = ''
     this.moved = false
-    this.delay = this.touchDelay
+    this.touchDelay = this.options.touchDelay
   }
   move(event) {
     const point = getPoint(event)
@@ -41,7 +29,7 @@ export class Handler {
     } else if (this.lock === 'vertical') {
       this._setAction(this.vy)
     } else if (this.vx !== 0 || this.vy !== 0) {
-      const isHorizontal = Math.abs(this.vx) > Math.abs(this.vy)
+      const isHorizontal = Math.abs(this.vx) >= Math.abs(this.vy)
       if (isHorizontal) {
         this.lock = 'horizontal'
         this._setAction(this.vx)
@@ -54,45 +42,63 @@ export class Handler {
     this.lastX = point.clientX
     this.lastY = point.clientY
 
-    if (this.isPreventDefault()) {
+    if (this.options.isPreventDefault()) {
       event.cancelable && event.preventDefault()
     }
 
-    if (this.isStopPropagation()) {
+    if (this.options.isStopPropagation()) {
       event.stopPropagation()
     }
     // 延迟防止第一次拖拽抖动
-    if (this.delay) {
-      this.delay--
+    if (this.touchDelay) {
+      this.touchDelay--
       return
     }
 
     this.moved = true
-
-    if (this[`on${this.action}`]) {
-      this.debouncer.requestTick()
-    }
+    this.update()
   }
   up() {
-    this.debouncer.cancel()
+    this.update.cancel()
   }
   update() {
-    this[`on${this.action}`](this.vx, this.vy)
+    const update = this.options[`on${this.action}`]
+    if (update) {
+      update(this.vx, this.vy)
+    }
   }
   is(action) {
     return this.action === action
   }
   _setAction(vector) {
-    this.action = propsMap[this.lock][vector <= 0 ? 0 : 1]
+    this.action = Handler.propsMap[this.lock][vector <= 0 ? 0 : 1]
+  }
+  static defaultOptions = {
+    touchDelay: 3,
+    isPreventDefault() {
+      return false
+    },
+    isStopPropagation() {
+      return false
+    }
+  }
+  static propsMap = {
+    horizontal: ['Left', 'Right'],
+    vertical: ['Up', 'Down']
   }
 }
 
-export function mouseMove(moveFn, upFn) {
-  function mouseup() {
-    upFn()
-    removeListener(document, 'mousemove', moveFn)
-    removeListener(document, 'mouseup', mouseup)
+export function mouseMove(moveFn, upFn, capture = false) {
+  function mouseup(event) {
+    upFn(event)
+    remove()
+    removeListener(document, 'mouseup', mouseup, { capture })
   }
-  addListener(document, 'mousemove', moveFn, { passive: false })
-  addListener(document, 'mouseup', mouseup)
+  function remove() {
+    removeListener(document, 'mousemove', moveFn, { capture })
+  }
+  addListener(document, 'mousemove', moveFn, { passive: false, capture })
+  addListener(document, 'mouseup', mouseup, { capture })
+
+  return remove
 }

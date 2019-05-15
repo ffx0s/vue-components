@@ -19,7 +19,7 @@
         tag="ul"
         class="image-list load-more-list"
       >
-        <template slot-scope="{ visibleData, getVisibleItemRect }">
+        <template v-slot="{ visibleData, getVisibleItemRect }">
           <li
             class="image-list-item absolute"
             v-for="(item, index) in visibleData"

@@ -34,12 +34,12 @@
 <script>
 import PullRefresh from '../../components/pullRefresh'
 import Loading from '../../components/loading'
-import Debouncer from '../../utils/debouncer'
 import {
+  view,
+  throttle,
   addListener,
   removeListener,
-  getScrollEventTarget,
-  view
+  getScrollEventTarget
 } from '../../utils/shared'
 
 export default {
@@ -108,7 +108,7 @@ export default {
     bind() {
       if (this.isBind) return
       this.$nextTick(() => {
-        this.onscroll = new Debouncer(this.scrollHandler)
+        this.onscroll = throttle(this.update)
         this.scrollEl = this.pullRefresh
           ? this.$refs.pullRefresh.scrollEl
           : getScrollEventTarget(this.$el)
@@ -124,7 +124,7 @@ export default {
       this.container = null
       this.onscroll = null
     },
-    scrollHandler() {
+    update() {
       if (this.shouldLoadMore()) {
         this.load()
       }
