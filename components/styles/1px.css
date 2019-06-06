@@ -1,0 +1,134 @@
+[class*="v-bd-"] {
+  position: relative;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    box-sizing: border-box;
+    border: 0 solid var(--border);
+  }
+}
+
+[class*="v-bd-y"] {
+  &:before,
+  &:after {
+    left: 0;
+    width: 100%;
+  }
+  &:before {
+    transform-origin: left top;
+  }
+  &:after {
+    transform-origin: left bottom;
+  }
+}
+
+[class*="v-bd-x"] {
+  &:before,
+  &:after {
+    top: 0;
+    height: 100%;
+    transform-origin: left top;
+  }
+}
+
+.v-bd-y-top {
+  &:before {
+    top: 0;
+    border-top-width: 1px; /*no*/
+  }
+  &:after {
+    display: none;
+  }
+}
+
+.v-bd-y-bottom {
+  &:before {
+    display: none;
+  }
+  &:after {
+    bottom: 0;
+    border-bottom-width: 1px; /*no*/
+  }
+}
+
+.v-bd-y-top-bottom {
+  &:before {
+    top: 0;
+    border-top-width: 1px; /*no*/
+  }
+  &:after {
+    bottom: 0;
+    border-bottom-width: 1px; /*no*/
+  }
+}
+
+.v-bd-x-left {
+  &:before {
+    left: 0;
+    border-left-width: 1px; /*no*/
+  }
+  &:after {
+    display: none;
+  }
+}
+
+.v-bd-x-right {
+  &:before {
+    display: none;
+  }
+  &:after {
+    right: 0;
+    border-right-width: 1px; /*no*/
+  }
+}
+
+.v-bd-x-left-right {
+  &:before {
+    left: 0;
+    border-left-width: 1px; /*no*/
+  }
+  &:after {
+    right: 0;
+    border-right-width: 1px; /*no*/
+  }
+}
+.v-bd-full {
+  &:after {
+    border-width: 1px; /*no*/
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 1.5) {
+  [class*="v-bd-y"]:before, 
+  [class*="v-bd-y"]:after {
+    transform: scaleY(0.666666);
+  }
+  [class*="v-bd-x"]:before, 
+  [class*="v-bd-x"]:after {
+    transform: scaleX(0.666666);
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 2) {
+  [class*="v-bd-y"]:before,
+  [class*="v-bd-y"]:after {
+    transform: scaleY(0.5);
+  }
+  [class*="v-bd-x"]:before, 
+  [class*="v-bd-x"]:after {
+    transform: scaleX(0.5);
+  }
+}
+
+@media screen and (-webkit-min-device-pixel-ratio: 3) {
+  [class*="v-bd-y"]:before,
+  [class*="v-bd-y"]:after {
+    transform: scaleY(0.333333);
+  }
+  [class*="v-bd-x"]:before, 
+  [class*="v-bd-x"]:after {
+    transform: scaleX(0.333333);
+  }
+}

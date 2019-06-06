@@ -1,10 +1,9 @@
 ## Vue Components  
 移动端 UI 组件  
+  
+<a href="https://ffx0s.github.io/vue-components/example/demo.html" target="_blank">https://ffx0s.github.io/vue-components/example/demo.html</a>  
 
-### Demo  
-<a href="https://ffx0s.github.io/vue-components/demo.html" target="_blank">https://ffx0s.github.io/vue-components/demo.html</a>  
-
-<a href="https://ffx0s.github.io/vue-components/dist/#/" target="_blank">
+<a href="https://ffx0s.github.io/vue-components/example/dist/#/" target="_blank">
   <img src="https://static.webfed.cn/o_1d2kl8j7570ttld1lejjmvmco9.png" alt="vue-components-qrcode" />
 </a>  
 
@@ -31,7 +30,7 @@
 ├── pullRefresh
 ├── radio
 ├── ring
-├── scrollToggle
+├── headroom
 ├── scrollView
 ├── swipe
 ├── swipeCell

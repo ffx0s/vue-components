@@ -1,0 +1,25 @@
+.v-color-primary {
+  color: var(--primary)
+}
+.v-color-success {
+  color: var(--success)
+}
+.v-color-error {
+  color: var(--error)
+}
+.v-color-warning {
+  color: var(--warning)
+}
+
+.v-background-primary {
+  background-color: var(--primary)
+}
+.v-background-success {
+  background-color: var(--success)
+}
+.v-background-error {
+  background-color: var(--error)
+}
+.v-background-warning {
+  background-color: var(--warning)
+}

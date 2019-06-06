@@ -1,0 +1,107 @@
+<template>
+  <div>
+    <Navbar title="Virtual List" />
+    <VirtualList
+      :data="data"
+      :itemSize="200"
+      :itemSizeGetter="itemSizeGetter"
+      :scrollOffset="46"
+      ref="list"
+    >
+      <template v-slot="{ visibleData }">
+        <div
+          class="image-list-item v-bd-y-bottom"
+          v-for="(item, index) in visibleData"
+          :key="item.id"
+          :style="{
+            height: item.height + 'px'
+          }"
+        >
+          <div class="image-list-item-inner">
+            <div class="image-list-item-background">
+              <span class="image-list-item-loading">{{ item.floor }}</span>
+              <VButton
+                type="icon"
+                class="image-list-item-delete"
+                @click="showDeleteActionsheet(index)"
+              >
+                <img
+                  src="../../assets/icon-delete.svg"
+                  style="width:20px;height:20px;"
+                />
+              </VButton>
+            </div>
+          </div>
+        </div>
+      </template>
+    </VirtualList>
+    <Actionsheet
+      v-transfer-dom
+      describe="删除后不可恢复，确定要删除吗？"
+      v-model="showDeleteMenus"
+      :actions="deleteActions"
+      @click="deleteHandler"
+    />
+  </div>
+</template>
+
+<script>
+import VirtualList from 'vue-components/virtualList/variable'
+import Actionsheet from 'vue-components/actionsheet'
+
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+function getData(number) {
+  const data = []
+  for (let i = 1; i <= number; i++) {
+    data.push({
+      id: i,
+      floor: '#' + i,
+      height: getRandomIntInclusive(100, 300)
+    })
+  }
+  return data
+}
+
+export default {
+  name: 'page-virtual-list-variable',
+  components: {
+    VirtualList,
+    Actionsheet
+  },
+  data() {
+    return {
+      data: Object.preventExtensions(getData(1000)),
+      showDeleteMenus: false,
+      deleteActions: [
+        { name: '确定', type: 'warning', delete: true, loading: false },
+        { name: '我再想想', type: 'primary' }
+      ],
+      deleteIndex: 0
+    }
+  },
+  methods: {
+    itemSizeGetter(item) {
+      return item.height
+    },
+    showDeleteActionsheet(index) {
+      this.showDeleteMenus = true
+      this.deleteIndex = index
+    },
+    deleteHandler(action) {
+      if (action.delete) {
+        this.$refs.list.remove(this.deleteIndex)
+      }
+      this.showDeleteMenus = false
+    }
+  }
+}
+</script>
+
+<style lang="postcss">
+@import './style.css';
+</style>
