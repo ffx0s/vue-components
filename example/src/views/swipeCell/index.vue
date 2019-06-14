@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar title="SwipeCell" />
-    <Notice title="最好用移动设备查看" />
+    <Notice title="用移动设备查看" />
     <Group title="默认">
       <SwipeCell @cancel="cancelHandler">
         <template slot="title">

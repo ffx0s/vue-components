@@ -3,9 +3,9 @@
     <Navbar title="TabBar" />
     <h4 class="text-center">默认</h4>
     <TabBar v-model="index">
-      <TabBarItem title="聊天" iconClass="far fa-comment" badge="2" />
-      <TabBarItem title="联系人" iconClass="far fa-address-book" />
-      <TabBarItem title="收藏夹" iconClass="far fa-star" />
+      <TabBarItem title="聊天" iconClass="icon-comment-empty" badge="2" />
+      <TabBarItem title="联系人" iconClass="icon-address-book-o" />
+      <TabBarItem title="收藏夹" iconClass="icon-star-empty" />
       <TabBarItem title="礼物">
         <svg slot="icon" viewBox="0 0 1024 1024">
           <path
@@ -26,18 +26,18 @@
       <TabBarItem
         class="page-tabbar-color-item"
         title="聊天"
-        iconClass="far fa-comment"
+        iconClass="icon-comment-empty"
         badge="2"
       />
       <TabBarItem
         class="page-tabbar-color-item"
         title="联系人"
-        iconClass="far fa-address-book"
+        iconClass="icon-address-book-o"
       />
       <TabBarItem
         class="page-tabbar-color-item"
         title="收藏夹"
-        iconClass="far fa-star"
+        iconClass="icon-star-empty"
       />
       <TabBarItem class="page-tabbar-color-item" title="礼物">
         <svg slot="icon" viewBox="0 0 1024 1024">
@@ -56,14 +56,14 @@
         title="聊天"
         to="tabBar"
         tag="router-link"
-        iconClass="far fa-comment"
+        iconClass="icon-comment-empty"
         activeClass="v-tab-bar-item-active"
       />
       <TabBarItem
         title="联系人"
         to="toast"
         tag="router-link"
-        iconClass="far fa-address-book"
+        iconClass="icon-address-book-o"
         activeClass="v-tab-bar-item-active"
         badge
       />
@@ -71,7 +71,7 @@
         title="收藏夹"
         to="cell"
         tag="router-link"
-        iconClass="far fa-star"
+        iconClass="icon-star-empty"
         activeClass="v-tab-bar-item-active"
       />
       <TabBarItem

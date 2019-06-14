@@ -9,26 +9,11 @@
         <PullRefreshModule />
       </Tab>
       <Tab class="demo-tab-item" title="Swipe" lazy> <SwipeModule /> </Tab>
-      <Tab class="demo-tab-item" title="ImgViewer"> <ImageViewerModule /> </Tab>
-      <Tab class="demo-tab-item" title="Tab5">
-        <ul class="items">
-          <li>Tab5</li>
-        </ul>
+      <Tab class="demo-tab-item" title="ImgViewer" lazy>
+        <ImageViewerModule />
       </Tab>
-      <Tab class="demo-tab-item" title="Tab6">
-        <ul class="items">
-          <li>Tab6</li>
-        </ul>
-      </Tab>
-      <Tab lazy class="demo-tab-item" title="Tab7">
-        <ul class="items">
-          <li>Tab7</li>
-        </ul>
-      </Tab>
-      <Tab class="demo-tab-item" title="Tab8">
-        <ul class="items">
-          <li>Tab8</li>
-        </ul>
+      <Tab class="demo-tab-item" title="Skeleton" lazy>
+        <SkeletonModule v-model="loading" />
       </Tab>
     </Tabs>
   </div>
@@ -41,6 +26,7 @@ import InfiniteScrollModule from '../infiniteScroll/module'
 import PullRefreshModule from '../pullRefresh/module'
 import SwipeModule from '../swipe/module'
 import ImageViewerModule from '../imageViewer/module'
+import SkeletonModule from '../skeleton/module'
 
 export default {
   name: 'page-tab',
@@ -50,11 +36,13 @@ export default {
     InfiniteScrollModule,
     PullRefreshModule,
     SwipeModule,
-    ImageViewerModule
+    ImageViewerModule,
+    SkeletonModule
   },
   data() {
     return {
-      index: 0
+      index: 0,
+      loading: true
     }
   }
 }

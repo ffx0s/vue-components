@@ -26,7 +26,7 @@ function transfer(el, targetSelector) {
 
 function restore(el, isDelete = true) {
   if (!el.__data) return
-  if (el.__data.originalParentNode && el.parentNode) {
+  if (el.__data.transfer && el.__data.originalParentNode && el.parentNode) {
     el.__data.originalParentNode.replaceChild(el, el.__data.placeNode)
     el.__data.transfer = false
   }

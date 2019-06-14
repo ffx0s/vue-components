@@ -112,9 +112,8 @@ export default {
   },
   methods: {
     setStyle(position) {
-      return `linear-gradient(to ${position}, ${
-        this.gradient
-      }, rgba(255, 255, 255, 0))`
+      // eslint-disable-next-line
+      return `linear-gradient(to ${position}, ${this.gradient}, rgba(255, 255, 255, 0))`
     },
     scrollTo(targetValue, transition = true) {
       const currentValue = this.getScrollValue()

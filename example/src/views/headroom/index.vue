@@ -24,7 +24,7 @@
 
     <h4 class="text-center">在有transform属性的父元素里使用会失效</h4>
 
-    <ul class="items">
+    <ul class="page-headeroom-items">
       <li v-for="i in 10" :key="i">{{ i }}</li>
     </ul>
 
@@ -97,7 +97,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="postcss">
 .demo-scrollToTop {
   width: 45px;
   height: 45px;
@@ -122,5 +122,22 @@ export default {
 }
 .page-headroom-space {
   height: 46px;
+}
+.page-headeroom-items {
+  padding: 0 10px;
+  margin: 0;
+  margin-top: 10px;
+  font-size: 0;
+  list-style-type: none;
+  & li {
+    margin-bottom: 10px;
+    width: 100%;
+    height: 120px;
+    line-height: 120px;
+    background: #fff;
+    border-radius: 4px;
+    font-size: 16px;
+    text-align: center;
+  }
 }
 </style>

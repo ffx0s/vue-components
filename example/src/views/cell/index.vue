@@ -64,10 +64,10 @@
     </Group>
     <Group title="图标">
       <Cell title="通讯录" isLink>
-        <div class="far fa-address-book" slot="icon" />
+        <div class="icon-address-book-o" slot="icon" />
       </Cell>
       <Cell title="我的收藏" isLink>
-        <div class="far fa-star" slot="icon" />
+        <div class="icon-star-empty" slot="icon" />
       </Cell>
       <Cell title="礼物" isLink>
         <svg slot="icon" viewBox="0 0 1024 1024" width="25" height="25">

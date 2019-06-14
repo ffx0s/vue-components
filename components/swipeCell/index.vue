@@ -26,7 +26,7 @@
           <div
             class="v-swipe-cell-item v-swipe-cell-cancel"
             v-if="cancelText"
-            @click.stop="cancelHandler"
+            @click.stop="handleCancel"
           >
             {{ cancelText }}
           </div>
@@ -36,7 +36,7 @@
               'v-swipe-cell-confirm': confirmDeleteText && confirmDelete
             }"
             v-if="deleteText"
-            @click.stop="deleteHandler"
+            @click.stop="handleDelete"
           >
             {{ deleteText }}
             <div class="v-swipe-cell-confirm-delete">
@@ -132,6 +132,7 @@ export default {
     this.handler = new Handler({
       panleft: this.update,
       panright: this.update,
+      threshold: this.threshold,
       isPreventDefault: this.isPreventDefault
     })
     instances.push(this)
@@ -150,7 +151,6 @@ export default {
       closeAll(this)
       this.handler.start(event)
       this.startTranslate = this.translate
-      this.vector = 0
     },
     pointermove(event) {
       this.renderHandler = true
@@ -158,7 +158,7 @@ export default {
     },
     pointerup() {
       this.handler.up()
-      const action = this.shouldSliding()
+      const action = this.shouldSlide()
       if (!action) return
       if (action.restore) return this.restore()
       if (action.close) return this.close()
@@ -177,7 +177,6 @@ export default {
       const width = this.getItemsWidth()
       const value =
         Math.abs(this.translate) > width || width === 0 ? this.friction * x : x
-      this.vector = x
       this.duration = 0
       this.translate += value
     },
@@ -218,21 +217,20 @@ export default {
         ? this.getRightItemsWidth()
         : this.getLeftItemsWidth()
     },
-    shouldSliding() {
-      const swipeLeft = this.handler.is('panleft')
-      const swipeRight = this.handler.is('panright')
+    shouldSlide() {
+      const panleft = this.handler.is('panleft')
+      const panright = this.handler.is('panright')
 
       if (!this.handler.moved && this.translate) return { close: true }
 
-      if (!swipeLeft && !swipeRight) return false
+      if (!panleft && !panright) return false
 
       const width = this.getItemsWidth()
-      const isFastMoving = Math.abs(this.vector) > this.threshold
 
-      if (isFastMoving) {
+      if (this.handler.isFast) {
         const isOpen = this.startTranslate !== 0
-        const openRight = !isOpen && swipeLeft
-        const openLeft = !isOpen && swipeRight
+        const openRight = !isOpen && panleft
+        const openLeft = !isOpen && panright
         let restore = isOpen && width && Math.abs(this.translate) > width
         return {
           restore,
@@ -256,10 +254,10 @@ export default {
         close: Math.abs(this.translate) < minSlideDistance
       }
     },
-    cancelHandler() {
+    handleCancel() {
       this.$emit('cancel', this.close)
     },
-    deleteHandler() {
+    handleDelete() {
       if (this.confirmDeleteText && !this.confirmDelete) {
         this.confirmDelete = true
       } else {

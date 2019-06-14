@@ -1,46 +1,47 @@
 <template>
-  <PullRefresh v-model="loading" @refresh="refresh" :failed="failed">
-    <transition-group class="items" tag="ul" name="item">
-      <li class="item" v-for="item in items" :key="item.id">
-        {{ item.value }}
-      </li>
+  <PullRefresh
+    v-model="loading"
+    @refresh="refresh"
+    :failed="failed"
+    backgroundColor="#f0eff5"
+  >
+    <transition-group class="items" tag="ul" :name="transitionName">
+      <Card tag="li" v-for="item in items" :key="item.id" :item="item" />
     </transition-group>
   </PullRefresh>
 </template>
 
 <script>
+import Card from 'vue-components/card/c3'
 import PullRefresh from 'vue-components/pullRefresh'
-
-function getItems() {
-  return new Promise(resolve => {
-    let count = 10
-    const data = []
-    while (count--) {
-      data.push({ id: count, value: (Math.random() * 100).toFixed(0) })
-    }
-    setTimeout(() => resolve(data), ~~(Math.random() * 100 + 300))
-  })
-}
+import { getComments } from '../../api/product'
 
 export default {
   components: {
+    Card,
     PullRefresh
   },
   data() {
     return {
       items: [],
       loading: true,
-      failed: false
+      failed: false,
+      transitionName: ''
     }
   },
   methods: {
     fetchData() {
-      this.failed = false
-      return getItems().catch(this.failure)
+      const productId = 110
+      return getComments(productId)
+        .then(data => {
+          this.items = data.records
+        })
+        .catch(this.failure)
     },
     async refresh(done) {
-      const data = await this.fetchData()
-      this.items = data
+      this.failed = false
+      this.transitionName = this.items.length ? '' : 'item'
+      await this.fetchData()
       done()
     },
     failure() {

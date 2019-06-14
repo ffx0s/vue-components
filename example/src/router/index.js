@@ -6,7 +6,9 @@ Vue.use(Router)
 
 function loadRoute(name) {
   return function() {
-    return import('../views/' + name)
+    return import('../views/' + name).catch(() => {
+      Toast('网络出错，请重试')
+    })
   }
 }
 

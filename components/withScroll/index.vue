@@ -47,6 +47,7 @@ export default {
       this.isBind = true
     },
     unbind() {
+      if (!this.isBind) return
       removeListener(this.scrollEl, 'scroll', this.handleScroll)
       this.isBind = false
       this.scrollEl = null

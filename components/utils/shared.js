@@ -8,7 +8,14 @@ export let isTouchDevice = function() {
 
 export let browser = function(userAgent) {
   const u = userAgent || navigator.userAgent
+  const androidVersion = u.match(/Android\s([0-9\\.]*)/) || []
   const info = {
+    // android
+    android: androidVersion[1] || false,
+    // ios
+    ios: u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
+      ? { version: +u.match(/[OS\s]\d+/i)[0] }
+      : false,
     // Chrome
     chrome: u.indexOf('Chrome') > -1 && u.indexOf('Edge') === -1,
     // Chrome IOS
@@ -23,10 +30,6 @@ export let browser = function(userAgent) {
     mobile: !!u.match(/AppleWebKit.*Mobile.*/),
     // mac
     mac: u.indexOf('Mac') > -1,
-    // ios
-    ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
-    // android / uc浏览器
-    android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1,
     iPhone: u.indexOf('iPhone') > -1,
     iPad: u.indexOf('iPad') > -1,
     weixin: u.indexOf('MicroMessenger') > -1

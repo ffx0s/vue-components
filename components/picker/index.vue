@@ -103,6 +103,7 @@ export default {
     this.handler = new Handler({
       panup: this.update,
       pandown: this.update,
+      threshold: this.threshold,
       isPreventDefault: () => true
     })
   },
@@ -145,10 +146,9 @@ export default {
       mouseMove(this.pointermove, this.pointerup)
     },
     update(x, y) {
-      const isFastMoving = Math.abs(y) > this.threshold
       const column = this.getCurrentColumn()
-      if (isFastMoving) {
-        column.vy += y * 4
+      if (this.handler.isFast) {
+        column.vy += y * 2
       } else {
         column.vy = 0
       }

@@ -1,0 +1,4 @@
+
+.icon-star-empty:before { content: '\e800'; } /* '' */
+.icon-comment-empty:before { content: '\f0e5'; } /* '' */
+.icon-address-book-o:before { content: '\f2ba'; } /* '' */

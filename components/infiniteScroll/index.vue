@@ -1,6 +1,7 @@
 <template>
   <WithScroll :onscroll="update">
     <component
+      v-bind="$attrs"
       :is="pullRefresh ? 'PullRefresh' : 'div'"
       :failed="failed"
       :disabled="isLoading"
@@ -25,7 +26,11 @@
         </slot>
       </div>
       <!-- 加载失败 -->
-      <div class="v-infinite-scroll-footer" v-show="failed" @click="load">
+      <div
+        class="v-infinite-scroll-footer"
+        v-show="failed && !finished"
+        @click="load"
+      >
         <slot name="failed">加载失败,点击重试</slot>
       </div>
     </component>
@@ -40,6 +45,7 @@ import { view } from '../utils/shared'
 
 export default {
   name: 'InfiniteScroll',
+  inheritAttrs: false,
   components: {
     WithScroll,
     PullRefresh,
@@ -128,8 +134,9 @@ export default {
 
 <style lang="postcss">
 .v-infinite-scroll-footer {
+  padding-top: 10px;
+  padding-bottom: 10px;
   width: 100%;
-  height: 50px;
   text-align: center;
   display: flex;
   align-items: center;

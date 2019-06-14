@@ -1,5 +1,5 @@
 <template>
-  <div class="v-c3">
+  <component :is="tag" class="v-c3">
     <div class="v-c3__head">
       <div class="v-c3__head-image" :class="loadingClass">
         <img v-if="item.image" :src="item.image" />
@@ -10,13 +10,17 @@
     <div class="v-c3__head-content" :class="loadingClass">
       {{ item.content }}
     </div>
-  </div>
+  </component>
 </template>
 
 <script>
 export default {
   name: 'v-card-c3',
   props: {
+    tag: {
+      type: String,
+      default: 'div'
+    },
     loading: {
       type: Boolean,
       default: false
@@ -54,6 +58,7 @@ export default {
   width: 28px;
   height: 28px;
   border-radius: 50%;
+  background-color: var(--background);
   & img {
     width: 100%;
     height: 100%;

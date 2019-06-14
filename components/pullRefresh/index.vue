@@ -9,6 +9,15 @@
     <div class="v-pull-refresh-main" :style="style">
       <div class="v-pull-refresh-head" :class="stateClass">
         <slot name="head">
+          <div class="v-pull-refresh-wave" :style="waveStyle" v-show="showWave">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentcolor"
+              viewBox="0 0 64 5.5"
+            >
+              <path d="M0 0 Q32 11 64 0"></path>
+            </svg>
+          </div>
           <!-- 上下拉状态 -->
           <div class="v-pull-refresh-arrow"></div>
           <!-- 刷新中 -->
@@ -18,7 +27,7 @@
           <!-- 刷新成功 -->
           <div class="v-pull-refresh-checkmark"></div>
           <!-- 加载失败 -->
-          <div class="v-pull-refresh-failed-content">刷新失败</div>
+          <div class="v-pull-refresh-failed-content">{{ failedText }}</div>
         </slot>
       </div>
       <slot />
@@ -30,9 +39,10 @@
 import Loading from '../loading'
 import { Handler, mouseMove } from '../utils/event'
 import {
+  sleep,
+  browser,
   getScrollEventTarget,
   getScrollTop,
-  sleep,
   isTouchDevice
 } from '../utils/shared'
 
@@ -89,14 +99,24 @@ export default {
     disabled: {
       type: Boolean,
       default: false
+    },
+    backgroundColor: {
+      type: String,
+      default: 'rgba(0, 0, 0, 0)'
+    },
+    failedText: {
+      type: String,
+      default: '刷新失败'
     }
   },
   data() {
     return {
       duration: 0,
       translateY: 0,
+      waveTranslateY: 0,
       stateClass: '',
-      isLoading: false
+      isLoading: false,
+      showWave: false
     }
   },
   computed: {
@@ -104,6 +124,13 @@ export default {
       return {
         transitionDuration: `${this.duration}ms`,
         transform: `translate3d(0, ${this.translateY}px, 0)`
+      }
+    },
+    waveStyle() {
+      return {
+        transitionDuration: `${this.duration}ms`,
+        transform: `translate3d(0, ${this.waveTranslateY}px, 0)`,
+        color: this.backgroundColor
       }
     },
     sholudLoad() {
@@ -128,6 +155,10 @@ export default {
     })
   },
   mounted() {
+    const { android, ios } = browser()
+    if (ios || (android && parseFloat(android) >= 5.1)) {
+      this.showWave = true
+    }
     this.scrollEl = getScrollEventTarget(this.$el)
   },
   beforeDestroy() {
@@ -148,11 +179,9 @@ export default {
     pointerup() {
       if (this.disabled) return
       this.handler.up()
-      if (!this.shouldUpdate()) return
-      if (this.sholudLoad) {
+      if (this.sholudLoad && this.shouldUpdate()) {
         this.load()
-        this.duration = this.animationDuration
-      } else {
+      } else if (this.translateY !== 0) {
         this.reset()
       }
     },
@@ -172,11 +201,14 @@ export default {
       if (!this.shouldUpdate()) return
       this.stateClass = this.sholudLoad ? this.upClass : this.downClass
       this.translateY += y / 2
+      this.waveTranslateY = Math.min(this.translateY, 50)
     },
     async load() {
       if (this.isLoading) return
+      this.duration = this.animationDuration
       this.isLoading = true
       this.translateY = this.threshold
+      this.waveTranslateY = 0
       this.stateClass = this.loadingClass
       await sleep(this.loadingDuration)
       this.$emit('input', true)
@@ -194,7 +226,7 @@ export default {
       return !this.isLoading && this.handler.moved && this.scrollTop === 0
     },
     reset() {
-      this.translateY = 0
+      this.translateY = this.waveTranslateY = 0
       this.duration = this.animationDuration
       this.stateClass = ''
       this.isLoading = false
@@ -265,6 +297,7 @@ export default {
 .v-pull-refresh-failed-content {
   opacity: 0;
   transition: opacity 0.3s ease;
+  z-index: 1;
 }
 .v-pull-refresh-arrow {
   position: absolute;
@@ -326,5 +359,12 @@ export default {
     width: var(--checkWidth);
     opacity: 1;
   }
+}
+.v-pull-refresh-wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  transition-property: transform;
 }
 </style>

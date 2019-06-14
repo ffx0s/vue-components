@@ -66,6 +66,7 @@ export default {
 @import '~vue-components/styles/animate.css';
 @import '~vue-components/styles/color.css';
 @import '~vue-components/styles/skeleton.css';
+@import './assets/font/css/fontello.css';
 
 a {
   text-decoration: none;
@@ -185,10 +186,6 @@ body.custom-scrollbar {
   background: var(--background);
 }
 
-.item {
-  transition: all 0.7s;
-}
-
 .item-enter,
 .item-leave-active {
   opacity: 0;
@@ -208,12 +205,6 @@ body.custom-scrollbar {
 }
 .items li {
   margin-bottom: 10px;
-  width: 100%;
-  height: 120px;
-  line-height: 120px;
-  background: #fff;
-  border-radius: 4px;
-  font-size: 16px;
-  text-align: center;
+  transition: all 0.7s;
 }
 </style>

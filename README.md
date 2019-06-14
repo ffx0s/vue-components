@@ -4,7 +4,7 @@
 <a href="https://ffx0s.github.io/vue-components/example/demo.html" target="_blank">https://ffx0s.github.io/vue-components/example/demo.html</a>  
 
 <a href="https://ffx0s.github.io/vue-components/example/dist/#/" target="_blank">
-  <img src="https://static.webfed.cn/o_1d2kl8j7570ttld1lejjmvmco9.png" alt="vue-components-qrcode" />
+  <img src="https://static.webfed.cn/o_1dcle8l7rr941kov1s9015ir1let9.png" alt="vue-components-qrcode" />
 </a>  
 
 ### 组件列表  

@@ -1,8 +1,8 @@
-const { properties } = require("vue-components/styles/variables");
+const { properties } = require('vue-components/styles/variables')
 
 module.exports = {
   plugins: {
-    "postcss-cssnext": {
+    'postcss-cssnext': {
       features: {
         customProperties: {
           variables: properties
@@ -10,4 +10,4 @@ module.exports = {
       }
     }
   }
-};
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="v-c2">
+  <component :is="tag" class="v-c2">
     <div class="v-c2__image" :class="loadingClass">
       <img v-if="item.image" :src="item.image" />
     </div>
@@ -9,13 +9,17 @@
         {{ item.description }}
       </div>
     </div>
-  </div>
+  </component>
 </template>
 
 <script>
 export default {
   name: 'v-card-c2',
   props: {
+    tag: {
+      type: String,
+      default: 'div'
+    },
     loading: {
       type: Boolean,
       default: false
@@ -48,8 +52,11 @@ export default {
 .v-c2__image {
   width: 100px;
   height: 100px;
+  background-color: var(--background);
+  border-radius: 5px;
   & img {
     max-width: 100%;
+    border-radius: inherit;
   }
 }
 .v-c2__detail {
