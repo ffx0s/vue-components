@@ -1,18 +1,5 @@
 import Tween from './tween'
 
-const requestAnimationFrame =
-  window.requestAnimationFrame ||
-  window.webkitRequestAnimationFrame ||
-  function(callback) {
-    return setTimeout(callback, 1000 / 60)
-  }
-
-const cancelAnimationFrame =
-  window.cancelAnimationFrame ||
-  function(id) {
-    clearTimeout(id)
-  }
-
 /**
  * 获取当前时间戳
  * @returns {Number} 时间戳

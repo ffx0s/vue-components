@@ -74,11 +74,11 @@ export default {
       type: Boolean,
       default: false
     },
-    // 最大宽度，只作用于水平滚动
-    maxWidth: {
-      type: String,
+    // 滚动宽度，只作用于水平滚动
+    scrollWidth: {
+      type: Number,
       required: false,
-      default: '5000px'
+      default: 5000
     },
     // 两边遮罩层的渐变颜色
     gradient: {
@@ -101,7 +101,7 @@ export default {
   },
   computed: {
     width() {
-      return this.flex ? '100%' : this.maxWidth
+      return this.flex ? '100%' : this.scrollWidth + 'px'
     },
     slotStyle() {
       return this.flex ? { width: '100%' } : { float: 'left' }

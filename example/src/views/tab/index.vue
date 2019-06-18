@@ -1,8 +1,8 @@
 <template>
   <div>
     <Navbar title="Tab" />
-    <Tabs class="demo-tab" v-model="index">
-      <Tab class="demo-tab-item" title="LoadMore" lazy>
+    <Tabs v-model="index">
+      <Tab class="demo-tab-item" title="InfiniteScroll" lazy>
         <InfiniteScrollModule />
       </Tab>
       <Tab class="demo-tab-item" title="PullRefresh" lazy>
@@ -49,13 +49,6 @@ export default {
 </script>
 
 <style lang="postcss">
-.demo-tab {
-  position: absolute;
-  top: 46px;
-  bottom: 0;
-  width: 100%;
-  height: auto;
-}
 .demo-tab-item {
   & .items {
     margin-top: 10px;

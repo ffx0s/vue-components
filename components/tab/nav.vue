@@ -2,12 +2,11 @@
   <ScrollView
     class="v-bd-y-bottom"
     :style="navStyle"
-    :scrollable="scrollable"
     :scrollBar="false"
-    flex
+    :scrollWidth="scrollWidth"
     ref="scrollView"
   >
-    <dl class="v-tab-nav" :class="{ 'v-tab-nav-scrollable': scrollable }">
+    <dl class="v-tab-nav" ref="nav">
       <dt
         v-for="(tab, i) in tabs"
         :key="i"
@@ -15,7 +14,7 @@
         @click="$emit('itemClick', i)"
         ref="item"
       >
-        <span :class="titleClass" v-if="tab.title"> {{ tab.title }} </span>
+        <span class="v-tab-nav-title" v-if="tab.title"> {{ tab.title }} </span>
         <VNode v-else-if="tab.$slots.title" :node="tab.$slots.title[0]" />
       </dt>
       <dd class="v-tab-nav-line" :style="lineStyle"></dd>
@@ -46,6 +45,10 @@ export default {
       type: String,
       default: properties.primary
     },
+    lineHeight: {
+      type: Number,
+      default: 3
+    },
     navHeight: {
       type: Number,
       default: 44
@@ -57,26 +60,21 @@ export default {
     activeClass: {
       type: String,
       default: 'v-tab-nav-active'
-    },
-    titleClass: {
-      type: String,
-      default: 'v-tab-nav-title'
     }
   },
   data() {
     return {
       lineWidth: 0,
       translate: 0,
-      duration: 0
+      duration: 0,
+      scrollWidth: 5000
     }
   },
   computed: {
-    scrollable() {
-      return this.tabs.length > this.scrollThreshold
-    },
     lineStyle() {
       return {
         width: this.lineWidth + 'px',
+        height: this.lineHeight + 'px',
         transitionDuration: `${this.duration}ms`,
         transform: `translateX(${this.translate}px)`,
         backgroundColor: this.lineColor
@@ -90,44 +88,44 @@ export default {
     }
   },
   mounted() {
+    this.padding = 16
     this.$nextTick(() => {
+      this.getScrollWidth()
       this.select(this.index, false)
     })
   },
   methods: {
-    getItemWidth() {
-      return (
-        this.itemWidth ||
-        (this.itemWidth = this.$refs.item[0].getBoundingClientRect().width)
-      )
+    getScrollWidth() {
+      const scrollWidth =
+        this.$refs.nav.getBoundingClientRect().width + this.padding * 2
+      this.scrollWidth = scrollWidth
+      return scrollWidth
     },
-    getTitleWidth(index) {
-      const title = this.$refs.item[index].querySelector('.' + this.titleClass)
-      const itemWidth = this.getItemWidth()
-      return title ? Math.min(title.offsetWidth, itemWidth) : itemWidth
+    getItemWidth(index) {
+      return this.$refs.item[index].getBoundingClientRect().width
+    },
+    getItemOffsetLeft(index) {
+      return this.$refs.item[index].offsetLeft
     },
     getMaxScrollValue() {
-      return this.tabs.length * this.getItemWidth() - view.getWidth()
+      return this.scrollWidth - view.getWidth()
     },
     select(index, transition) {
       this.scrollTo(index, transition)
       this.lineMoveTo(index, transition)
     },
     scrollTo(index, transition) {
-      if (!this.scrollable) return
-      const width = this.getItemWidth()
-      const offsetLeft = width * index + 8 // 数值8为样式边距
+      const width = this.getItemWidth(index)
+      const offsetLeft = this.getItemOffsetLeft(index) + this.padding
       const value = offsetLeft - view.getWidth() / 2 + width / 2
       const scrollValue = Math.max(Math.min(this.getMaxScrollValue(), value), 0)
       this.$refs.scrollView.scrollTo(scrollValue, transition)
     },
     lineMoveTo(index, transition = true) {
-      const width = this.getItemWidth()
-      const titleWidth = this.getTitleWidth(index)
-      const value = (width - titleWidth) / 2
-      this.lineWidth = titleWidth
+      const width = this.getItemWidth(index)
+      this.lineWidth = width
       this.duration = transition ? this.lineAnimationDuration : 0
-      this.translate = index * width + value
+      this.translate = this.getItemOffsetLeft(index)
     },
     lineMove(x) {
       this.duration = 0
@@ -139,9 +137,7 @@ export default {
 
 <style lang="postcss">
 .v-tab-nav {
-  display: flex;
   position: relative;
-  left: -8px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -149,18 +145,13 @@ export default {
   line-height: 44px;
   text-align: center;
   & dt {
-    flex: 1;
+    float: left;
+    padding: 0 8px;
     box-sizing: border-box;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
     transition: 0.3s color;
-  }
-}
-.v-tab-nav-scrollable {
-  & dt {
-    flex: 0 0 22%;
-    width: 22%;
   }
 }
 .v-tab-nav-line {
@@ -169,7 +160,6 @@ export default {
   bottom: 0;
   margin: 0;
   width: 40px;
-  height: 3px;
   transition-property: transform, width;
 }
 .v-tab-nav-active {

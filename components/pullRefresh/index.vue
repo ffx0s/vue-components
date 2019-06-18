@@ -107,6 +107,10 @@ export default {
     failedText: {
       type: String,
       default: '刷新失败'
+    },
+    wave: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -157,7 +161,7 @@ export default {
   mounted() {
     const { android, ios } = browser()
     if (ios || (android && parseFloat(android) >= 5.1)) {
-      this.showWave = true
+      this.showWave = this.wave
     }
     this.scrollEl = getScrollEventTarget(this.$el)
   },

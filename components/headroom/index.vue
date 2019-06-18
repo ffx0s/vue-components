@@ -92,7 +92,7 @@ export default {
     this.lastTop = 0
     this.startTop = 0
     this.containerHeight =
-      this.height || this.$refs.headroom.firstChild.offsetHeight
+      this.height || this.$refs.headroom.children[0].offsetHeight
   },
   methods: {
     update(scrollTop) {

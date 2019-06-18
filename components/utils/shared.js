@@ -154,7 +154,7 @@ export function fixedSpringback(touchTarget) {
     if (
       (pullDownAction && scroller.scrollTop <= 0) ||
       (pullUpAction &&
-        Math.floor(scroller.scrollHeight - view.getHeight()) <=
+        Math.floor(scroller.scrollHeight - scroller.offsetHeight) <=
           scroller.scrollTop)
     ) {
       event.cancelable && event.preventDefault()

@@ -37,6 +37,7 @@ import TabNav from './nav'
 import VNode from '../vnode'
 import Swipe from '../swipe/swipe'
 import SwipeItem from '../swipe/item'
+import ScrollHandler from './scrollHandler'
 
 export default {
   name: 'Tab',
@@ -50,6 +51,10 @@ export default {
     value: {
       type: Number,
       default: 0
+    },
+    header: {
+      type: Boolean,
+      default: true
     }
   },
   computed: {
@@ -72,11 +77,19 @@ export default {
   mounted() {
     this.tabs = this.$refs.swipeItem.map(tab => tab.$children[0])
     this.tabs[this.value].load()
+    if (this.header) {
+      this.scrollHandler = new ScrollHandler(this.$el, this.$refs.swipeItem)
+    }
+  },
+  beforeDestroy() {
+    this.scrollHandler && this.scrollHandler.unbind()
+    this.scrollHandler = null
   },
   methods: {
     tabChange(index) {
       this.tabs[index].load()
       this.$refs.nav.select(index)
+      this.scrollHandler && this.scrollHandler.resetState()
       this.$emit('change', index)
     },
     tabMove(current, x) {
