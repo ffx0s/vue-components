@@ -25,7 +25,7 @@ function getDefaultOptions() {
  */
 export default function(options) {
   let timer = null
-  const { time, type, targets, running, end } = Object.assign(
+  const { time, type, targets, running, stop: end } = Object.assign(
     getDefaultOptions(),
     options
   )
@@ -48,7 +48,6 @@ export default function(options) {
 
     if (scale === 1) {
       stop()
-      end && end()
     } else {
       timer = requestAnimationFrame(step)
     }
@@ -56,9 +55,11 @@ export default function(options) {
 
   function stop() {
     cancelAnimationFrame(timer)
+    end && end()
   }
 
   timer = requestAnimationFrame(step)
+
   return {
     stop
   }

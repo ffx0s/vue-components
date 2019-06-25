@@ -1,12 +1,6 @@
-import { makeArray, view, rAFThrottle } from '../utils/shared'
+import { makeArray, view, rAFThrottle, toFixed } from '../utils/shared'
 import animate from '../utils/animate'
-import {
-  getPoints,
-  getTouchCenter,
-  getScale,
-  originZoom,
-  toFixed
-} from './helpers'
+import { getPoints, getTouchCenter, getScale, originZoom } from './helpers'
 
 export default class Handler {
   constructor(options) {
@@ -25,9 +19,12 @@ export default class Handler {
     event.preventDefault()
 
     const touches = getPoints(event)
+
+    this.inAnimation && this.animation.stop()
     this.moved = false
     this.downTime = Date.now()
-    this.animation && this.animation.stop()
+    this.last.diff = { x: 0, y: 0, time: 0 }
+
     clearTimeout(this.clickTimer)
 
     if (touches.length === 2) {
@@ -61,7 +58,7 @@ export default class Handler {
       // 模拟双击事件
       if (time - this.upTime <= dobuleclickTime) {
         this.options.dobuleClick(this.last.move)
-        this.position = this.checkPosition(this.options.getCurrentItem().style)
+        this.position = this.checkPosition(this.options.getCurrentStyle().style)
       } else if (time - this.downTime <= clickTime) {
         // 单击事件
         this.clickTimer = setTimeout(this.options.click, dobuleclickTime)
@@ -110,7 +107,8 @@ export default class Handler {
 
     // 水平滑动
     if (this.isHorizontal) {
-      const style = this.options.getCurrentItem().style
+      const style = this.options.getCurrentStyle().style
+
       // 根据 position 判断是否需要切换上一张/下一张
       this.position = this.checkPosition({
         x: style.x + x,
@@ -119,6 +117,7 @@ export default class Handler {
         width: style.width,
         height: style.height
       })
+
       // 左滑
       if (x < 0) {
         // 切换下一张的条件判断，符合则标记 disabled 状态
@@ -138,7 +137,7 @@ export default class Handler {
         (!this.position.isBottom && this.position.isTop) ||
         (this.position.isBottom && this.position.isTop)
       ) {
-        const style = this.options.getCurrentItem().style
+        const style = this.options.getCurrentStyle().style
         const scaleChanged = 1 - y / move.y
         let newScale = style.scale * scaleChanged
 
@@ -166,6 +165,7 @@ export default class Handler {
         this.options.scaleTo(move, newScale, false, false)
         this.options.updateOverlayOpcity(this.overlayOpcity)
       }
+
       this.isSlideDown = true
     }
 
@@ -185,7 +185,8 @@ export default class Handler {
 
     // 前面标记的状态，如果是 true 则不再触发移动
     if (!this.disabled) {
-      this.options.move(x, y, false)
+      const style = this.options.getCurrentStyle().style
+      this.options.setStyle({ x: style.x + x, y: style.y + y, duration: 0 })
     }
   }
 
@@ -203,7 +204,7 @@ export default class Handler {
     const result = this._isFastMove()
 
     if (result) {
-      const style = this.options.getCurrentItem().style
+      const style = this.options.getCurrentStyle().style
       let x = style.x + result.x
       let y = style.y + result.y
       let scale = style.scale
@@ -220,6 +221,7 @@ export default class Handler {
         x = position.x
         y = position.y
         scale = position.scale
+
         // 根据滑动的方向和 position 数据判断是否需要回弹效果
         if (
           ((position.isBottom || position.isTop) && !this.isHorizontal) ||
@@ -265,7 +267,7 @@ export default class Handler {
       return
     }
 
-    const scale = this.options.getCurrentItem().style.scale * scaleChanged
+    const scale = this.options.getCurrentStyle().style.scale * scaleChanged
     this.options.scaleTo(centerPoint, scale, false, false)
   }
 
@@ -287,7 +289,7 @@ export default class Handler {
     let isTop = false
     let isBottom = false
 
-    if (height <= view.height()) {
+    if (height < view.height()) {
       y = (view.height() - height) / 2
       isDraw = isTop = isBottom = true
     } else {
@@ -302,7 +304,7 @@ export default class Handler {
       }
     }
 
-    if (width <= view.width()) {
+    if (width < view.width()) {
       x = (view.width() - width) / 2
       isDraw = isLeft = isRight = true
     } else {
@@ -321,19 +323,23 @@ export default class Handler {
   }
 
   validation(style, isDraw) {
-    style = style || this.options.getCurrentItem().style
-    const position = this._checkScale(style.scale) || this.checkPosition(style)
+    style = style || this.options.getCurrentStyle().style
+
+    const position = this._checkScale(style) || this.checkPosition(style)
+
     if (position.scale === undefined) {
       position.scale = style.scale
     }
+
     if (isDraw && position.isDraw) {
       this.animate(position.x, position.y, position.scale)
     }
+
     return position
   }
 
-  _checkScale(scale) {
-    const { style, initStyle } = this.options.getCurrentItem()
+  _checkScale(style) {
+    const { initStyle } = this.options.getCurrentStyle()
     const maxScale = 1
     const minScale = initStyle.scale
     const that = this
@@ -353,9 +359,9 @@ export default class Handler {
       return position
     }
 
-    if (scale > maxScale) {
+    if (style.scale > maxScale) {
       return setScale(maxScale)
-    } else if (scale < minScale) {
+    } else if (style.scale < minScale) {
       return setScale(minScale)
     }
   }
@@ -365,6 +371,7 @@ export default class Handler {
     const diff = this.last.diff
     const vx = diff.x / diff.time
     const vy = diff.y / diff.time
+
     if (Math.abs(vx) > speed || Math.abs(vy) > speed) {
       const time = 420
       const value = 1.4
@@ -375,15 +382,25 @@ export default class Handler {
   }
 
   animate(x, y, scale, options = { time: 450, type: 'easeOutCubic' }) {
-    const style = this.options.getCurrentItem().style
-    this.animation && this.animation.stop()
+    const style = this.options.getCurrentStyle().style
+
+    this.inAnimation && this.animation.stop()
+    this.inAnimation = true
+
     this.animation = animate({
       targets: [[style.scale, scale], [style.x, x], [style.y, y]],
       time: options.time,
       type: options.type,
       running: target => {
-        style.scale = target[0]
-        this.options.moveTo(target[1], target[2], false)
+        this.options.setStyle({
+          scale: target[0],
+          x: target[1],
+          y: target[2],
+          duration: 0
+        })
+      },
+      stop: () => {
+        this.inAnimation = false
       }
     })
   }

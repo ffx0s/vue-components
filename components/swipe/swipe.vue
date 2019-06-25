@@ -9,7 +9,6 @@
   >
     <div
       class="v-swipe-items"
-      :style="style"
       @webkitTransitionEnd.self="transitionend"
       @transitionEnd.self="transitionend"
       ref="items"
@@ -28,7 +27,7 @@
 
 <script>
 import { Handler, mouseMove } from '../utils/event'
-import { debounce, noop } from '../utils/shared'
+import { debounce, noop, isTouchDevice, toFixed } from '../utils/shared'
 
 function directionMap(arr) {
   return {
@@ -124,20 +123,8 @@ export default {
   },
   data() {
     return {
-      translate: 0,
-      duration: 0,
       items: [],
       currentIndex: this.value
-    }
-  },
-  computed: {
-    style() {
-      return {
-        transitionDuration: `${this.duration}ms`,
-        transform: this.vertical
-          ? `translate3d(0, ${this.translate}px, 0)`
-          : `translate3d(${this.translate}px, 0, 0)`
-      }
     }
   },
   watch: {
@@ -154,10 +141,12 @@ export default {
     vertical() {
       this.duration = 0
       this.initActions()
-      this.setTranslate(this.currentIndex)
+      this.translateTo(this.currentIndex)
     }
   },
   created() {
+    this.translate = 0
+    this.duration = 0
     this.items = this.$children
   },
   mounted() {
@@ -171,7 +160,7 @@ export default {
     })
     this.initActions()
     this.showItem(this.currentIndex)
-    this.setTranslate(this.currentIndex)
+    this.translateTo(this.currentIndex)
     this.bindResizeEvent()
     this.play()
   },
@@ -201,14 +190,18 @@ export default {
     },
     pointerup() {
       this.handler.up()
+
       const action = this.shouldSlide()
+
       this.$emit('up', action)
+
       if (!action) return
       if (action.restore) return this.slide(this.currentIndex)
       if (action.next) return this.next()
       if (action.prev) return this.prev()
     },
     onMousedown(event) {
+      if (isTouchDevice()) return
       event.preventDefault()
       this.pointerdown(event)
       this.removeMouseEvents = mouseMove(this.pointermove, this.pointerup)
@@ -232,7 +225,7 @@ export default {
       const value = vector * friction
 
       this.showAdjacentItem()
-      this.translate += value
+      this.setStyle(this.translate + value)
       this.touchmove && this.touchmove(this.translate, value)
     },
     slide(nextIndex, duration) {
@@ -248,7 +241,7 @@ export default {
       }
 
       this.duration = duration || this.animationDuration
-      this.setTranslate(nextIndex)
+      this.translateTo(nextIndex)
     },
     next() {
       this.slide(this.currentIndex + 1)
@@ -263,10 +256,23 @@ export default {
       this.play()
       this.$emit('stop', this.currentIndex)
     },
-    setTranslate(index) {
-      const value =
+    translateTo(index) {
+      const translate =
         -index * (this.getSwipeRect()[this.directionMap.size] + this.offset)
-      this.translate = value
+      this.setStyle(translate)
+    },
+    setStyle(translate) {
+      const el = this.$refs.items
+
+      // eslint-disable-next-line prettier/prettier
+      el.style.transitionDuration =
+      el.style.webkitTransitionDuration = `${this.duration}ms`
+
+      el.style.transform = el.style.webkitTransform = this.vertical
+        ? `translate3d(0, ${toFixed(translate, 3)}px, 0)`
+        : `translate3d(${toFixed(translate, 3)}px, 0, 0)`
+
+      this.translate = translate
     },
     shouldSlide() {
       const isPrev = this.handler.is(this.directionMap.prevAction)
@@ -274,22 +280,28 @@ export default {
 
       if (!isPrev && !isNext) return false
 
+      const hasPrev = this.isVaildIndex(this.currentIndex - 1)
+      const hasNext = this.isVaildIndex(this.currentIndex + 1)
+
       if (this.handler.isFast) {
+        const prev = isPrev && hasPrev
+        const next = isNext && hasNext
         return {
-          restore: false,
-          prev: isPrev,
-          next: isNext
+          prev,
+          next,
+          restore: !prev && !next
         }
       }
 
       const slideDistance = this.translate - this.startTranslate
       const restore = Math.abs(slideDistance) < this.distance
-      const next = this.translate < this.startTranslate
+      const next = !restore && this.translate < this.startTranslate && hasNext
+      const prev = !restore && !next && hasPrev
 
       return {
-        restore,
+        prev,
         next,
-        prev: !next
+        restore: !prev && !next
       }
     },
     isVaildIndex(index) {
@@ -370,12 +382,13 @@ export default {
       this.isBindResize = true
     },
     removeResizeEvent() {
+      if (!this.isBindResize) return
       window.removeEventListener('resize', this.handleResize)
       this.isBindResize = false
     },
     handleResize() {
       this.swipeRect = null
-      this.setTranslate(this.currentIndex)
+      this.translateTo(this.currentIndex)
       this.$emit('resize')
     }
   }

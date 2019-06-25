@@ -1,5 +1,9 @@
 export const sleep = time => new Promise(resolve => setTimeout(resolve, time))
 
+export function toFixed(number, digits) {
+  return +number.toFixed(digits)
+}
+
 export let isTouchDevice = function() {
   const support = 'ontouchstart' in document.documentElement
   isTouchDevice = () => support
@@ -344,7 +348,6 @@ export const view = {
     return this._height
   },
   bind() {
-    if (process.server) return
     const onResize = debounce(() => {
       this.getWidth()
       this.getHeight()
@@ -353,4 +356,6 @@ export const view = {
   }
 }
 
-view.bind()
+if (!process.server) {
+  view.bind()
+}

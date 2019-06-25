@@ -1,6 +1,4 @@
-export function toFixed(number, digits) {
-  return +number.toFixed(digits)
-}
+import { toFixed } from '../utils/shared'
 
 export function getPoints(event) {
   return event.touches ? event.touches : [event]

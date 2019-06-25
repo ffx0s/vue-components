@@ -42,9 +42,9 @@ export default class ScrollHandler {
           targets: [[currentTop, targetTop]],
           running: target => {
             this.scrolling = true
-            this.wrapScrollEl.scrollTop = target[0]
+            this.wrapScrollEl.scrollTop = Math.ceil(target[0])
           },
-          end: () => {
+          stop: () => {
             this.scrolling = false
           }
         })

@@ -66,7 +66,9 @@
       <Cell title="Field" to="/field" isLink />
     </Group>
 
-    <Group title="样式"> <Cell title="1px" to="/1px" isLink /> </Group>
+    <Group title="样式">
+      <Cell title="1px" to="/1px" isLink />
+    </Group>
   </div>
 </template>
 

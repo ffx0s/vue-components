@@ -125,7 +125,7 @@ export default {
         this.animate = animate({
           targets: [[currentValue, targetValue]],
           running: values => {
-            this.$refs.scroller[this.scrollProps] = values[0]
+            this.$refs.scroller[this.scrollProps] = Math.ceil(values[0])
           }
         })
       } else {
@@ -139,7 +139,7 @@ export default {
       this.animate = animate({
         targets: [[currentValue, targetValue]],
         running: values => {
-          this.$refs.scroller[this.scrollProps] = values[0]
+          this.$refs.scroller[this.scrollProps] = Math.ceil(values[0])
         }
       })
     },
