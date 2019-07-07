@@ -4,20 +4,24 @@
       v-bind="$attrs"
       :index="value"
       :tabs="tabs"
-      @itemClick="tabNavItemClick"
+      @itemClick="itemClick"
       ref="nav"
     />
     <Swipe
       class="v-tab-content"
       :style="{
-        top: navHeight + 'px'
+        top: navHeight + 'px',
+        bottom: offset + 'px'
       }"
       :dot="false"
       :stopPropagation="false"
-      :touchmove="tabMove"
+      :touchmove="move"
+      :showPrev="scrollToTop"
+      :showNext="scrollToTop"
       v-model="index"
-      @up="tabUp"
-      @change="tabChange"
+      @up="up"
+      @beforeChange="beforeChange"
+      @change="change"
       optimization
     >
       <SwipeItem
@@ -37,7 +41,8 @@ import TabNav from './nav'
 import VNode from '../vnode'
 import Swipe from '../swipe/swipe'
 import SwipeItem from '../swipe/item'
-import ScrollHandler from './scrollHandler'
+import NavbarHandler from './navbarHandler'
+import HeaderHandler from './headerHandler'
 
 export default {
   name: 'Tab',
@@ -52,9 +57,19 @@ export default {
       type: Number,
       default: 0
     },
+    offset: {
+      type: Number,
+      default: 0
+    },
+    // tab上面是否有头部导航栏，有的话滑动的时候会隐藏头部导航栏
+    navbar: {
+      type: Boolean,
+      default: false
+    },
+    // tab上面是否有头部视图
     header: {
       type: Boolean,
-      default: true
+      default: false
     }
   },
   computed: {
@@ -77,30 +92,53 @@ export default {
   mounted() {
     this.tabs = this.$refs.swipeItem.map(tab => tab.$children[0])
     this.tabs[this.value].load()
+
+    let Handler
+
     if (this.header) {
-      this.scrollHandler = new ScrollHandler(this.$el, this.$refs.swipeItem)
+      Handler = HeaderHandler
+    } else if (this.navbar) {
+      Handler = NavbarHandler
+    }
+
+    if (Handler) {
+      this.handler = new Handler(this.$el, this.$refs.swipeItem, {
+        offset: this.offset,
+        tabIndex: this.value
+      })
     }
   },
   beforeDestroy() {
-    this.scrollHandler && this.scrollHandler.unbind()
-    this.scrollHandler = null
+    if (this.handler) {
+      this.handler.unbind()
+      this.handler = null
+    }
   },
   methods: {
-    tabChange(index) {
+    beforeChange(index) {
+      if (this.handler) {
+        this.handler.tabIndex = index
+        this.handler.tabScrollToTop(index)
+      }
+    },
+    change(index) {
       this.tabs[index].load()
       this.$refs.nav.select(index)
-      this.scrollHandler && this.scrollHandler.resetState()
+      this.handler && this.handler.resetState()
       this.$emit('change', index)
     },
-    tabMove(current, x) {
+    move(current, x) {
       this.$refs.nav.lineMove(x)
     },
-    tabUp() {
+    up() {
       this.$refs.nav.lineMoveTo(this.value)
     },
-    tabNavItemClick(index) {
+    itemClick(index) {
       if (index === this.value) return
       this.$emit('input', index)
+    },
+    scrollToTop(index) {
+      this.handler && this.handler.tabScrollToTop(index)
     }
   }
 }
