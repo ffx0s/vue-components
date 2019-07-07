@@ -8,11 +8,7 @@
   >
     <!-- 垂直滚动 -->
     <template v-if="vertical">
-      <div
-        class="v-scroll-view-scroller v-scroll-view-vertical"
-        @touchmove.stop="() => {}"
-        ref="scroller"
-      >
+      <div class="v-scroll-view-scroller v-scroll-view-vertical" ref="scroller">
         <div class="v-scroll-view-slot"><slot /></div>
       </div>
       <template v-if="gradient">
@@ -36,7 +32,6 @@
     <template v-else>
       <div
         class="v-scroll-view-scroller v-scroll-view-horizontal"
-        @touchmove.stop="() => {}"
         ref="scroller"
       >
         <div :style="{ width }">
@@ -167,6 +162,7 @@ export default {
 .v-scroll-view-vertical {
   overflow-y: auto;
   overflow-x: hidden;
+  touch-action: pan-y;
   & .v-scroll-view-slot {
     padding: 16px 0;
   }
@@ -175,6 +171,7 @@ export default {
 .v-scroll-view-horizontal {
   overflow-x: auto;
   overflow-y: hidden;
+  touch-action: pan-x;
   & .v-scroll-view-slot {
     padding: 0 16px;
   }
@@ -183,6 +180,14 @@ export default {
 .v-scroll-view-disabled {
   & .v-scroll-view-scroller {
     overflow: hidden;
+    touch-action: none;
+  }
+  & .v-scroll-view-overlay-horizontal,
+  & .v-scroll-view-overlay-vertical {
+    display: none;
+  }
+  & .v-scroll-view-slot {
+    padding: 0;
   }
 }
 

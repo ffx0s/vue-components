@@ -1,36 +1,17 @@
 <template>
   <div>
-    <div class="page-headroom-space" v-show="shouldTransfer"></div>
-    <Headroom :visible="visible" fixed v-transfer-dom="shouldTransfer">
-      <Navbar title="Headroom">
-        <VButton slot="right" small type="icon" @click="showDrawer">
-          <svg viewBox="0 0 1024 1024" style="width:25px;height:25px;">
-            <path
-              d="M800 320 224 320c-17.664 0-32-14.336-32-32s14.336-32 32-32l576 0c17.696 0 32 14.336 32 32S817.696 320 800 320z"
-              fill="currentColor"
-            />
-            <path
-              d="M800 544 224 544c-17.664 0-32-14.336-32-32s14.336-32 32-32l576 0c17.696 0 32 14.336 32 32S817.696 544 800 544z"
-              fill="currentColor"
-            />
-            <path
-              d="M800 768 224 768c-17.664 0-32-14.336-32-32s14.336-32 32-32l576 0c17.696 0 32 14.336 32 32S817.696 768 800 768z"
-              fill="currentColor"
-            />
-          </svg>
-        </VButton>
-      </Navbar>
-    </Headroom>
-
-    <h4 class="text-center">在有transform属性的父元素里使用会失效</h4>
+    <div class="page-headroom-space">
+      <Headroom transformFixed="top">
+        <Navbar title="Headroom" />
+      </Headroom>
+    </div>
 
     <ul class="page-headeroom-items">
       <li v-for="i in 10" :key="i">{{ i }}</li>
     </ul>
 
     <Headroom
-      :visible="visible"
-      v-transfer-dom="shouldTransfer"
+      transformFixed="bottom|100"
       position="bottom"
       initialClass="demo-scrollToTop-initial"
       pinnedClass="demo-scrollToTop-pinned"
@@ -38,15 +19,18 @@
       transitionClass="demo-scrollToTop-transition"
       style="width:45px; bottom:100px; right:20px;"
     >
-      <div class="demo-scrollToTop">↑</div>
+      <div class="demo-scrollToTop" @click="$toast('toTop')">↑</div>
     </Headroom>
 
-    <Headroom
-      :visible="visible"
-      v-transfer-dom="shouldTransfer"
-      position="bottom"
-    >
-      <VButton block type="primary" style="border-radius: 0"> Toolbar </VButton>
+    <Headroom position="bottom" transformFixed="bottom">
+      <VButton
+        block
+        type="primary"
+        style="border-radius: 0"
+        @click="$toast('toolbar')"
+      >
+        Toolbar
+      </VButton>
     </Headroom>
   </div>
 </template>
@@ -60,39 +44,6 @@ export default {
   components: {
     Headroom,
     VButton
-  },
-  data() {
-    return {
-      visible: true,
-      transfer: true
-    }
-  },
-  computed: {
-    drawerShow() {
-      return this.$store.state.page.drawerShow
-    },
-    shouldTransfer() {
-      return this.transfer && !this.drawerShow
-    }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.visible = false
-    next()
-  },
-  activated() {
-    this.visible = true
-    this.transfer = true
-  },
-  deactivated() {
-    this.transfer = false
-  },
-  methods: {
-    showDrawer() {
-      this.$store.commit('page/drawerShow', {
-        show: true,
-        direction: 'right'
-      })
-    }
   }
 }
 </script>

@@ -4,9 +4,17 @@
     :style="navStyle"
     :scrollBar="false"
     :scrollWidth="scrollWidth"
+    :scrollable="scrollable"
+    :flex="flex"
+    @touchstart.native.passive="touchstart"
+    @touchmove.native="touchmove"
     ref="scrollView"
   >
-    <dl class="v-tab-nav" ref="nav">
+    <dl
+      class="v-tab-nav"
+      ref="nav"
+      :class="{ 'v-tab-nav-scrollable': scrollable }"
+    >
       <dt
         v-for="(tab, i) in tabs"
         :key="i"
@@ -25,6 +33,7 @@
 <script>
 import ScrollView from '../scrollView'
 import VNode from '../vnode'
+import { Handler } from '../utils/event'
 import { view } from '../utils/shared'
 import { properties } from '../styles/variables'
 
@@ -67,7 +76,9 @@ export default {
       lineWidth: 0,
       translate: 0,
       duration: 0,
-      scrollWidth: 5000
+      scrollWidth: 5000,
+      scrollable: true,
+      flex: false
     }
   },
   computed: {
@@ -89,9 +100,23 @@ export default {
   },
   mounted() {
     this.padding = 16
+
+    this.handler = new Handler({
+      isStopPropagation: this.isStopPropagation,
+      isPreventDefault: this.isPreventDefault
+    })
+
     this.$nextTick(() => {
       this.getScrollWidth()
-      this.select(this.index, false)
+
+      if (this.scrollWidth < view.width()) {
+        this.flex = true
+        this.scrollable = false
+      }
+
+      this.$nextTick(() => {
+        this.select(this.index, false)
+      })
     })
   },
   methods: {
@@ -130,6 +155,18 @@ export default {
     lineMove(x) {
       this.duration = 0
       this.translate -= x * 0.1
+    },
+    touchstart(event) {
+      this.handler.start(event)
+    },
+    touchmove(event) {
+      this.handler.move(event)
+    },
+    isStopPropagation() {
+      return this.handler.is('panleft') || this.handler.is('panright')
+    },
+    isPreventDefault() {
+      return this.handler.is('panup') || this.handler.is('pandown')
     }
   }
 }
@@ -144,9 +181,12 @@ export default {
   height: 44px;
   line-height: 44px;
   text-align: center;
+  background-color: #fff;
+  display: flex;
   & dt {
-    float: left;
+    flex: 1;
     padding: 0 8px;
+    min-width: 50px;
     box-sizing: border-box;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -154,6 +194,14 @@ export default {
     transition: 0.3s color;
   }
 }
+
+.v-tab-nav-scrollable {
+  display: block;
+  & dt {
+    float: left;
+  }
+}
+
 .v-tab-nav-line {
   position: absolute;
   left: 0;

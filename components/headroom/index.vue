@@ -2,17 +2,13 @@
   <WithScroll
     rAF
     class="v-haedroom"
-    :class="[{ 'v-headroom-visible': visible }, 'v-headroom-' + position]"
-    :style="{ height: this.containerHeight + 'px' }"
+    :class="['v-headroom-' + position]"
+    :style="[{ height: this.containerHeight + 'px' }, transformFixedStyle]"
     :onscroll="update"
+    v-transfer-dom="transfer"
   >
     <div
-      :class="[
-        initialClass,
-        toggleClass && transitionClass,
-        toggleClass,
-        { 'v-headroom-notransition': !fixed && noTransition }
-      ]"
+      :class="[initialClass, toggleClass && transitionClass, toggleClass]"
       ref="headroom"
     >
       <slot />
@@ -22,19 +18,17 @@
 
 <script>
 import WithScroll from '../withScroll'
+import transformFixed from '../mixins/transformFixed'
 
 export default {
   name: 'Headroom',
+  mixins: [transformFixed],
   components: {
     WithScroll
   },
   props: {
     // 禁用
     disabled: {
-      type: Boolean,
-      default: false
-    },
-    fixed: {
       type: Boolean,
       default: false
     },
@@ -58,10 +52,6 @@ export default {
       type: Number,
       default: 100
     },
-    visible: {
-      type: Boolean,
-      default: true
-    },
     pinnedClass: {
       type: String,
       default: 'v-headroom-pinned'
@@ -80,10 +70,8 @@ export default {
     }
   },
   data() {
-    const isTop = this.position === 'top'
     return {
-      isTop,
-      noTransition: isTop,
+      isTop: this.position === 'top',
       toggleClass: '',
       containerHeight: this.height
     }
@@ -117,12 +105,10 @@ export default {
         this[scrollTop > this.lastTop ? 'unpinned' : 'pinned']()
         this.startTop = 0
       }
-
       this.lastTop = scrollTop
     },
     pinned() {
       this.toggleClass = this.pinnedClass
-      this.noTransition = false
       this.$emit('pinned')
     },
     unpinned() {
@@ -131,7 +117,6 @@ export default {
     },
     restore() {
       this.toggleClass = ''
-      this.noTransition = this.isTop
       this.$emit('restore')
     }
   }
@@ -142,39 +127,26 @@ export default {
 .v-haedroom {
   width: 100%;
   z-index: 99996;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.v-headroom-visible {
-  opacity: 1;
+  transform: translateZ(0);
 }
 .v-headroom-pinned {
   transform: translateZ(0) translateY(0);
 }
 .v-headroom-top {
-  position: relative;
-}
-.v-headroom-bottom {
   position: fixed;
-  bottom: 0;
-  transform: translateZ(0);
-  & .v-headroom-unpinned {
-    transform: translateZ(0) translateY(100%);
-  }
-}
-.v-headroom-top {
+  top: 0;
   & .v-headroom-unpinned {
     transform: translateZ(0) translateY(-100%);
   }
 }
-.v-headroom-transition {
+.v-headroom-bottom {
   position: fixed;
-  left: 0;
-  width: 100%;
-  z-index: 5;
-  transition: 0.3s transform ease-in-out;
+  bottom: 0;
+  & .v-headroom-unpinned {
+    transform: translateZ(0) translateY(100%);
+  }
 }
-.v-headroom-notransition {
-  transition-duration: 0s;
+.v-headroom-transition {
+  transition: 0.3s transform ease-in-out;
 }
 </style>

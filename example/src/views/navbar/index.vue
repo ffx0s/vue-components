@@ -2,22 +2,12 @@
   <div>
     <div class="page-navbar-background"></div>
     <Headroom
-      class="demo-navbar-headroom"
-      :visible="visible"
-      v-transfer-dom="transfer"
       pinnedClass="demo-navbar-pinned"
       unpinnedClass="demo-navbar-unpinned"
-      transitionClass="demo-navbar-transition"
-      @unpinned="unpinned"
-      @restore="restore"
+      transitionClass=""
+      transformFixed="top"
     >
-      <Navbar
-        class="demo-navbar"
-        title="NavBar 固定+过渡"
-        :backIconColor="backIconColor"
-        :border="false"
-        fixed
-      />
+      <Navbar class="demo-navbar" title="NavBar 固定+过渡" :border="false" />
     </Headroom>
     <br />
     <Navbar
@@ -50,46 +40,17 @@ export default {
   name: 'page-navbar',
   components: {
     Headroom
-  },
-  data() {
-    return {
-      visible: false,
-      transfer: true,
-      backIconColor: '#ffffff'
-    }
-  },
-  beforeRouteLeave(to, from, next) {
-    this.visible = false
-    next()
-  },
-  activated() {
-    const self = this
-    this.$animatedRoute.$once('afterEnter', function() {
-      self.visible = true
-    })
-    this.transfer = true
-  },
-  deactivated() {
-    this.transfer = false
-  },
-  methods: {
-    unpinned() {
-      this.backIconColor = '#000000'
-    },
-    restore() {
-      this.backIconColor = '#ffffff'
-    }
   }
 }
 </script>
 
-<style>
+<style lang="postcss">
 .page-navbar-space {
   height: 1000px;
 }
 .page-navbar-background {
   height: 300px;
-  background-image: url('https://static.webfed.cn/o_1d9u7gc8cnpnke014pnu1g25ch.jpg?imageView2/0/w/700');
+  background-image: url('https://static.webfed.cn/ceddJB493dB4A.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -98,14 +59,16 @@ export default {
   color: transparent;
   background-color: transparent;
   transition: 0.3s background, 0.3s color;
+  & .v-button {
+    color: #fff;
+  }
 }
 .demo-navbar-pinned .demo-navbar,
 .demo-navbar-unpinned .demo-navbar {
   color: #000;
   background-color: #fff;
-}
-.demo-navbar-headroom {
-  position: fixed;
-  top: 0;
+  & .v-button {
+    color: #000;
+  }
 }
 </style>

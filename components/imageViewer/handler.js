@@ -6,10 +6,11 @@ export default class Handler {
   constructor(options) {
     this.upTime = 0
     this.downTime = 0
+    this.hideScale = 0.8
     this.options = options
     this.last = {
       move: { x: 0, y: 0 },
-      diff: { x: 0, y: 0, time: 0 },
+      dif: { x: 0, y: 0, time: 0 },
       centerPoint: { x: 0, y: 0 }
     }
     this.position = Handler.initPosition(true)
@@ -23,7 +24,7 @@ export default class Handler {
     this.inAnimation && this.animation.stop()
     this.moved = false
     this.downTime = Date.now()
-    this.last.diff = { x: 0, y: 0, time: 0 }
+    this.last.dif = { x: 0, y: 0, time: 0 }
 
     clearTimeout(this.clickTimer)
 
@@ -82,7 +83,7 @@ export default class Handler {
     this.disabled = false
     this.isHide = false
     this.isSlideDown = false
-    this.currentScale = undefined
+    this.startScale = undefined
     this.last.move = {
       x: touches[0].clientX,
       y: touches[0].clientY
@@ -92,6 +93,8 @@ export default class Handler {
   }
 
   dragmove(event) {
+    if (this.isHide) return
+
     const touches = getPoints(event)
     const move = {
       x: touches[0].clientX,
@@ -141,8 +144,8 @@ export default class Handler {
         const scaleChanged = 1 - y / move.y
         let newScale = style.scale * scaleChanged
 
-        if (this.currentScale === undefined) {
-          this.currentScale = style.scale
+        if (this.startScale === undefined) {
+          this.startScale = style.scale
           this.overlayOpcity = 1
         }
 
@@ -150,17 +153,13 @@ export default class Handler {
 
         // 上滑
         if (y < 0) {
-          if (newScale >= this.currentScale) {
-            newScale = this.currentScale
+          if (newScale >= this.startScale) {
+            newScale = this.startScale
             this.overlayOpcity = 1
           }
         } else {
           // 下滑
         }
-
-        // 比例差值大于 max 则隐藏
-        const max = 0.05
-        this.isHide = this.currentScale - newScale >= max
 
         this.options.scaleTo(move, newScale, false, false)
         this.options.updateOverlayOpcity(this.overlayOpcity)
@@ -169,7 +168,7 @@ export default class Handler {
       this.isSlideDown = true
     }
 
-    this.last.diff = {
+    this.last.dif = {
       x,
       y,
       time: event.timeStamp - this.timeStamp
@@ -194,6 +193,10 @@ export default class Handler {
   dragend() {
     if (!this.moved) return
 
+    const style = this.options.getCurrentStyle().style
+
+    this.isHide = style.scale / this.startScale <= this.hideScale
+
     if (this.isHide) {
       return this.options.hide()
     } else if (this.isSlideDown) {
@@ -204,7 +207,6 @@ export default class Handler {
     const result = this._isFastMove()
 
     if (result) {
-      const style = this.options.getCurrentStyle().style
       let x = style.x + result.x
       let y = style.y + result.y
       let scale = style.scale
@@ -368,15 +370,15 @@ export default class Handler {
 
   _isFastMove() {
     const speed = 0.2
-    const diff = this.last.diff
-    const vx = diff.x / diff.time
-    const vy = diff.y / diff.time
+    const dif = this.last.dif
+    const speedX = dif.x / dif.time
+    const speedY = dif.y / dif.time
 
-    if (Math.abs(vx) > speed || Math.abs(vy) > speed) {
+    if (Math.abs(speedX) > speed || Math.abs(speedY) > speed) {
       const time = 420
       const value = 1.4
-      let x = vx * (time / value)
-      let y = vy * (time / value)
+      let x = speedX * (time / value)
+      let y = speedY * (time / value)
       return { x, y, time: time * 2 }
     }
   }

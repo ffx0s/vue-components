@@ -21,7 +21,6 @@ import { fixedSwipeBack, isForward, scroller } from './helpers'
 import { fixedSpringback } from '../utils/shared'
 
 const pageStatus = {}
-const events = new Vue()
 
 export default {
   name: 'AnimatedRoute',
@@ -52,7 +51,33 @@ export default {
     }
   },
   created() {
-    events.$on('updateDirection', this.updateDirection)
+    const $animatedRoute = this
+
+    $animatedRoute.scroller = scroller
+
+    // 设置和保存滚动位置
+    Vue.mixin({
+      beforeRouteEnter(to, from, next) {
+        $animatedRoute.updateDirection(to, from)
+
+        next(vm => {
+          // 进入当前页面的路由时，滚动到之前的位置
+          scroller.scrollTo(vm.$el, to)
+        })
+      },
+      beforeRouteLeave(to, from, next) {
+        // 离开当前页面的路由时，保存页面滚动位置
+        scroller.saveScrollTop(this.$el, from)
+        next()
+      }
+    })
+
+    Vue.prototype.$animatedRoute = $animatedRoute
+
+    // 解决 safari 回弹效果无法滚动问题
+    fixedSpringback(document.body)
+    // 解决 IOS 两边手动测滑问题
+    fixedSwipeBack(pageStatus)
   },
   methods: {
     // 页面切换方向控制
@@ -68,42 +93,21 @@ export default {
       pageStatus.reset()
     },
     afterEnter(el) {
-      events.$emit('afterEnter', el)
+      this.$emit('afterEnter', el)
     },
     afterLeave(el) {
-      events.$emit('afterLeave', el)
+      this.$emit('afterLeave', el)
     },
     enterCancelled(el) {
-      events.$emit('enterCancelled', el)
+      this.$emit('enterCancelled', el)
     },
     // leaveCancelled 只用于 v-show 中
     leaveCancelled(el) {
-      events.$emit('leaveCancelled', el)
+      this.$emit('leaveCancelled', el)
+    },
+    getPageScrollData(pagePath) {
+      return this.scroller.historyPage[pagePath]
     }
-  },
-  install(Vue) {
-    // 设置和保存滚动位置
-    Vue.mixin({
-      beforeRouteEnter(to, from, next) {
-        events.$emit('updateDirection', to, from)
-        next(vm => {
-          // 进入当前页面的路由时，滚动到之前的位置
-          scroller.scrollTo(vm.$el, to)
-        })
-      },
-      beforeRouteLeave(to, from, next) {
-        // 离开当前页面的路由时，保存页面滚动位置
-        scroller.saveScrollTop(this.$el, from)
-        next()
-      }
-    })
-
-    Vue.prototype.$animatedRoute = events
-
-    // 解决 safari 回弹效果无法滚动问题
-    fixedSpringback(document.body)
-    // 解决 IOS 两边手动测滑问题
-    fixedSwipeBack(pageStatus)
   }
 }
 </script>

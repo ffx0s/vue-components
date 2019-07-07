@@ -89,6 +89,7 @@ export const scroller = (function page() {
   const historyPage = {}
 
   return {
+    historyPage,
     // 进入当前页面的路由时，滚动到之前的位置
     scrollTo(scrollEl, to) {
       if (scrollEl) {

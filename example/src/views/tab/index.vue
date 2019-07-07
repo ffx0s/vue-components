@@ -1,20 +1,29 @@
 <template>
   <div>
-    <Navbar title="Tab" />
-    <Tabs v-model="index">
-      <Tab class="demo-tab-item" title="InfiniteScroll" lazy>
-        <InfiniteScrollModule />
-      </Tab>
-      <Tab class="demo-tab-item" title="PullRefresh" lazy>
-        <PullRefreshModule />
-      </Tab>
-      <Tab class="demo-tab-item" title="Swipe" lazy> <SwipeModule /> </Tab>
-      <Tab class="demo-tab-item" title="ImgViewer" lazy>
-        <ImageViewerModule />
-      </Tab>
-      <Tab class="demo-tab-item" title="Skeleton" lazy>
+    <Navbar title="Tab">
+      <VButton
+        @click="$router.push({ name: 'tab2' })"
+        slot="right"
+        type="primary"
+        text
+      >
+        TabView
+      </VButton>
+    </Navbar>
+    <Tabs v-model="index" navbar>
+      <Tab title="Skeleton" lazy>
         <SkeletonModule v-model="loading" />
       </Tab>
+      <Tab title="ImgViewer" lazy>
+        <ImageViewerModule />
+      </Tab>
+      <Tab title="InfiniteScroll" lazy>
+        <InfiniteScrollModule />
+      </Tab>
+      <Tab title="PullRefresh" lazy>
+        <PullRefreshModule />
+      </Tab>
+      <Tab title="Swipe" lazy> <SwipeModule /> </Tab>
     </Tabs>
   </div>
 </template>
@@ -47,11 +56,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss">
-.demo-tab-item {
-  & .items {
-    margin-top: 10px;
-  }
-}
-</style>

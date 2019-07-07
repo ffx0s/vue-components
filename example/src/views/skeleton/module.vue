@@ -66,8 +66,7 @@ export default {
           '江苏省，简称苏，是中华人民共和国省级行政区，位于华东地区，省会南京市。“江苏”之名可追溯至清初设置的江苏布政使司，是当时江宁府和苏州府两府首字之合称。'
       },
       item3: {
-        image:
-          'https://static.webfed.cn/o_1d9uckkvb1e8m1dd71ir2e95krh.jpg?imageView2/0/w/300',
+        image: 'http://static.webfed.cn/FksNjHhy7Je-dpNJanGFwXDjH2xf',
         name: '在沙漠里打滚',
         date: '2018-08-18',
         content: '卖家超级好，有问题反馈了，很快就给解决，东西好评，还会再来。'

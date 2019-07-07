@@ -22,6 +22,8 @@
 
     <Group title="组件">
       <Cell title="Tab" to="/tab" isLink />
+      <Cell title="TabView" to="/tab2" isLink value="Header + PullRefresh" />
+      <Cell title="ImageViewer" to="/imageViewer" isLink />
       <Cell title="PullRefresh" to="/pullRefresh" isLink />
       <Cell title="InfiniteScroll" to="/infiniteScroll" isLink />
       <Cell title="ScrollView" to="/scrollView" isLink />
@@ -54,7 +56,6 @@
         isLink
         value="Variable + LoadMore"
       />
-      <Cell title="ImageViewer" to="/imageViewer" isLink />
       <Cell title="Ring" to="/ring" isLink />
     </Group>
 

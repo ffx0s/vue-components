@@ -70,7 +70,7 @@ export default {
     },
     threshold: {
       type: Number,
-      default: 40
+      default: 50
     },
     failed: {
       type: Boolean,
@@ -111,6 +111,11 @@ export default {
     wave: {
       type: Boolean,
       default: true
+    },
+    // 下拉滑动的时候是否阻止冒泡
+    stopPropagation: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -199,7 +204,7 @@ export default {
       return this.scrollTop <= 0 && this.handler.is('pandown')
     },
     isStopPropagation() {
-      return this.handler.is('pandown')
+      return this.stopPropagation && this.handler.is('pandown')
     },
     update(x, y) {
       if (!this.shouldUpdate()) return
@@ -263,6 +268,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
   & .v-loading {
     position: absolute;
     left: 0;

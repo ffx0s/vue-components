@@ -27,7 +27,14 @@
 
 <script>
 import { Handler, mouseMove } from '../utils/event'
-import { debounce, noop, isTouchDevice, toFixed } from '../utils/shared'
+import {
+  debounce,
+  noop,
+  isTouchDevice,
+  toFixed,
+  addListener,
+  removeListener
+} from '../utils/shared'
 
 function directionMap(arr) {
   return {
@@ -294,9 +301,10 @@ export default {
       }
 
       const slideDistance = this.translate - this.startTranslate
-      const restore = Math.abs(slideDistance) < this.distance
-      const next = !restore && this.translate < this.startTranslate && hasNext
-      const prev = !restore && !next && hasPrev
+      const shouldSlide = Math.abs(slideDistance) > this.distance
+      const _isNext = this.translate < this.startTranslate
+      const next = shouldSlide && _isNext && hasNext
+      const prev = shouldSlide && !_isNext && hasPrev
 
       return {
         prev,
@@ -378,12 +386,12 @@ export default {
     },
     bindResizeEvent() {
       if (this.isBindResize) return
-      window.addEventListener('resize', this.handleResize)
+      addListener(window, 'resize', this.handleResize)
       this.isBindResize = true
     },
     removeResizeEvent() {
       if (!this.isBindResize) return
-      window.removeEventListener('resize', this.handleResize)
+      removeListener(window, 'resize', this.handleResize)
       this.isBindResize = false
     },
     handleResize() {

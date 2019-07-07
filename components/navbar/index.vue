@@ -1,11 +1,12 @@
 <template>
-  <div class="v-navbar-wrap">
+  <div class="v-navbar-wrap" :style="{ backgroundColor: backgroundColor }">
     <div
       class="v-navbar"
       :class="{ 'v-navbar-fixed': fixed, 'v-bd-y-bottom': border }"
-      :style="{ backgroundColor: backgroundColor, height: height + 'px' }"
+      :style="{ height: height + 'px' }"
     >
       <div class="v-navbar-left v-navbar-center">
+        <!-- left -->
         <slot name="left">
           <VButton
             small
@@ -22,12 +23,16 @@
             </svg>
           </VButton>
         </slot>
+        <!-- leftText -->
+        <slot name="leftText" />
       </div>
+      <!-- title -->
       <div class="v-navbar-middle v-navbar-center">
         <div class="v-navbar-title" :style="{ color: titleColor }">
           <slot>{{ title }}</slot>
         </div>
       </div>
+      <!-- right -->
       <div class="v-navbar-right v-navbar-center"><slot name="right" /></div>
     </div>
     <div
@@ -39,8 +44,6 @@
 </template>
 
 <script>
-import { properties } from '../styles/variables'
-
 export default {
   name: 'Navbar',
   props: {
@@ -60,8 +63,7 @@ export default {
       type: String
     },
     backIconColor: {
-      type: String,
-      default: properties.primary
+      type: String
     },
     backgroundColor: {
       type: String
@@ -81,7 +83,6 @@ export default {
 
 <style lang="postcss">
 .v-navbar-wrap {
-  position: relative;
   color: var(--textPrimary);
   background-color: #fff;
 }
@@ -117,6 +118,7 @@ export default {
   height: 100%;
   & .v-button {
     margin-left: -14px;
+    color: var(--primary);
   }
 }
 .v-navbar-middle {

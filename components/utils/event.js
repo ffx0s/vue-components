@@ -76,16 +76,16 @@ export class Handler {
     }
 
     this.moved = true
-    this.update()
+
+    if (this.options[this.action]) {
+      this.update()
+    }
   }
   up() {
     this.update.cancel()
   }
   update() {
-    const update = this.options[this.action]
-    if (update) {
-      update(this.vx, this.vy)
-    }
+    this.options[this.action](this.vx, this.vy)
   }
   is(action) {
     return this.action === action

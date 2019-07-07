@@ -22,6 +22,7 @@
         :innerStrokeWidth="5"
         color="#f00"
         textColor="#f00"
+        backgroundColor="#fff"
       />
       <br />
       <VButton type="primary" @click="add" :disabled="progress === 100">

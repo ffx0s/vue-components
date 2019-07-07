@@ -18,7 +18,7 @@ export let browser = function(userAgent) {
     android: androidVersion[1] || false,
     // ios
     ios: u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)
-      ? { version: +u.match(/[OS\s]\d+/i)[0] }
+      ? +u.match(/[OS\s]\d+/i)[0]
       : false,
     // Chrome
     chrome: u.indexOf('Chrome') > -1 && u.indexOf('Edge') === -1,
@@ -136,33 +136,34 @@ export function getScrollEventTarget(element) {
   return window
 }
 
-// 解决 safari -webkit-overflow-scrolling 滚动回弹效果没有结束时滚动不了问题
+// 在页面底部/顶部滚动时，阻止默认事件。可以解决 safari 页面滚动不了的问题。
 export function fixedSpringback(touchTarget) {
-  if (!browser().safari) return
-
-  const resistance = 5
-  let startY = 0
+  let lastY = 0
   let scroller = null
 
   function touchstart(event) {
-    startY = event.touches[0].pageY
+    lastY = event.touches[0].clientY
     scroller = getScrollEventTarget(event.target)
     if (scroller === window) scroller = null
   }
 
   function touchmove(event) {
     if (!scroller) return
-    const y = startY - event.touches[0].pageY
-    const pullDownAction = y < -resistance
-    const pullUpAction = y > resistance
+
+    const clientY = event.touches[0].clientY
+    const y = clientY - lastY
+    const pullUpAction = y <= 0
+    const scrollTop = scroller.scrollTop
+
     if (
-      (pullDownAction && scroller.scrollTop <= 0) ||
+      (!pullUpAction && scrollTop <= 0) ||
       (pullUpAction &&
-        Math.floor(scroller.scrollHeight - scroller.offsetHeight) <=
-          scroller.scrollTop)
+        Math.floor(scroller.scrollHeight - scroller.offsetHeight) <= scrollTop)
     ) {
       event.cancelable && event.preventDefault()
     }
+
+    lastY = clientY
   }
 
   addListener(touchTarget, 'touchstart', touchstart)

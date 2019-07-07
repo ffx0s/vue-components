@@ -44,13 +44,13 @@ export default function(options) {
       value.push(currentValue)
     })
 
-    running(value)
-
     if (scale === 1) {
       stop()
     } else {
       timer = requestAnimationFrame(step)
     }
+
+    running(value)
   }
 
   function stop() {

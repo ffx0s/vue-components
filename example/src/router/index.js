@@ -62,6 +62,12 @@ const routes = [
     component: loadRoute('tab')
   },
   {
+    path: '/tab2',
+    name: 'tab2',
+    meta: { title: 'tab2' },
+    component: loadRoute('tab2')
+  },
+  {
     path: '/swipe',
     name: 'swipe',
     meta: { title: 'swipe' },
