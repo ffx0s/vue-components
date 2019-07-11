@@ -14,7 +14,7 @@
       :position="position"
       :overlay="overlay"
     >
-      <div class="demo-popup-content">Popup</div>
+      <div class="popup__content">Popup</div>
     </Popup>
   </div>
 </template>
@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.demo-popup-content {
+.popup__content {
   padding: 10px;
   width: 100%;
   height: 100px;

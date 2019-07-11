@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar title="Toast" />
-    <div class="page-spacing">
+    <div class="app--spacing">
       <h4>类型</h4>
       <VButton
         type="primary"

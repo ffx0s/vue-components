@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar title="Modal" />
-    <div class="page-spacing">
+    <div class="app--spacing">
       <h4>类型</h4>
       <VButton @click="confirmShow = true"> Confirm </VButton>
       <VButton @click="alertShow = true">Alert</VButton>

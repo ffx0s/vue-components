@@ -18,7 +18,7 @@
         </svg>
       </VButton>
     </Navbar>
-    <div class="page-spacing">
+    <div class="app--spacing">
       <VButton @click="drawerShow('left')">左侧展开</VButton>
       <VButton @click="drawerShow('right')">右侧展开</VButton>
       <br />

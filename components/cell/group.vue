@@ -1,9 +1,9 @@
 <template>
   <components :is="tag" class="v-group">
-    <div v-if="title || $slots.title" class="v-group-title">
+    <div v-if="title || $slots.title" class="v-group__title">
       <slot name="title">{{ title }}</slot>
     </div>
-    <div class="v-group-cells" :class="{ 'v-bd-y-top-bottom': border }">
+    <div class="v-group__cells" :class="{ 'v-bd-top-bottom': border }">
       <slot />
     </div>
   </components>
@@ -53,13 +53,13 @@ export default {
   margin-bottom: 15px;
   overflow: hidden;
 }
-.v-group-cells {
+.v-group__cells {
   background-color: #fff;
 }
-.v-group .v-cell:last-child .v-cell-content.v-bd-y-bottom:after {
+.v-group .v-cell:last-child .v-cell__content.v-bd-bottom:after {
   display: none;
 }
-.v-group-title {
+.v-group__title {
   padding: 10px 14px;
   font-size: 16px;
   color: var(--textRegular);

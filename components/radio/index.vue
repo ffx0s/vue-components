@@ -1,13 +1,13 @@
 <template>
-  <label class="v-radio" :class="{ 'v-radio-disabled': disabled }">
+  <label class="v-radio" :class="{ 'v-radio--disabled': disabled }">
     <template v-if="textAlign === 'left'">
-      <span class="v-radio-text">
+      <span class="v-radio__text">
         <slot>{{ label }}</slot>
       </span>
       &nbsp;
     </template>
     <input
-      class="v-radio-input"
+      class="v-radio__input"
       type="radio"
       :checked="checked"
       :value="label"
@@ -16,7 +16,7 @@
     />
     <template v-if="textAlign === 'right'">
       &nbsp;
-      <span class="v-radio-text">
+      <span class="v-radio__text">
         <slot>{{ label }}</slot>
       </span>
     </template>
@@ -84,10 +84,10 @@ export default {
     margin-left: 15px;
   }
 }
-.v-radio-disabled {
+.v-radio--disabled {
   cursor: default;
 }
-.v-radio-input {
+.v-radio__input {
   margin: 0;
   outline: 0;
   appearance: none;
@@ -112,28 +112,28 @@ export default {
       background-color: var(--border);
     }
   }
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 75%;
+    height: 75%;
+    border-radius: 50%;
+    background-color: var(--primary);
+    transform: scale(0);
+    transition: transform 0.3s;
+    transform-origin: center 50%;
+    z-index: 3;
+  }
+  &:checked::before {
+    transform: scale(1);
+  }
 }
-.v-radio-input::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  width: 75%;
-  height: 75%;
-  border-radius: 50%;
-  background-color: var(--primary);
-  transform: scale(0);
-  transition: transform 0.3s;
-  transform-origin: center 50%;
-  z-index: 3;
-}
-.v-radio-input:checked::before {
-  transform: scale(1);
-}
-.v-radio-text {
+.v-radio__text {
   padding-left: 6px;
   font-size: 16px;
   display: inline-block;

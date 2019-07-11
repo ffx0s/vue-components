@@ -3,19 +3,19 @@
     @click.stop="clickHandler"
     class="v-button"
     :class="[
-      `v-button-${type}${outline ? '-outline' : ''}`,
-      { 'v-button_large': large },
-      { 'v-button_small': small },
-      { 'v-button_loading': isLoading },
-      { 'v-button_fill': fill },
-      { 'v-button_block': block },
-      { 'v-button_radius': radius },
-      { 'v-button_text': text }
+      `v-button--${type}${outline ? '-outline' : ''}`,
+      { 'v-button--large': large },
+      { 'v-button--small': small },
+      { 'v-button--loading': isLoading },
+      { 'v-button--fill': fill },
+      { 'v-button--block': block },
+      { 'v-button--radius': radius },
+      { 'v-button--text': text }
     ]"
     :disabled="disabled || isLoading"
   >
-    <span class="v-button-content"><slot /></span>
-    <span v-if="isLoading" class="v-button-loading">
+    <span class="v-button__content"><slot /></span>
+    <span v-if="isLoading" class="v-button__loading">
       <slot name="loading"><Loading :size="loadingSize"/></slot>
     </span>
   </button>
@@ -166,74 +166,74 @@ export default {
 }
 
 /* default */
-.v-button-default {
+.v-button--default {
   color: var(--textPrimary);
   background-color: #fff;
   border-color: #fff;
 }
-.v-button-default-outline {
+.v-button--default-outline {
   color: var(--textRegular);
   border-color: var(--textRegular);
 }
 
 /* primary */
-.v-button-primary {
+.v-button--primary {
   color: #fff;
   background-color: var(--primary);
   border-color: var(--primary);
-  &.v-button_text {
+  &.v-button--text {
     color: var(--primary);
   }
 }
-.v-button-primary-outline {
+.v-button--primary-outline {
   color: var(--primary);
   border-color: var(--primary);
 }
 
 /* success */
-.v-button-success {
+.v-button--success {
   color: #fff;
   background-color: var(--success);
   border-color: var(--success);
-  &.v-button_text {
+  &.v-button--text {
     color: var(--success);
   }
 }
-.v-button-success-outline {
+.v-button--success-outline {
   color: var(--success);
   border-color: var(--success);
 }
 
 /* error */
-.v-button-error {
+.v-button--error {
   color: #fff;
   background-color: var(--error);
   border-color: var(--error);
-  &.v-button_text {
+  &.v-button--text {
     color: var(--error);
   }
 }
-.v-button-error-outline {
+.v-button--error-outline {
   color: var(--error);
   border-color: var(--error);
 }
 
 /* warning */
-.v-button-warning {
+.v-button--warning {
   color: #fff;
   background-color: var(--warning);
   border-color: var(--warning);
-  &.v-button_text {
+  &.v-button--text {
     color: var(--warning);
   }
 }
-.v-button-warning-outline {
+.v-button--warning-outline {
   color: var(--warning);
   border-color: var(--warning);
 }
 
 /* icon button */
-.v-button-icon {
+.v-button--icon {
   min-width: 38px;
   min-height: 31px;
   line-height: 0;
@@ -245,20 +245,20 @@ export default {
   }
 }
 
-.v-button_fill {
+.v-button--fill {
   background-color: #fff;
 }
 
-.v-button_block {
+.v-button--block {
   display: block;
   width: 100%;
 }
 
-.v-button_radius {
+.v-button--radius {
   border-radius: 20px;
 }
 
-.v-button_text {
+.v-button--text {
   border: none;
   background-color: transparent;
   &::before {
@@ -269,28 +269,29 @@ export default {
   }
 }
 
-.v-button_small {
+.v-button--small {
   padding: 8px;
   font-size: 12px;
 }
 
-.v-button_large {
+.v-button--large {
   padding: 8px 16px;
   font-size: 20px;
   line-height: 1.5;
   border-radius: 3px;
 }
 
-.v-button_loading .v-button-content {
-  opacity: 0;
+.v-button--loading {
+  &:disabled {
+    opacity: 1;
+    cursor: default;
+  }
+  & .v-button__content {
+    opacity: 0;
+  }
 }
 
-.v-button_loading:disabled {
-  opacity: 1;
-  cursor: default;
-}
-
-.v-button-loading {
+.v-button__loading {
   position: absolute;
   left: 0;
   top: 0;
@@ -308,7 +309,7 @@ export default {
   margin-left: 10px;
 }
 
-.v-button_block + .v-button_block {
+.v-button--block + .v-button--block {
   margin-left: 0;
   margin-top: 14px;
 }

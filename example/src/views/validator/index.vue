@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar title="Validator" />
-    <div :class="{ 'hide-info': type === 2 }">
+    <div :class="{ 'validator--hide-error': type === 2 }">
       <br />
       <Group>
         <Cell title="验证方式">
@@ -24,7 +24,7 @@
                 type="text"
                 placeholder="请输入用户名"
               />
-              <p class="error-info">{{ error.username }}</p>
+              <p class="validator__error">{{ error.username }}</p>
             </Cell>
 
             <Cell title="密码">
@@ -35,7 +35,7 @@
                 placeholder="请输入密码"
                 autocomplete
               />
-              <p class="error-info">{{ error.password }}</p>
+              <p class="validator__error">{{ error.password }}</p>
             </Cell>
 
             <Cell title="确认密码">
@@ -46,11 +46,11 @@
                 placeholder="请再次输入密码"
                 autocomplete
               />
-              <p class="error-info">{{ error.password2 }}</p>
+              <p class="validator__error">{{ error.password2 }}</p>
             </Cell>
 
-            <Cell class="demo-form-code-cell" title="验证码">
-              <div class="demo-form-code">
+            <Cell class="validator__code-cell" title="验证码">
+              <div class="validator__code">
                 <input
                   v-model="form.code"
                   @blur="check('code')"
@@ -59,7 +59,7 @@
                 />
                 <VButton text type="primary">获取验证码</VButton>
               </div>
-              <p class="error-info">{{ error.code }}</p>
+              <p class="validator__error">{{ error.code }}</p>
             </Cell>
 
             <Cell title="类型">
@@ -73,7 +73,7 @@
                   {{ item.name }}
                 </option>
               </select>
-              <p class="error-info">{{ error.type }}</p>
+              <p class="validator__error">{{ error.type }}</p>
             </Cell>
 
             <Cell title="真实姓名">
@@ -83,7 +83,7 @@
                 type="text"
                 placeholder="请输入真实姓名"
               />
-              <p class="error-info">{{ error['idCard.name'] }}</p>
+              <p class="validator__error">{{ error['idCard.name'] }}</p>
             </Cell>
 
             <Cell title="身份证号码">
@@ -93,22 +93,22 @@
                 type="text"
                 placeholder="请输入身份证号码"
               />
-              <p class="error-info">{{ error['idCard.number'] }}</p>
+              <p class="validator__error">{{ error['idCard.number'] }}</p>
             </Cell>
           </Group>
 
-          <div class="demo-form-button">
-            <div class="demo-form-agreement">
+          <div class="validator__footer">
+            <div class="validator__agreement">
               <Checkbox v-model="form.checked" @input="check('checked')">
                 我已阅读和接受<span style="color: red;">《用户服务协议》</span>
               </Checkbox>
-              <p class="error-info">{{ error.checked }}</p>
+              <p class="validator__error">{{ error.checked }}</p>
             </div>
 
             <VButton block type="primary" @click="submit" :loading="loading">
               注册
             </VButton>
-            <VButton block class="reset" @click="reset"> 还原 </VButton>
+            <VButton block @click="reset"> 还原 </VButton>
           </div>
         </template>
       </Validator>
@@ -187,7 +187,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.error-info {
+.validator__error {
   position: absolute;
   right: 14px;
   top: 15px;
@@ -195,30 +195,30 @@ export default {
   font-size: 12px;
   margin: 0;
 }
-.hide-info .error-info {
+.validator--hide-error .validator__error {
   display: none;
 }
-.demo-form-button {
+.validator__footer {
   margin-bottom: 40px;
   padding: 0 14px;
 }
-.demo-form-agreement {
+.validator__agreement {
   position: relative;
   margin: 25px 0 30px;
-  & .error-info {
+  & .validator__error {
     left: 3px;
     top: auto;
     right: auto;
     margin-top: 3px;
   }
 }
-.demo-form-code-cell {
-  & .v-cell-content {
+.validator__code-cell {
+  & .v-cell__content {
     padding-right: 0;
     padding-top: 5px;
     padding-bottom: 5px;
   }
-  & .demo-form-code {
+  & .validator__code {
     display: flex;
     flex: 1;
     align-items: center;
@@ -231,7 +231,7 @@ export default {
       margin-right: -14px;
     }
   }
-  & .error-info {
+  & .validator__error {
     position: static;
   }
 }

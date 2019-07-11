@@ -68,8 +68,8 @@ export default {
   },
   methods: {
     init() {
-      const ids = this.findIds(this.cityId)
       this.loadCity(-1, '', (currentHierarchy, values) => {
+        const ids = this.findIds(this.cityId)
         return ids[currentHierarchy] ? this.findIndex(ids, values) : 0
       })
     },
@@ -122,9 +122,11 @@ export default {
         })
         .catch(() => {
           this.loading = false
+          // 加载失败重置索引为 0
+          this.init()
+          this.$emit('error')
         })
     },
-
     cancel() {
       this.$emit('input', false)
     },
@@ -136,21 +138,26 @@ export default {
       this.loadCity(index, item.id)
     },
     getChildrenList(id) {
+      let cacheId = id || 1
+
+      if (cities[cacheId]) {
+        return Promise.resolve(cities[cacheId])
+      }
+
       const query =
         'key=UTRBZ-XNYKR-BCBWB-WKH4C-BDBNQ-LEF5Q&output=jsonp' +
         (id ? `&id=${id}` : '')
-      return cities[id]
-        ? Promise.resolve(cities[id])
-        : jsonp(
-            `https://apis.map.qq.com/ws/district/v1/getchildren?${query}`
-          ).then(data => {
-            const result = data.result[0].map(item => ({
-              id: item.id,
-              fullname: item.fullname
-            }))
-            if (id) cities[id] = result
-            return result
-          })
+
+      return jsonp(
+        `https://apis.map.qq.com/ws/district/v1/getchildren?${query}`
+      ).then(data => {
+        const result = data.result[0].map(item => ({
+          id: item.id,
+          fullname: item.fullname
+        }))
+        cities[cacheId] = result
+        return result
+      })
     }
   }
 }

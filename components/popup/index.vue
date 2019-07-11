@@ -1,11 +1,11 @@
 <template>
   <transition :name="transitionName">
     <div class="v-popup" v-if="loaded" v-show="value">
-      <div class="v-popup-content" :class="'v-popup-content-' + position">
+      <div class="v-popup__content" :class="'v-popup--' + position">
         <slot />
       </div>
       <div
-        class="v-popup-overlay"
+        class="v-popup__overlay"
         v-if="overlay"
         @click="close"
         @touchmove.prevent
@@ -54,35 +54,38 @@ export default {
 </script>
 
 <style lang="postcss">
-.v-popup {
-  transition-duration: 300ms;
+:root {
+  --duration: 300ms;
 }
-.v-popup-content {
+.v-popup {
+  transition-duration: var(--duration);
+}
+.v-popup__content {
   position: fixed;
   z-index: 10000;
   width: 100%;
-  transition: transform 300ms;
+  transition: transform var(--duration);
   user-select: none;
 }
 
-.v-popup-content-top {
+.v-popup--top {
   left: 0;
   top: 0;
 }
-.v-popup-content-right {
+.v-popup--right {
   right: 0;
   bottom: 0;
 }
-.v-popup-content-bottom {
+.v-popup--bottom {
   left: 0;
   bottom: 0;
 }
-.v-popup-content-left {
+.v-popup--left {
   left: 0;
   bottom: 0;
 }
 
-.v-popup-overlay {
+.v-popup__overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -90,31 +93,31 @@ export default {
   width: 100%;
   height: 100%;
   background-color: rgb(0, 0, 0, 0.7);
-  transition: opacity 300ms;
+  transition: opacity var(--duration);
 }
 
-.v-popup-enter .v-popup-overlay,
-.v-popup-leave-active .v-popup-overlay {
+.v-popup-enter .v-popup__overlay,
+.v-popup-leave-active .v-popup__overlay {
   opacity: 0;
 }
 
-.v-popup-enter .v-popup-content-bottom,
-.v-popup-leave-active .v-popup-content-bottom {
+.v-popup-enter .v-popup--bottom,
+.v-popup-leave-active .v-popup--bottom {
   transform: translateY(100%);
 }
 
-.v-popup-enter .v-popup-content-top,
-.v-popup-leave-active .v-popup-content-top {
+.v-popup-enter .v-popup--top,
+.v-popup-leave-active .v-popup--top {
   transform: translateY(-100%);
 }
 
-.v-popup-enter .v-popup-content-left,
-.v-popup-leave-active .v-popup-content-left {
+.v-popup-enter .v-popup--left,
+.v-popup-leave-active .v-popup--left {
   transform: translateX(-100%);
 }
 
-.v-popup-enter .v-popup-content-right,
-.v-popup-leave-active .v-popup-content-right {
+.v-popup-enter .v-popup--right,
+.v-popup-leave-active .v-popup--right {
   transform: translateX(100%);
 }
 </style>

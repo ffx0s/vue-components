@@ -1,11 +1,11 @@
 <template>
   <div
     class="v-switch"
-    :class="{ 'v-switch-on': value, 'v-switch-disabled': disabled }"
+    :class="{ 'v-switch--on': value, 'v-switch--disabled': disabled }"
     :style="style"
     @click="click"
   >
-    <div class="v-switch-circle" />
+    <div class="v-switch__circle" />
   </div>
 </template>
 
@@ -59,7 +59,7 @@ export default {
   transition: background 0.3s, border-color 0.3s;
   cursor: pointer;
 }
-.v-switch-circle {
+.v-switch__circle {
   position: absolute;
   top: 0;
   left: 0;
@@ -71,14 +71,14 @@ export default {
     0px 4px 11px 0px rgba(0, 0, 0, 0.08), -1px 2px 2px 0px rgba(0, 0, 0, 0.14);
   transition: transform 0.3s;
 }
-.v-switch-on {
+.v-switch--on {
   background-color: #4dd865;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.v-switch-on .v-switch-circle {
+.v-switch--on .v-switch__circle {
   transform: translateX(1em);
 }
-.v-switch-disabled {
+.v-switch--disabled {
   opacity: 0.6;
   cursor: default;
 }

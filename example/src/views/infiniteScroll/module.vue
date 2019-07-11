@@ -1,15 +1,15 @@
 <template>
   <InfiniteScroll
-    class="page-infinite-scroll"
+    class="infinite-scroll"
     v-model="loading"
     :empty="empty"
     :failed="failed"
     :finished="finished"
-    backgroundColor="#f0eff5"
+    waveColor="#f0eff5"
     @load="load"
     @refresh="refresh"
   >
-    <transition-group class="items" tag="ul" :name="transitionName">
+    <transition-group class="app__items" tag="ul" :name="transitionName">
       <Card tag="li" v-for="item in items" :key="item.id" :item="item" />
     </transition-group>
   </InfiniteScroll>
@@ -81,7 +81,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.page-infinite-scroll {
+.infinite-scroll {
   padding-bottom: 10px;
 }
 </style>

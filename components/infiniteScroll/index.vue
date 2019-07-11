@@ -1,5 +1,5 @@
 <template>
-  <WithScroll :onscroll="update">
+  <WithScroll :onscroll="update" rAF>
     <component
       v-bind="$attrs"
       :is="pullRefresh ? 'PullRefresh' : 'div'"
@@ -9,29 +9,25 @@
       @refresh="refresh"
     >
       <div class="v-infinite-scroll" ref="container"><slot /></div>
-      <!-- 加载中 -->
-      <div class="v-infinite-scroll-footer" v-show="value">
-        <slot name="loading">
-          <Loading class="v-infinite-scroll-loading" size="32" />
-        </slot>
-      </div>
-      <!-- 全部加载完成 -->
-      <div class="v-infinite-scroll-footer" v-show="finished && !empty">
-        <slot name="finished">全部加载完成</slot>
-      </div>
-      <!-- 空空如也 -->
-      <div class="v-infinite-scroll-footer" v-show="empty">
-        <slot name="empty">
-          <div class="v-infinite-scroll-empty">空空如也</div>
-        </slot>
-      </div>
-      <!-- 加载失败 -->
-      <div
-        class="v-infinite-scroll-footer"
-        v-show="failed && !finished"
-        @click="load"
-      >
-        <slot name="failed">加载失败,点击重试</slot>
+      <div :class="footerClass">
+        <!-- 加载中 -->
+        <div :class="loadingClass" v-show="value">
+          <slot name="loading">
+            <Loading class="v-infinite-scroll__loading" size="32" />
+          </slot>
+        </div>
+        <!-- 全部加载完成 -->
+        <div :class="finishedClass" v-show="finished && !empty">
+          <slot name="finished">全部加载完成</slot>
+        </div>
+        <!-- 空空如也 -->
+        <div :class="emptyClass" v-show="empty">
+          <slot name="empty">空空如也</slot>
+        </div>
+        <!-- 加载失败 -->
+        <div :class="failedClass" v-show="failed && !finished" @click="load">
+          <slot name="failed">加载失败,点击重试</slot>
+        </div>
       </div>
     </component>
   </WithScroll>
@@ -81,6 +77,26 @@ export default {
     pullRefresh: {
       type: Boolean,
       default: true
+    },
+    footerClass: {
+      type: String,
+      default: 'v-infinite-scroll__footer'
+    },
+    loadingClass: {
+      type: String,
+      default: ''
+    },
+    finishedClass: {
+      type: String,
+      default: ''
+    },
+    emptyClass: {
+      type: String,
+      default: 'v-infinite-scroll__empty'
+    },
+    failedClass: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -133,21 +149,20 @@ export default {
 </script>
 
 <style lang="postcss">
-.v-infinite-scroll-footer {
-  padding-top: 10px;
-  padding-bottom: 10px;
+.v-infinite-scroll__footer {
   width: 100%;
+  min-height: 52px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.v-infinite-scroll-empty {
+.v-infinite-scroll__empty {
   min-height: 400px;
   display: flex;
   align-items: center;
 }
-.v-infinite-scroll-loading {
+.v-infinite-scroll__loading {
   color: var(--textSecondary);
 }
 </style>

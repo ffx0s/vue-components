@@ -1,8 +1,8 @@
 <template>
   <span
     :class="[
-      'v-badge-' + type,
-      'v-badge-' + (value === '' ? 'circle' : 'number')
+      'v-badge--' + type,
+      'v-badge__' + (value === '' ? 'circle' : 'number')
     ]"
     :style="style"
   >
@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.v-badge-number {
+.v-badge__number {
   padding: 2px 3px;
   min-width: 10px;
   min-height: 10px;
@@ -46,21 +46,21 @@ export default {
   color: white;
   text-align: center;
 }
-.v-badge-circle {
+.v-badge__circle {
   width: 8px;
   height: 8px;
   border-radius: 50%;
 }
-.v-badge-default {
+.v-badge--default {
   background-color: var(--error);
 }
-.v-badge-primary {
+.v-badge--primary {
   background-color: var(--primary);
 }
-.v-badge-success {
+.v-badge--success {
   background-color: var(--success);
 }
-.v-badge-warning {
+.v-badge--warning {
   background-color: var(--warning);
 }
 </style>

@@ -3,15 +3,15 @@
     <svg :viewBox="viewBox">
       <circle
         :fill="backgroundColor"
-        stroke-linecap="round"
-        :stroke="outerColor"
-        :stroke-width="strokeWidth"
         :cx="offset"
         :cy="offset"
         :r="radius"
+        :stroke="outerColor"
+        :stroke-width="strokeWidth"
+        stroke-linecap="round"
       />
       <circle
-        class="v-ring-inner"
+        class="v-ring__inner"
         fill="none"
         :stroke-dashoffset="linecap === 'round' ? '1px' : 0"
         :stroke="color"
@@ -26,7 +26,7 @@
     </svg>
     <slot name="progress">
       <div
-        class="v-ring-progress"
+        class="v-ring__progress"
         :style="{
           color: textColor,
           fontSize: fontSize
@@ -121,11 +121,11 @@ export default {
   position: relative;
   color: var(--primary);
 }
-.v-ring-inner {
+.v-ring__inner {
   transform: rotate(-90deg);
   transition: 0.3s stroke-dasharray;
 }
-.v-ring-progress {
+.v-ring__progress {
   position: absolute;
   top: 0;
   bottom: 0;

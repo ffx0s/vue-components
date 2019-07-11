@@ -1,6 +1,6 @@
 <template>
   <ScrollView
-    class="v-bd-y-bottom"
+    class="v-bd-bottom"
     :style="navStyle"
     :scrollBar="false"
     :scrollWidth="scrollWidth"
@@ -11,9 +11,9 @@
     ref="scrollView"
   >
     <dl
-      class="v-tab-nav"
+      class="v-tab__nav"
       ref="nav"
-      :class="{ 'v-tab-nav-scrollable': scrollable }"
+      :class="{ 'v-tab__nav--scrollable': scrollable }"
     >
       <dt
         v-for="(tab, i) in tabs"
@@ -22,10 +22,10 @@
         @click="$emit('itemClick', i)"
         ref="item"
       >
-        <span class="v-tab-nav-title" v-if="tab.title"> {{ tab.title }} </span>
+        <span v-if="tab.title"> {{ tab.title }} </span>
         <VNode v-else-if="tab.$slots.title" :node="tab.$slots.title[0]" />
       </dt>
-      <dd class="v-tab-nav-line" :style="lineStyle"></dd>
+      <dd class="v-tab__nav-line" :style="lineStyle"></dd>
     </dl>
   </ScrollView>
 </template>
@@ -68,7 +68,7 @@ export default {
     },
     activeClass: {
       type: String,
-      default: 'v-tab-nav-active'
+      default: 'v-tab__nav--active'
     }
   },
   data() {
@@ -173,7 +173,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.v-tab-nav {
+.v-tab__nav {
   position: relative;
   margin: 0;
   padding: 0;
@@ -195,22 +195,23 @@ export default {
   }
 }
 
-.v-tab-nav-scrollable {
+.v-tab__nav--scrollable {
   display: block;
   & dt {
     float: left;
   }
 }
 
-.v-tab-nav-line {
+.v-tab__nav--active {
+  color: var(--primary);
+}
+
+.v-tab__nav-line {
   position: absolute;
   left: 0;
   bottom: 0;
   margin: 0;
   width: 40px;
   transition-property: transform, width;
-}
-.v-tab-nav-active {
-  color: var(--primary);
 }
 </style>

@@ -2,17 +2,17 @@
   <WithScroll
     rAF
     class="v-haedroom"
-    :class="['v-headroom-' + position]"
+    :class="[
+      'v-headroom__' + position,
+      positionClass,
+      toggleClass && transitionClass,
+      toggleClass
+    ]"
     :style="[{ height: this.containerHeight + 'px' }, transformFixedStyle]"
     :onscroll="update"
     v-transfer-dom="transfer"
   >
-    <div
-      :class="[initialClass, toggleClass && transitionClass, toggleClass]"
-      ref="headroom"
-    >
-      <slot />
-    </div>
+    <slot />
   </WithScroll>
 </template>
 
@@ -37,6 +37,11 @@ export default {
       type: String,
       default: 'top'
     },
+    // 是否为 fixed 定位
+    fixed: {
+      type: Boolean,
+      default: true
+    },
     // 元素高度
     height: {
       type: Number,
@@ -54,33 +59,28 @@ export default {
     },
     pinnedClass: {
       type: String,
-      default: 'v-headroom-pinned'
+      default: 'v-headroom--pinned'
     },
     unpinnedClass: {
       type: String,
-      default: 'v-headroom-unpinned'
+      default: 'v-headroom--unpinned'
     },
     transitionClass: {
       type: String,
-      default: 'v-headroom-transition'
-    },
-    initialClass: {
-      type: String,
-      default: 'v-headroom-initial'
+      default: 'v-headroom--transition'
     }
   },
   data() {
     return {
-      isTop: this.position === 'top',
       toggleClass: '',
+      positionClass: `v-headroom--${this.fixed ? 'fixed' : 'absolute'}`,
       containerHeight: this.height
     }
   },
   mounted() {
     this.lastTop = 0
     this.startTop = 0
-    this.containerHeight =
-      this.height || this.$refs.headroom.children[0].offsetHeight
+    this.containerHeight = this.height || this.$el.children[0].offsetHeight
   },
   methods: {
     update(scrollTop) {
@@ -129,24 +129,30 @@ export default {
   z-index: 99996;
   transform: translateZ(0);
 }
-.v-headroom-pinned {
+.v-headroom--fixed {
+  position: fixed;
+}
+.v-headroom--absolute {
+  position: absolute;
+}
+.v-headroom--pinned {
   transform: translateZ(0) translateY(0);
 }
-.v-headroom-top {
-  position: fixed;
+
+.v-headroom__top {
   top: 0;
-  & .v-headroom-unpinned {
+  &.v-headroom--unpinned {
     transform: translateZ(0) translateY(-100%);
   }
 }
-.v-headroom-bottom {
-  position: fixed;
+.v-headroom__bottom {
   bottom: 0;
-  & .v-headroom-unpinned {
+  &.v-headroom--unpinned {
     transform: translateZ(0) translateY(100%);
   }
 }
-.v-headroom-transition {
+
+.v-headroom--transition {
   transition: 0.3s transform ease-in-out;
 }
 </style>

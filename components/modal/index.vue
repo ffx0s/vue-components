@@ -2,27 +2,26 @@
   <transition name="v-modal">
     <div
       class="v-modal"
-      :class="{ 'v-modal-overlay': overlay }"
+      :class="{ 'v-modal--overlay': overlay }"
       v-if="loaded"
       v-show="value"
       @touchmove.prevent
     >
-      <div class="v-modal-wrapper" @click.self="overlayClickHandler">
-        <div class="v-modal-container">
-          <div class="v-modal-header">
+      <div class="v-modal__wrapper" @click.self="overlayClickHandler">
+        <div class="v-modal__container">
+          <div class="v-modal__header">
             <slot name="header">
               <strong>{{ header }}</strong>
             </slot>
           </div>
 
-          <div class="v-modal-body">
+          <div class="v-modal__body">
             <slot>{{ body }}</slot>
           </div>
 
-          <div class="v-modal-footer">
+          <div class="v-modal__footer">
             <slot name="footer">
               <VButton
-                class="v-modal-default-button"
                 outline
                 :loading="cancelLoading"
                 v-if="showCancelButton"
@@ -31,7 +30,6 @@
                 {{ cancelText }}
               </VButton>
               <VButton
-                class="v-modal-default-button"
                 type="primary"
                 :loading="confirmLoading"
                 v-if="showConfirmButton"
@@ -136,17 +134,17 @@ export default {
   pointer-events: none;
 }
 
-.v-modal-overlay {
+.v-modal--overlay {
   pointer-events: auto;
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.v-modal-wrapper {
+.v-modal__wrapper {
   display: table-cell;
   vertical-align: middle;
 }
 
-.v-modal-container {
+.v-modal__container {
   width: 70%;
   max-width: 500px; /*no*/
   margin: 0px auto;
@@ -158,13 +156,13 @@ export default {
   pointer-events: auto;
 }
 
-.v-modal-body {
+.v-modal__body {
   margin: 20px 0; /*no*/
   font-size: 16px; /*no*/
   line-height: 24px; /*no*/
 }
 
-.v-modal-footer {
+.v-modal__footer {
   text-align: right;
 }
 
@@ -172,10 +170,10 @@ export default {
 .v-modal-leave-active {
   opacity: 0;
 }
-.v-modal-enter .v-modal-container {
+.v-modal-enter .v-modal__container {
   transform: scale(1.1);
 }
-.v-modal-leave-active .v-modal-container {
+.v-modal-leave-active .v-modal__container {
   transform: scale(0.8);
 }
 </style>

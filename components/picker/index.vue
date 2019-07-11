@@ -1,19 +1,19 @@
 <template>
   <div class="v-picker">
     <slot name="toolbar">
-      <div class="v-picker-toolbar v-bd-y-bottom">
+      <div class="v-picker__toolbar v-bd-bottom">
         <VButton text type="primary" @click="cancel">
           {{ cancelText }}
         </VButton>
-        <h4 class="v-picker-toolbar-title">{{ title }}</h4>
+        <h4 class="v-picker__title">{{ title }}</h4>
         <VButton text type="primary" @click="confirm">
           {{ confirmText }}
         </VButton>
       </div>
     </slot>
-    <div class="v-picker-main">
+    <div class="v-picker__main">
       <div
-        class="v-picker-columns"
+        class="v-picker__columns"
         @touchstart="pointerdown"
         @touchmove="pointermove"
         @touchend="pointerup"
@@ -28,8 +28,8 @@
           ref="columns"
         />
       </div>
-      <div class="v-picker-select-box v-bd-y-top-bottom"></div>
-      <Delay class="v-picker-loading" v-model="loading" :delay="loadingDelay">
+      <div class="v-picker__select v-bd-top-bottom"></div>
+      <Delay class="v-picker__loading" v-model="loading" :delay="loadingDelay">
         <Loading size="30" />
       </Delay>
     </div>
@@ -251,13 +251,13 @@ export default {
 .v-picker {
   background-color: white;
 }
-.v-picker-main {
+.v-picker__main {
   position: relative;
   width: 100%;
   height: 200px;
   overflow: hidden;
 }
-.v-picker-columns {
+.v-picker__columns {
   position: relative;
   display: flex;
   height: 100%;
@@ -272,7 +272,7 @@ export default {
     transparent
   );
 }
-.v-picker-select-box {
+.v-picker__select {
   position: absolute;
   top: 50%;
   margin-top: -20px;
@@ -280,7 +280,7 @@ export default {
   height: 40px;
   pointer-events: none;
 }
-.v-picker-loading {
+.v-picker__loading {
   position: absolute;
   top: 0;
   width: 100%;
@@ -293,13 +293,13 @@ export default {
     margin: 0 auto;
   }
 }
-.v-picker-toolbar {
+.v-picker__toolbar {
   padding: 2px 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.v-picker-toolbar-title {
+.v-picker__title {
   padding: 0;
   font-size: 17px;
   font-weight: 400;

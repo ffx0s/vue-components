@@ -3,7 +3,7 @@
     <h4 class="text-center">Swpie 横向</h4>
     <Swipe
       v-model="index"
-      class="demo-swipe"
+      class="swipe"
       @change="change"
       preload
       :vertical="vertical"
@@ -15,7 +15,7 @@
     <h4 class="text-center">Swpie 垂直</h4>
     <Swipe
       v-model="index2"
-      class="demo-swipe"
+      class="swipe"
       @change="change"
       vertical
       optimization
@@ -59,7 +59,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.demo-swipe {
+.swipe {
   margin: 0 auto;
   width: 100%;
   height: 200px;

@@ -1,13 +1,13 @@
 <template>
   <div style="background-color: #fff;">
     <Navbar title="1像素边框" />
-    <div class="page-spacing">
-      <div class="page-1px-item v-bd-y-top">上边框</div>
-      <div class="page-1px-item v-bd-y-bottom">下边框</div>
-      <div class="page-1px-item v-bd-y-top-bottom">上下边框</div>
-      <div class="page-1px-item v-bd-x-left">左边框</div>
-      <div class="page-1px-item v-bd-x-right">右边框</div>
-      <div class="page-1px-item v-bd-x-left-right">左右边框</div>
+    <div class="app--spacing">
+      <div class="px__item v-bd-top">上边框</div>
+      <div class="px__item v-bd-bottom">下边框</div>
+      <div class="px__item v-bd-top-bottom">上下边框</div>
+      <div class="px__item v-bd-left">左边框</div>
+      <div class="px__item v-bd-right">右边框</div>
+      <div class="px__item v-bd-left-right">左右边框</div>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.page-1px-item {
+.px__item {
   margin: 40px auto;
   width: 200px;
   height: 50px;

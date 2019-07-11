@@ -1,5 +1,6 @@
 <template>
   <div class="v-tab">
+    <slot name="header" />
     <TabNav
       v-bind="$attrs"
       :index="value"
@@ -8,7 +9,7 @@
       ref="nav"
     />
     <Swipe
-      class="v-tab-content"
+      class="v-tab__content"
       :style="{
         top: navHeight + 'px',
         bottom: offset + 'px'
@@ -25,7 +26,7 @@
       optimization
     >
       <SwipeItem
-        class="v-tab-item"
+        class="v-tab__item"
         v-for="(tab, i) in $slots.default"
         :key="i"
         ref="swipeItem"
@@ -149,19 +150,19 @@ export default {
   position: relative;
   height: 100%;
 }
-.v-tab-content {
+.v-tab__content {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
 }
-.v-tab-item {
+.v-tab__item {
   position: relative;
   z-index: 1;
   width: 100%;
   height: 100%;
-  & > .v-swipe-item-content {
+  & > .v-swipe__content {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }

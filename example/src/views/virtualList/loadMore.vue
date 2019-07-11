@@ -17,11 +17,11 @@
         :itemSizeGetter="itemSizeGetter"
         ref="virtualList"
         tag="ul"
-        class="image-list load-more-list"
+        class="virtual-list"
       >
         <template v-slot="{ visibleData, getVisibleItemRect }">
           <li
-            class="image-list-item absolute"
+            class="virtual-list__item virtual-list__absolute"
             v-for="(item, index) in visibleData"
             :key="item.id"
             :style="{
@@ -30,16 +30,16 @@
               height: getVisibleItemRect(index).size + 'px'
             }"
           >
-            <div class="image-list-item-inner">
-              <span class="image-list-item-loading">
+            <div class="virtual-list__inner">
+              <span class="virtual-list__loading">
                 {{ item.floor }} Loading...
               </span>
-              <div class="image-list-item-background">
-                <img class="image-list-item-img" :src="item.imgSrc" />
+              <div class="virtual-list__background">
+                <img class="virtual-list__img" :src="item.imgSrc" />
               </div>
               <VButton
                 type="icon"
-                class="image-list-item-delete"
+                class="virtual-list__delete"
                 @click="showDeleteActionsheet(index)"
               >
                 <img
@@ -177,7 +177,7 @@ export default {
 
 <style lang="postcss">
 @import './style.css';
-.absolute {
+.virtual-list__absolute {
   position: absolute;
   top: 0;
   left: 0;

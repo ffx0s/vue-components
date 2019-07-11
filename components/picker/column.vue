@@ -1,11 +1,11 @@
 <template>
-  <div class="v-picker-column" :class="column.className">
-    <ul class="v-picker-items" :style="style">
+  <div class="v-picker__column" :class="column.className">
+    <ul class="v-picker__items" :style="style">
       <li
-        class="v-picker-item"
+        class="v-picker__item"
         :class="{
-          'v-picker-item-selected': selectedIndex === index,
-          'v-picker-item-disabled': value.disabled
+          'v-picker--selected': selectedIndex === index,
+          'v-picker--disabled': value.disabled
         }"
         v-for="(value, index) in column.values"
         :key="index"
@@ -13,7 +13,7 @@
         {{ getValue(value) }}
       </li>
     </ul>
-    <div class="v-picker-touch-overlay" :data-index="columnIndex"></div>
+    <div class="v-picker__overlay" :data-index="columnIndex"></div>
   </div>
 </template>
 
@@ -77,7 +77,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.v-picker-column {
+.v-picker__column {
   position: relative;
   flex: 1;
   height: 100%;
@@ -86,14 +86,14 @@ export default {
   text-align: center;
   overflow: hidden;
 }
-.v-picker-items {
+.v-picker__items {
   margin: 0;
   padding: 0;
   list-style: none;
   transition-property: transform;
   transition-timing-function: ease;
 }
-.v-picker-item {
+.v-picker__item {
   padding: 0 6px;
   height: 40px;
   line-height: 40px;
@@ -102,7 +102,7 @@ export default {
   white-space: nowrap;
   transition: 0.3s color;
 }
-.v-picker-touch-overlay {
+.v-picker__overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -110,10 +110,10 @@ export default {
   height: 100%;
   z-index: 2;
 }
-.v-picker-item-selected {
+.v-picker--selected {
   color: var(--textPrimary);
 }
-.v-picker-item-disabled {
+.v-picker--disabled {
   color: var(--lightGray);
 }
 </style>

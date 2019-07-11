@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar title="Button" />
-    <div class="page-spacing">
+    <div class="app--spacing">
       <h4>大小</h4>
       <VButton large>大号按钮</VButton>
       <VButton>默认大小</VButton>
@@ -12,7 +12,7 @@
       <VButton type="primary">主要</VButton>
       <VButton type="success">成功</VButton>
       <VButton type="error">出错</VButton>
-      <div class="page-button-span"></div>
+      <div class="button__span"></div>
       <VButton type="warning">警告</VButton>
 
       <h4>禁用状态</h4>
@@ -39,7 +39,7 @@
         点击加载
         <div slot="loading">加载中...</div>
       </VButton>
-      <div class="page-button-span"></div>
+      <div class="button__span"></div>
       <VButton :loading="loading" type="error">
         自定义加载
         <div slot="loading">Loading...</div>
@@ -95,7 +95,7 @@
       <VButton radius outline type="primary">主要</VButton>
       <VButton radius outline fill type="success">成功</VButton>
       <VButton radius type="error">出错</VButton>
-      <div class="page-button-span"></div>
+      <div class="button__span"></div>
       <VButton radius type="warning">警告</VButton>
     </div>
   </div>
@@ -129,7 +129,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.page-button-span {
+.button__span {
   padding-top: 10px;
 }
 </style>

@@ -23,26 +23,26 @@ export default {
 
 <style lang="postcss">
 .v-radio-group {
-  & .v-cell-content {
+  & .v-cell__content {
     padding: 0;
   }
-  & .v-cell-left {
+  & .v-cell__left {
     width: 100%;
   }
-  & .v-cell-left .v-radio,
-  & .v-cell-right .v-radio {
+  & .v-cell__left .v-radio,
+  & .v-cell__right .v-radio {
     padding-top: 11px;
     padding-bottom: 11px;
     width: 100%;
   }
-  & .v-radio-text {
+  & .v-radio__text {
     font-size: 16px;
   }
-  & .v-cell-right .v-radio {
+  & .v-cell__right .v-radio {
     text-align: justify;
     color: var(--textPrimary);
   }
-  & .v-cell-right .v-radio:after {
+  & .v-cell__right .v-radio:after {
     display: inline-block;
     overflow: hidden;
     width: 100%;

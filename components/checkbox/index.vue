@@ -2,19 +2,18 @@
   <label
     class="v-checkbox"
     :class="{
-      'v-checkbox-active': checked,
-      'v-checkbox-disbled': disabled
+      'v-checkbox--disbled': disabled
     }"
   >
     <template v-if="textAlign === 'left'">
-      <span class="v-checkbox-text">
+      <span class="v-checkbox__text">
         <slot>{{ label }}</slot>
       </span>
       &nbsp;
     </template>
     <input
       type="checkbox"
-      class="v-checkbox-input"
+      class="v-checkbox__input"
       :checked="checked"
       :style="inputStyle"
       :disabled="disabled"
@@ -22,7 +21,7 @@
     />
     <template v-if="textAlign === 'right'">
       &nbsp;
-      <span class="v-checkbox-text">
+      <span class="v-checkbox__text">
         <slot>{{ label }}</slot>
       </span>
     </template>
@@ -119,17 +118,17 @@ export default {
     margin-left: 15px;
   }
 }
-.v-checkbox-disbled {
+.v-checkbox--disbled {
   cursor: default;
-  & .v-checkbox-input {
+  & .v-checkbox__input {
     background-color: var(--lightGray) !important;
     border-color: var(--border) !important;
   }
-  & .v-checkbox-text {
+  & .v-checkbox__text {
     color: var(--textSecondary);
   }
 }
-.v-checkbox-input {
+.v-checkbox__input {
   margin: 0;
   outline: 0;
   z-index: 0;
@@ -166,7 +165,7 @@ export default {
     display: block;
   }
 }
-.v-checkbox-text {
+.v-checkbox__text {
   padding-left: 6px;
   font-size: 14px;
   display: inline-block;

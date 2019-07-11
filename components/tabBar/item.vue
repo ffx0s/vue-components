@@ -1,16 +1,16 @@
 <template>
   <component
     :is="tag"
-    class="v-tab-bar-item"
+    class="v-tab-bar__item"
     :class="{ [activeClass]: isActive }"
     v-bind="$attrs"
     @click="click"
   >
-    <div class="v-tab-bar-icon">
+    <div class="v-tab-bar__icon">
       <i :class="iconClass" v-if="iconClass" /><slot v-else name="icon" />
       <Badge v-if="badge !== undefined" :value="badge" />
     </div>
-    <div class="v-tab-bar-title">
+    <div class="v-tab-bar__title">
       <slot name="title">{{ title }}</slot>
     </div>
     <slot />
@@ -75,7 +75,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.v-tab-bar-item {
+.v-tab-bar__item {
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -86,25 +86,25 @@ export default {
   color: var(--textPrimary);
   cursor: pointer;
 }
-.v-tab-bar-item-active {
+.v-tab-bar--active {
   color: var(--primary);
 }
-.v-tab-bar-icon {
+.v-tab-bar__icon {
   position: relative;
   width: 28px;
   height: 28px;
   font-size: 24px;
   text-align: center;
-  & + .v-tab-bar-title {
+  & + .v-tab-bar__title {
     margin-bottom: -2px;
   }
-  & .v-badge-number {
+  & .v-badge__number {
     position: absolute;
     top: -2px;
     left: 60%;
     display: table;
   }
-  & .v-badge-circle {
+  & .v-badge__circle {
     position: absolute;
     top: -2px;
     left: 70%;

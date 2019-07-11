@@ -1,8 +1,8 @@
 <template>
   <div class="v-loading" :style="style">
-    <svg class="v-loading-svg" :viewBox="viewBox">
+    <svg class="v-loading__svg" :viewBox="viewBox">
       <circle
-        class="v-loading-circle"
+        class="v-loading__svg-circle"
         :stroke="color"
         :stroke-width="strokeWidth"
         :cx="offset"
@@ -56,12 +56,12 @@ export default {
   margin: 0 auto;
   z-index: 0;
 }
-.v-loading-svg {
+.v-loading__svg {
   width: 100%;
   height: 100%;
   animation: v-loading-rotate 1.4s linear infinite;
 }
-.v-loading-circle {
+.v-loading__svg-circle {
   stroke-dasharray: 80 200;
   stroke-dashoffset: 0;
   stroke-linecap: round;

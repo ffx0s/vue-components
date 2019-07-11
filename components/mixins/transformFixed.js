@@ -2,10 +2,7 @@ import { view, browser } from '../utils/shared'
 
 export default {
   props: {
-    transformFixed: {
-      type: String,
-      default: ''
-    }
+    transformFixed: [String, Boolean]
   },
   data() {
     return {
@@ -26,13 +23,15 @@ export default {
     this.leave()
   },
   beforeDestroy() {
-    this.leave()
+    this.leave(true)
   },
   methods: {
     enter() {
-      if (this.transformFixed && !this.entering) {
+      if (this.transformFixed !== false && !this.entering) {
         this.entering = true
-        this.setTransformFixedStyle()
+        this.$nextTick(() => {
+          this.setTransformFixedStyle()
+        })
         this.$animatedRoute.$once('afterEnter', () => {
           setTimeout(() => {
             this.removeTransformFixedStyle()
@@ -42,35 +41,38 @@ export default {
         })
       }
     },
-    leave() {
-      if (this.transformFixed && !this.leaving) {
+    leave(destroy) {
+      if (this.transformFixed !== false && !this.leaving) {
         this.leaving = true
         this.transfer = false
-        this.setTransformFixedStyle()
+        this.setTransformFixedStyle(destroy)
         this.$nextTick(() => {
           this.leaving = false
         })
       }
     },
-    setTransformFixedStyle() {
-      this.$nextTick(() => {
-        const pageData = this.$animatedRoute.getPageScrollData(
-          this.pagePath
-        ) || {
-          scrollTop: 0
-        }
-        const [position = 'bottom', offset = 0] = this.transformFixed.split('|')
-        const elHeight = this.$el.offsetHeight
-        const value =
-          position === 'bottom'
-            ? pageData.scrollTop + view.height() - elHeight - +offset + 'px'
-            : pageData.scrollTop + 'px'
+    setTransformFixedStyle(destroy) {
+      const pageData = this.$animatedRoute.getPageScrollData(this.pagePath) || {
+        scrollTop: 0
+      }
+      const isBottom = this.position === 'bottom'
+      const [offset] = this.transformFixed.split('|')
+      const elHeight = this.$el.offsetHeight
+      const value = isBottom
+        ? pageData.scrollTop + view.height() - elHeight - +offset + 'px'
+        : pageData.scrollTop + 'px'
 
+      // 销毁实例前，数据响应失效，改用原生操作
+      if (destroy) {
+        const style = this.$el.style
+        style.position = 'absolute'
+        style.top = value
+      } else {
         this.transformFixedStyle = {
           position: 'absolute',
           top: value
         }
-      })
+      }
     },
     removeTransformFixedStyle() {
       const ios = browser().ios

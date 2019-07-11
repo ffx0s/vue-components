@@ -1,28 +1,27 @@
 <template>
   <div>
-    <div class="page-headroom-space">
-      <Headroom transformFixed="top">
+    <div class="headroom__space">
+      <Headroom transformFixed>
         <Navbar title="Headroom" />
       </Headroom>
     </div>
 
-    <ul class="page-headeroom-items">
+    <ul class="headeroom__items">
       <li v-for="i in 10" :key="i">{{ i }}</li>
     </ul>
 
     <Headroom
-      transformFixed="bottom|100"
+      transformFixed="100"
       position="bottom"
-      initialClass="demo-scrollToTop-initial"
-      pinnedClass="demo-scrollToTop-pinned"
-      unpinnedClass="demo-scrollToTop-unpinned"
-      transitionClass="demo-scrollToTop-transition"
-      style="width:45px; bottom:100px; right:20px;"
+      class="headeroom__toTop--initial"
+      pinnedClass="headeroom__toTop--pinned"
+      unpinnedClass="headeroom__toTop--unpinned"
+      transitionClass="headeroom__toTop--transition"
     >
-      <div class="demo-scrollToTop" @click="$toast('toTop')">↑</div>
+      <div class="headeroom__toTop" @click="$toast('toTop')">↑</div>
     </Headroom>
 
-    <Headroom position="bottom" transformFixed="bottom">
+    <Headroom position="bottom" transformFixed>
       <VButton
         block
         type="primary"
@@ -49,7 +48,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.demo-scrollToTop {
+.headeroom__toTop {
   width: 45px;
   height: 45px;
   line-height: 45px;
@@ -60,21 +59,26 @@ export default {
   color: #fff;
   border-radius: 4px;
 }
-
-.demo-scrollToTop-initial,
-.demo-scrollToTop-unpinned {
+.headeroom__toTop--initial {
+  opacity: 0;
+  width: 45px;
+  bottom: 100px;
+  right: 20px;
+}
+.headeroom__toTop--unpinned {
   opacity: 0;
 }
-.demo-scrollToTop-pinned {
+.headeroom__toTop--pinned {
   opacity: 1;
 }
-.demo-scrollToTop-transition {
+.headeroom__toTop--transition {
   transition: 0.3s opacity;
 }
-.page-headroom-space {
+
+.headroom__space {
   height: 46px;
 }
-.page-headeroom-items {
+.headeroom__items {
   padding: 0 10px;
   margin: 0;
   margin-top: 10px;

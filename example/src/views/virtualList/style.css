@@ -1,23 +1,23 @@
-.image-list {
+.virtual-list {
   padding: 0;
   margin: 0;
   list-style: none;
 }
-.image-list-item {
+.virtual-list__item {
   box-sizing: border-box;
   width: 100%;
   background-color: var(--background);
 }
-.image-list-item-inner {
+.virtual-list__inner {
   padding: 10px 10px 0;
   height: 100%;
   box-sizing: border-box;
 }
-.image-list-item-background {
+.virtual-list__background {
   background-color: #fff;
   height: 100%;
 }
-.image-list-item-loading {
+.virtual-list__loading {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -29,11 +29,11 @@
   height: 40px;
   line-height: 40px;
 }
-.image-list-item-img {
+.virtual-list__img {
   position: relative;
   width: 100%;
 }
-.image-list-item-delete {
+.virtual-list__delete {
   position: absolute;
   bottom: 14px;
   right: 14px;

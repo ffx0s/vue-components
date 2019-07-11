@@ -3,9 +3,9 @@
     v-model="loading"
     @refresh="refresh"
     :failed="failed"
-    backgroundColor="#f0eff5"
+    waveColor="#f0eff5"
   >
-    <transition-group class="items" tag="ul" :name="transitionName">
+    <transition-group class="app__items" tag="ul" :name="transitionName">
       <Card tag="li" v-for="item in items" :key="item.id" :item="item" />
     </transition-group>
   </PullRefresh>

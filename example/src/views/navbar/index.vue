@@ -1,13 +1,17 @@
 <template>
   <div>
-    <div class="page-navbar-background"></div>
+    <div class="navbar-background"></div>
     <Headroom
-      pinnedClass="demo-navbar-pinned"
-      unpinnedClass="demo-navbar-unpinned"
+      pinnedClass="navbar--pinned"
+      unpinnedClass="navbar--unpinned"
       transitionClass=""
-      transformFixed="top"
+      transformFixed
     >
-      <Navbar class="demo-navbar" title="NavBar 固定+过渡" :border="false" />
+      <Navbar
+        class="navbar-fixed-header"
+        title="NavBar 固定+过渡"
+        :border="false"
+      />
     </Headroom>
     <br />
     <Navbar
@@ -29,7 +33,7 @@
     </Navbar>
     <br />
     <Navbar title="高度修改" height="60" />
-    <div class="page-navbar-space"></div>
+    <div style="height: 1000px"></div>
   </div>
 </template>
 
@@ -45,17 +49,14 @@ export default {
 </script>
 
 <style lang="postcss">
-.page-navbar-space {
-  height: 1000px;
-}
-.page-navbar-background {
+.navbar-background {
   height: 300px;
   background-image: url('https://static.webfed.cn/ceddJB493dB4A.jpg');
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
 }
-.demo-navbar {
+.navbar-fixed-header {
   color: transparent;
   background-color: transparent;
   transition: 0.3s background, 0.3s color;
@@ -63,8 +64,8 @@ export default {
     color: #fff;
   }
 }
-.demo-navbar-pinned .demo-navbar,
-.demo-navbar-unpinned .demo-navbar {
+.navbar--pinned .navbar-fixed-header,
+.navbar--unpinned .navbar-fixed-header {
   color: #000;
   background-color: #fff;
   & .v-button {

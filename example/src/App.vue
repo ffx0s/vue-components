@@ -3,12 +3,12 @@
     <AnimatedRoute :effect="effect" :include="/page-/" max="5" />
     <!-- <router-view /> -->
     <Drawer
-      class="page-drawer"
+      class="app__drawer"
       :direction="drawerDirection"
-      selector=".animated-route"
+      selector=".v-route"
       v-model="drawerShow"
     >
-      <div class="page-drawer-close" @click="drawerShow = false">X</div>
+      <div class="app__drawer-close" @click="drawerShow = false">X</div>
       <Gruop title="Drawer">
         <Cell title="Link" isLink />
         <Cell title="Link" isLink />
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import AnimatedRoute from 'vue-components/animatedRoute/index'
+import AnimatedRoute from 'vue-components/route'
 import Gruop from 'vue-components/cell/group'
 import Cell from 'vue-components/cell'
 import Drawer from 'vue-components/drawer'
@@ -121,17 +121,17 @@ body {
 }
 
 body.hide-scrollbar {
-  & .animated-route-view::-webkit-scrollbar,
-  & .v-swipe-item-content::-webkit-scrollbar,
-  & .v-scroll-view-scroller::-webkit-scrollbar {
+  & .v-route__view::-webkit-scrollbar,
+  & .v-swipe__content::-webkit-scrollbar,
+  & .v-scroll-view__scroller::-webkit-scrollbar {
     display: none;
   }
 }
 
 body.custom-scrollbar {
-  & .animated-route-view,
-  & .v-swipe-item-content,
-  & .v-scroll-view-scroller {
+  & .v-route__view,
+  & .v-swipe__content,
+  & .v-scroll-view__scroller {
     &::-webkit-scrollbar {
       width: 5px;
     }
@@ -148,31 +148,31 @@ body.custom-scrollbar {
   text-align: center;
 }
 
-.page-spacing {
+.app--spacing {
   padding: 15px;
 }
 
-.page-drawer {
+.app__drawer {
   background-color: #2d2d2d;
   color: white;
-  & .v-cell-left,
-  & .v-group-title {
+  & .v-cell__left,
+  & .v-group__title {
     color: #fff;
   }
   & .v-cell {
     background-color: #2d2d2d;
   }
-  & .v-group .v-bd-y-top-bottom:before,
-  & .v-group .v-bd-y-top-bottom:after,
-  & .v-cell-content.v-bd-y-bottom:after {
+  & .v-group .v-bd-top-bottom:before,
+  & .v-group .v-bd-top-bottom:after,
+  & .v-cell__content.v-bd-bottom:after {
     border-color: #4a4a4a;
   }
-  & .v-cell-clickable {
+  & .v-cell--clickable {
     &:active {
       background-color: #4a4a4a;
     }
   }
-  & .page-drawer-close {
+  & .app__drawer-close {
     padding-right: 14px;
     text-align: right;
     height: 40px;
@@ -182,8 +182,20 @@ body.custom-scrollbar {
   }
 }
 
-.animated-route {
+.v-route {
   background: var(--background);
+}
+
+.app__items {
+  padding: 0 10px;
+  margin: 0;
+  margin-top: 10px;
+  font-size: 0;
+  list-style-type: none;
+  & li {
+    margin-bottom: 10px;
+    transition: all 0.7s;
+  }
 }
 
 .item-enter,
@@ -194,17 +206,5 @@ body.custom-scrollbar {
 
 .item-leave-active {
   position: absolute;
-}
-
-.items {
-  padding: 0 10px;
-  margin: 0;
-  margin-top: 10px;
-  font-size: 0;
-  list-style-type: none;
-}
-.items li {
-  margin-bottom: 10px;
-  transition: all 0.7s;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar title="Actionsheet" />
-    <div class="page-spacing">
+    <div class="app--spacing">
       <h4>类型</h4>
       <VButton @click="showUploadMenus = true">默认</VButton>
       <VButton @click="showCustomMenus = true">自定义</VButton>
@@ -12,9 +12,11 @@
         :actions="actions"
       />
       <Actionsheet v-transfer-dom v-model="showCustomMenus" title="分享到">
-        <div class="share-actionsheet">
-          <i class="share-item weixin"></i> <i class="share-item friend"></i>
-          <i class="share-item qq"></i> <i class="share-item weibo"></i>
+        <div class="actionsheet__share">
+          <i class="actionsheet__item actionsheet__item--weixin"></i>
+          <i class="actionsheet__item actionsheet__item--friend"></i>
+          <i class="actionsheet__item actionsheet__item--qq"></i>
+          <i class="actionsheet__item actionsheet__item--weibo"></i>
         </div>
       </Actionsheet>
       <Actionsheet
@@ -98,12 +100,12 @@ export default {
 </script>
 
 <style lang="postcss">
-.share-actionsheet {
+.actionsheet__share {
   display: flex;
   padding: 14px 12px;
   background-color: #fff;
 }
-.share-item {
+.actionsheet__item {
   text-align: center;
   flex: 1;
   height: 46px;
@@ -111,16 +113,16 @@ export default {
   background-position: center;
   background-size: auto 100%;
 }
-.weixin {
+.actionsheet__item--weixin {
   background-image: url('./images/share-wx.svg');
 }
-.friend {
+.actionsheet__item--friend {
   background-image: url('./images/share-tl.svg');
 }
-.qq {
+.actionsheet__item--qq {
   background-image: url('./images/share-qq.svg');
 }
-.weibo {
+.actionsheet__item--weibo {
   background-image: url('./images/share-wb.svg');
 }
 </style>

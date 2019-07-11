@@ -6,11 +6,11 @@
       <SwipeCell @cancel="cancelHandler">
         <template slot="title">
           <div>左右可滑动</div>
-          <div class="demo-swipe-cell-describe">左滑取消删除，右滑回复</div>
+          <div class="swipe-cell__describe">左滑取消删除，右滑回复</div>
         </template>
         <template slot="left">
           <div
-            class="v-swipe-cell-item"
+            class="v-swipe-cell__item"
             style="color: #fff;background-color: #2196f3;"
           >
             回复
@@ -20,13 +20,13 @@
       <SwipeCell cancelText="">
         <template slot="title">
           <div>左滑</div>
-          <div class="demo-swipe-cell-describe">左滑删除</div>
+          <div class="swipe-cell__describe">左滑删除</div>
         </template>
       </SwipeCell>
       <SwipeCell deleteText="" @cancel="cancelHandler">
         <template slot="title">
           <div>左滑</div>
-          <div class="demo-swipe-cell-describe">左滑取消</div>
+          <div class="swipe-cell__describe">左滑取消</div>
         </template>
       </SwipeCell>
     </Group>
@@ -35,7 +35,7 @@
       <SwipeCell title="右侧自定义">
         <template slot="right">
           <div
-            class="v-swipe-cell-item"
+            class="v-swipe-cell__item"
             style="color: #fff;background-color: pink;"
           >
             置顶
@@ -66,7 +66,7 @@
       >
         <template slot="title">
           <div>左滑</div>
-          <div class="demo-swipe-cell-describe">左滑删除</div>
+          <div class="swipe-cell__describe">左滑删除</div>
         </template>
       </SwipeCell>
     </Group>
@@ -122,7 +122,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.demo-swipe-cell-describe {
+.swipe-cell__describe {
   color: var(--textRegular);
   font-size: 14px;
 }

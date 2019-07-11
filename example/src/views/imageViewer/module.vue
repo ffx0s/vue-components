@@ -1,10 +1,10 @@
 <template>
-  <div class="page-spacing">
+  <div class="app--spacing">
     <div
-      class="page-image-viewer-item"
+      class="image-viewer__item"
       v-for="(item, i) in items"
       :key="i"
-      :id="'item' + i"
+      :id="'image-viewer__item-' + i"
     >
       <h4>#{{ i + 1 }} {{ item.title }}</h4>
       <ul>
@@ -19,10 +19,10 @@
     </div>
     <ImageViewer v-transfer-dom :images="images" ref="viewer">
       <template v-slot:toolbar="{ index, item }">
-        <div class="v-image-viewer-topbar">
+        <div class="v-image-viewer__topbar">
           <span>{{ index + 1 }}/{{ images.length }}</span>
         </div>
-        <div class="page-image-viewer-toolbar">{{ item.alt }}</div>
+        <div class="image-viewer__toolbar">{{ item.alt }}</div>
       </template>
     </ImageViewer>
   </div>
@@ -132,7 +132,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.viewer.show({
           index: imageIndex,
-          selector: `#item${itemIndex} img`
+          selector: `#image-viewer__item-${itemIndex} img`
         })
       })
     }
@@ -141,7 +141,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.page-image-viewer-item {
+.image-viewer__item {
   & ul {
     list-style: none;
     margin: 0 -5px;
@@ -160,7 +160,7 @@ export default {
     }
   }
 }
-.page-image-viewer-toolbar {
+.image-viewer__toolbar {
   position: absolute;
   bottom: 0;
   left: 0;

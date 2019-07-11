@@ -1,6 +1,8 @@
 <template>
-  <div class="v-swipe-item">
-    <div class="v-swipe-item-content" v-if="loaded" v-show="show"><slot /></div>
+  <div class="v-swipe__item">
+    <div class="v-swipe__content" v-if="loaded" v-show="show">
+      <slot />
+    </div>
   </div>
 </template>
 
@@ -23,11 +25,11 @@ export default {
 </script>
 
 <style lang="postcss">
-.v-swipe-item {
+.v-swipe__item {
   position: relative;
   flex: 0 0 100%;
 }
-.v-swipe-item-content {
+.v-swipe__content {
   height: 100%;
 }
 </style>

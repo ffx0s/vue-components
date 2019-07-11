@@ -1,5 +1,5 @@
 <template>
-  <div class="animated-route" :class="{ 'animated-3d': translate3d }">
+  <div class="v-route" :class="{ 'v-route--3d': translate3d }">
     <transition
       :name="transitionName"
       @afterEnter="afterEnter"
@@ -8,10 +8,10 @@
       @leaveCancelled="leaveCancelled"
     >
       <keep-alive v-bind="$attrs">
-        <router-view class="animated-route-view" />
+        <router-view class="v-route__view" />
       </keep-alive>
     </transition>
-    <div class="animated-overlay"></div>
+    <div class="v-route__overlay"></div>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import { fixedSpringback } from '../utils/shared'
 const pageStatus = {}
 
 export default {
-  name: 'AnimatedRoute',
+  name: 'VRoute',
   inheritAttrs: false,
   props: {
     effect: {
@@ -43,11 +43,11 @@ export default {
   computed: {
     transitionName() {
       return this.direction
-        ? 'animated-' +
+        ? 'v-route-' +
             (this.direction === 'forward'
               ? `${this.effect}-in`
               : `${this.effect}-out`)
-        : 'animated-no-transition'
+        : 'v-route--notransition'
     }
   },
   created() {
@@ -123,7 +123,7 @@ body {
   overflow-x: hidden;
 }
 
-.animated-route {
+.v-route {
   position: absolute;
   left: 0;
   top: 0;
@@ -133,7 +133,7 @@ body {
   background-color: white;
 }
 
-.animated-route-view {
+.v-route__view {
   position: relative;
   z-index: 1;
   width: 100%;
@@ -143,15 +143,15 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-.animated-3d {
+.v-route--3d {
   transform: translate3d(0, 0, 0);
 }
 
 /* 渐隐切换效果 */
-.animated-fade-out-enter-active,
-.animated-fade-out-leave-active,
-.animated-fade-in-enter-active,
-.animated-fade-in-leave-active {
+.v-route-fade-out-enter-active,
+.v-route-fade-out-leave-active,
+.v-route-fade-in-enter-active,
+.v-route-fade-in-leave-active {
   position: absolute;
   will-change: transform;
   transition: transform var(--duration) cubic-bezier(0.25, 0.46, 0.45, 0.94),
@@ -160,32 +160,32 @@ body {
   perspective: 1000;
 }
 
-.animated-fade-out-enter-to,
-.animated-fade-in-leave {
+.v-route-fade-out-enter-to,
+.v-route-fade-in-leave {
   transform: translate3d(0, 0, 0);
   opacity: 1;
 }
 
-.animated-fade-out-enter,
-.animated-fade-in-leave-to {
+.v-route-fade-out-enter,
+.v-route-fade-in-leave-to {
   transform: translate3d(-80px, 0, 0);
   opacity: 0.3;
 }
 
-.animated-fade-out-leave-to,
-.animated-fade-in-enter {
+.v-route-fade-out-leave-to,
+.v-route-fade-in-enter {
   opacity: 0.3;
   transform: translate3d(80px, 0, 0);
 }
 
-.animated-fade-out-leave,
-.animated-fade-in-enter-to {
+.v-route-fade-out-leave,
+.v-route-fade-in-enter-to {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }
 
 /* IOS 切换效果 */
-.animated-overlay {
+.v-route__overlay {
   position: absolute;
   left: 0;
   top: 0;
@@ -198,10 +198,10 @@ body {
   transition: opacity var(--duration);
 }
 
-.animated-ios-out-enter-active,
-.animated-ios-out-leave-active,
-.animated-ios-in-enter-active,
-.animated-ios-in-leave-active {
+.v-route-ios-out-enter-active,
+.v-route-ios-out-leave-active,
+.v-route-ios-in-enter-active,
+.v-route-ios-in-leave-active {
   position: absolute;
   top: 0;
   will-change: transform;
@@ -210,57 +210,57 @@ body {
   perspective: 1000;
 }
 
-.animated-ios-out-leave,
-.animated-ios-out-leave-to {
+.v-route-ios-out-leave,
+.v-route-ios-out-leave-to {
   z-index: 4;
 }
 
-.animated-ios-out-leave,
-.animated-ios-out-enter-to,
-.animated-ios-in-leave,
-.animated-ios-in-enter-to {
+.v-route-ios-out-leave,
+.v-route-ios-out-enter-to,
+.v-route-ios-in-leave,
+.v-route-ios-in-enter-to {
   transform: translate3d(0, 0, 0);
 }
 
-.animated-ios-out-leave-to,
-.animated-ios-in-enter {
+.v-route-ios-out-leave-to,
+.v-route-ios-in-enter {
   transform: translate3d(100%, 0, 0);
 }
 
-.animated-ios-out-enter,
-.animated-ios-in-leave-to {
+.v-route-ios-out-enter,
+.v-route-ios-in-leave-to {
   transform: translate3d(-30%, 0, 0);
 }
 
-.animated-ios-out-enter,
-.animated-ios-in-enter-to {
-  & + .animated-overlay {
+.v-route-ios-out-enter,
+.v-route-ios-in-enter-to {
+  & + .v-route__overlay {
     opacity: 1;
   }
 }
 
-.animated-ios-out-enter-to {
-  & + .animated-overlay {
+.v-route-ios-out-enter-to {
+  & + .v-route__overlay {
     opacity: 0;
     z-index: 3;
   }
 }
 
-.animated-ios-out-enter-active,
-.animated-ios-in-enter-active {
+.v-route-ios-out-enter-active,
+.v-route-ios-in-enter-active {
   z-index: 3;
-  & + .animated-overlay {
+  & + .v-route__overlay {
     display: block;
   }
 }
 
-.animated-no-transition-leave {
+.v-route--notransition-leave {
   display: none;
 }
 
 /* Android 切换效果 */
-.animated-android-out-leave-active,
-.animated-android-in-enter-active {
+.v-route-android-out-leave-active,
+.v-route-android-in-enter-active {
   position: absolute;
   top: 0;
   z-index: 2;
@@ -269,17 +269,17 @@ body {
   backface-visibility: hidden;
   perspective: 1000;
 }
-.animated-android-out-enter-active,
-.animated-android-in-leave-active {
+.v-route-android-out-enter-active,
+.v-route-android-in-leave-active {
   transition-duration: var(--duration);
 }
-.animated-android-out-leave-to,
-.animated-android-in-enter {
+.v-route-android-out-leave-to,
+.v-route-android-in-enter {
   opacity: 0;
   transform: translate3d(0, 46px, 0);
 }
-.animated-android-out-leave,
-.animated-android-in-enter-to {
+.v-route-android-out-leave,
+.v-route-android-in-enter-to {
   opacity: 1;
   transform: translate3d(0, 0, 0);
 }

@@ -6,29 +6,29 @@
   >
     <div
       class="v-image-viewer"
-      :class="{ 'v-image-viewer-lock': lock }"
+      :class="{ 'v-image-viewer--lock': lock }"
       v-if="loaded"
       v-show="value"
     >
       <div
-        class="v-image-viewer-toolbar"
+        class="v-image-viewer__toolbar"
         :class="{ [toolbarShowClass]: showToolbar }"
       >
         <slot name="toolbar" :index="index" :item="images[index] || {}">
-          <div class="v-image-viewer-topbar">
+          <div class="v-image-viewer__topbar">
             <span>{{ index + 1 }}/{{ images.length }}</span>
           </div>
         </slot>
       </div>
       <div
-        class="v-image-viewer-touch"
+        class="v-image-viewer__touch"
         @touchstart.capture="touchstart"
         @touchmove.capture="touchmove"
         @touchend.capture="touchend"
         @mousedown.capture="mousedown"
       >
         <Swipe
-          class="v-image-viewer-swipe"
+          class="v-image-viewer__swipe"
           ref="swipe"
           v-model="index"
           :showPrev="showPrevOrNext"
@@ -43,22 +43,22 @@
           optimization
         >
           <SwipeItem
-            class="v-image-viewer-item"
+            class="v-image-viewer__item"
             v-for="(item, i) in items"
             :key="item.uid"
             lazy
           >
             <div
-              class="v-image-viewer-zoom"
-              :id="'v-image-viewer-zoom-' + item.uid"
+              class="v-image-viewer__zoom"
+              :id="'v-image-viewer__zoom-' + item.uid"
             >
               <img
                 v-if="!item.loaded || item.error"
-                class="v-image-viewer-img"
+                class="v-image-viewer__img"
                 :src="images[i].thumbnail"
               />
               <img
-                class="v-image-viewer-img"
+                class="v-image-viewer__img"
                 :src="images[i].src"
                 @load="onload(i)"
                 @error="onerror(i)"
@@ -71,7 +71,7 @@
       <!-- loading -->
       <slot name="loading">
         <Delay
-          class="v-image-viewer-center"
+          class="v-image-viewer__loading"
           v-model="loading"
           :delay="loadingDelay"
         >
@@ -88,7 +88,7 @@
         </Delay>
       </slot>
       <!-- overlay -->
-      <div class="v-image-viewer-overlay" ref="overlay" />
+      <div class="v-image-viewer__overlay" ref="overlay" />
     </div>
   </transition>
 </template>
@@ -130,7 +130,7 @@ export default {
     },
     toolbarShowClass: {
       type: String,
-      default: 'v-image-viewer-toolbar-show'
+      default: 'v-image-viewer__toolbar--show'
     },
     clickHidden: {
       type: Boolean,
@@ -370,7 +370,7 @@ export default {
       this.currentEl =
         index >= 0
           ? this.$el.querySelector(
-              '#v-image-viewer-zoom-' + this.items[index].uid
+              '#v-image-viewer__zoom-' + this.items[index].uid
             )
           : null
     },
@@ -495,25 +495,25 @@ export default {
   width: 100%;
   height: 100%;
 }
-.v-image-viewer-lock {
+.v-image-viewer--lock {
   pointer-events: none;
 }
-.v-image-viewer-touch {
+.v-image-viewer__touch {
   position: absolute;
   width: 100%;
   height: 100%;
   left: 0;
   top: 0;
 }
-.v-image-viewer-swipe {
+.v-image-viewer__swipe {
   height: 100%;
 }
-.v-image-viewer-item {
+.v-image-viewer__item {
   margin-right: 20px;
   overflow: hidden;
   width: 100%;
 }
-.v-image-viewer-zoom {
+.v-image-viewer__zoom {
   position: absolute;
   left: 0;
   top: 0;
@@ -521,14 +521,14 @@ export default {
   transition-property: transform;
   transform-origin: left top;
 }
-.v-image-viewer-img {
+.v-image-viewer__img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
 }
-.v-image-viewer-toolbar {
+.v-image-viewer__toolbar {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -541,14 +541,14 @@ export default {
   pointer-events: none;
   user-select: none;
 }
-.v-image-viewer-toolbar > div {
+.v-image-viewer__toolbar > div {
   pointer-events: auto;
 }
-.v-image-viewer-toolbar-show {
+.v-image-viewer__toolbar--show {
   opacity: 1;
   visibility: visible;
 }
-.v-image-viewer-topbar {
+.v-image-viewer__topbar {
   position: absolute;
   top: 0;
   left: 0;
@@ -565,7 +565,7 @@ export default {
     letter-spacing: 2px;
   }
 }
-.v-image-viewer-center {
+.v-image-viewer__loading {
   margin: auto;
   position: absolute;
   top: 0;
@@ -576,7 +576,7 @@ export default {
   height: 45px;
   z-index: 2;
 }
-.v-image-viewer-overlay {
+.v-image-viewer__overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -586,12 +586,12 @@ export default {
 }
 .v-image-viewer-enter-active,
 .v-image-viewer-leave-active,
-.v-image-viewer-enter-active .v-image-viewer-overlay,
-.v-image-viewer-leave-active .v-image-viewer-overlay {
+.v-image-viewer-enter-active .v-image-viewer__overlay,
+.v-image-viewer-leave-active .v-image-viewer__overlay {
   transition: opacity 350ms;
 }
-.v-image-viewer-enter .v-image-viewer-overlay,
-.v-image-viewer-leave-to .v-image-viewer-overlay {
+.v-image-viewer-enter .v-image-viewer__overlay,
+.v-image-viewer-leave-to .v-image-viewer__overlay {
   opacity: 0 !important;
 }
 </style>

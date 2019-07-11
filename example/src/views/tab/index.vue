@@ -36,9 +36,11 @@ import PullRefreshModule from '../pullRefresh/module'
 import SwipeModule from '../swipe/module'
 import ImageViewerModule from '../imageViewer/module'
 import SkeletonModule from '../skeleton/module'
+import showModal from '../../mixins/showModal'
 
 export default {
   name: 'page-tab',
+  mixins: [showModal],
   components: {
     Tabs,
     Tab,

@@ -12,34 +12,34 @@
     <slot slot="title" name="title" />
     <div
       slot="bottom"
-      class="v-swipe-cell-handler"
+      class="v-swipe-cell__handler"
       v-if="renderHandler"
       @touchstart.stop
       @touchmove.stop
       @touchend.stop
     >
-      <div class="v-swipe-cell-items v-swipe-cell-left" ref="leftItems">
+      <div class="v-swipe-cell__items v-swipe-cell--left" ref="leftItems">
         <slot name="left" />
       </div>
-      <div class="v-swipe-cell-items v-swipe-cell-right" ref="rightItems">
+      <div class="v-swipe-cell__items v-swipe-cell--right" ref="rightItems">
         <slot name="right">
           <div
-            class="v-swipe-cell-item v-swipe-cell-cancel"
+            class="v-swipe-cell__item v-swipe-cell--cancel"
             v-if="cancelText"
             @click.stop="handleCancel"
           >
             {{ cancelText }}
           </div>
           <div
-            class="v-swipe-cell-item v-swipe-cell-delete"
+            class="v-swipe-cell__item v-swipe-cell--delete"
             :class="{
-              'v-swipe-cell-confirm': confirmDeleteText && confirmDelete
+              'v-swipe-cell--confirm': confirmDeleteText && confirmDelete
             }"
             v-if="deleteText"
             @click.stop="handleDelete"
           >
             {{ deleteText }}
-            <div class="v-swipe-cell-confirm-delete">
+            <div class="v-swipe-cell__delete">
               {{ confirmDeleteText }}
             </div>
           </div>
@@ -272,27 +272,27 @@ export default {
 .v-swipe-cell {
   transition-property: transform;
 }
-.v-swipe-cell-items {
+.v-swipe-cell__items {
   position: absolute;
   top: 0;
   height: 100%;
   display: flex;
 }
-.v-swipe-cell-left {
+.v-swipe-cell--left {
   left: 0;
   transform: translate3d(-100%, 0, 0);
-  & .v-swipe-cell-item::after {
+  & .v-swipe-cell__item::after {
     right: 98%;
   }
 }
-.v-swipe-cell-right {
+.v-swipe-cell--right {
   right: 0;
   transform: translate3d(100%, 0, 0);
-  & .v-swipe-cell-item::after {
+  & .v-swipe-cell__item::after {
     left: 98%;
   }
 }
-.v-swipe-cell-item {
+.v-swipe-cell__item {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -308,23 +308,23 @@ export default {
     background-color: inherit;
   }
 }
-.v-swipe-cell-delete {
+.v-swipe-cell--delete {
   color: #fff;
   background-color: var(--error);
   transition: 0.3s transform;
 }
-.v-swipe-cell-cancel {
+.v-swipe-cell--cancel {
   color: #fff;
   background-color: var(--border);
 }
-.v-swipe-cell-confirm {
+.v-swipe-cell--confirm {
   transform: translateX(-100%);
-  & .v-swipe-cell-confirm-delete {
+  & .v-swipe-cell__delete {
     opacity: 1;
     visibility: visible;
   }
 }
-.v-swipe-cell-confirm-delete {
+.v-swipe-cell__delete {
   position: absolute;
   background: inherit;
   width: 200%;

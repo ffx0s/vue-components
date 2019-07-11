@@ -1,5 +1,5 @@
 <template>
-  <footer class="v-tab-bar v-bd-y-top"><slot /></footer>
+  <footer class="v-tab-bar v-bd-top"><slot /></footer>
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
     },
     activeClass: {
       type: String,
-      default: 'v-tab-bar-item-active'
+      default: 'v-tab-bar--active'
     }
   },
   mounted() {

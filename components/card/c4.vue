@@ -30,7 +30,7 @@
         </span>
       </div>
     </div>
-    <div class="v-c4__footer v-c4_between v-bd-y-top">
+    <div class="v-c4__footer v-c4_between v-bd-top">
       <span class="v-color-error">{{ item.message }}</span>
       <div class="v-c4__footer-actions"><slot name="btns" /></div>
     </div>

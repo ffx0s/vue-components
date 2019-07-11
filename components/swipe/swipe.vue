@@ -1,25 +1,25 @@
 <template>
   <div
     class="v-swipe"
-    :class="{ 'v-swipe-vertical': vertical }"
+    :class="{ 'v-swipe--vertical': vertical }"
     @touchstart="pointerdown"
     @touchmove="pointermove"
     @touchend="pointerup"
     @mousedown="onMousedown"
   >
     <div
-      class="v-swipe-items"
+      class="v-swipe__items"
       @webkitTransitionEnd.self="transitionend"
       @transitionEnd.self="transitionend"
       ref="items"
     >
       <slot />
     </div>
-    <ul class="v-swipe-dots" v-if="dot">
+    <ul class="v-swipe__dots" v-if="dot">
       <li
         v-for="(item, i) in items.length"
         :key="i"
-        :class="{ 'v-swipe-dots-active': i === currentIndex }"
+        :class="{ 'v-swipe__dots-active': i === currentIndex }"
       />
     </ul>
   </div>
@@ -412,14 +412,14 @@ export default {
   user-select: none;
 }
 
-.v-swipe-items {
+.v-swipe__items {
   display: flex;
   height: 100%;
   transition-property: transform;
   transition-timing-function: ease;
 }
 
-.v-swipe-dots {
+.v-swipe__dots {
   position: absolute;
   bottom: 10px;
   margin: 0;
@@ -438,20 +438,20 @@ export default {
     border-radius: 50%;
     opacity: 0.5;
     transition: 0.3s opacity;
-    &.v-swipe-dots-active {
+    &.v-swipe__dots-active {
       opacity: 1;
     }
   }
 }
 
-.v-swipe-vertical {
-  & .v-swipe-items {
+.v-swipe--vertical {
+  & .v-swipe__items {
     flex-direction: column;
   }
-  & .v-swipe-item {
+  & .v-swipe__item {
     height: 100%;
   }
-  & .v-swipe-dots {
+  & .v-swipe__dots {
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -10,19 +10,19 @@
     >
       <template v-slot="{ visibleData }">
         <div
-          class="image-list-item v-bd-y-bottom"
+          class="virtual-list v-bd-bottom"
           v-for="(item, index) in visibleData"
           :key="item.id"
           :style="{
             height: item.height + 'px'
           }"
         >
-          <div class="image-list-item-inner">
-            <div class="image-list-item-background">
-              <span class="image-list-item-loading">{{ item.floor }}</span>
+          <div class="virtual-list__inner">
+            <div class="virtual-list__background">
+              <span class="virtual-list__loading">{{ item.floor }}</span>
               <VButton
                 type="icon"
-                class="image-list-item-delete"
+                class="virtual-list__delete"
                 @click="showDeleteActionsheet(index)"
               >
                 <img

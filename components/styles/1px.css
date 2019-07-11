@@ -10,7 +10,9 @@
   }
 }
 
-[class*="v-bd-y"] {
+.v-bd-top,
+.v-bd-bottom,
+.v-bd-top-bottom {
   &:before,
   &:after {
     left: 0;
@@ -24,7 +26,9 @@
   }
 }
 
-[class*="v-bd-x"] {
+.v-bd-left,
+.v-bd-right,
+.v-bd-left-right {
   &:before,
   &:after {
     top: 0;
@@ -33,7 +37,7 @@
   }
 }
 
-.v-bd-y-top {
+.v-bd-top {
   &:before {
     top: 0;
     border-top-width: 1px; /*no*/
@@ -43,7 +47,7 @@
   }
 }
 
-.v-bd-y-bottom {
+.v-bd-bottom {
   &:before {
     display: none;
   }
@@ -53,7 +57,7 @@
   }
 }
 
-.v-bd-y-top-bottom {
+.v-bd-top-bottom {
   &:before {
     top: 0;
     border-top-width: 1px; /*no*/
@@ -64,7 +68,7 @@
   }
 }
 
-.v-bd-x-left {
+.v-bd-left {
   &:before {
     left: 0;
     border-left-width: 1px; /*no*/
@@ -74,7 +78,7 @@
   }
 }
 
-.v-bd-x-right {
+.v-bd-right {
   &:before {
     display: none;
   }
@@ -84,7 +88,7 @@
   }
 }
 
-.v-bd-x-left-right {
+.v-bd-left-right {
   &:before {
     left: 0;
     border-left-width: 1px; /*no*/
@@ -101,34 +105,58 @@
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 1.5) {
-  [class*="v-bd-y"]:before, 
-  [class*="v-bd-y"]:after {
-    transform: scaleY(0.666666);
+  .v-bd-top,
+  .v-bd-bottom,
+  .v-bd-top-bottom {
+    &:after,
+    &:before {
+      transform: scaleY(0.666666);
+    }
   }
-  [class*="v-bd-x"]:before, 
-  [class*="v-bd-x"]:after {
-    transform: scaleX(0.666666);
+  .v-bd-left,
+  .v-bd-right,
+  .v-bd-left-right {
+    &:after,
+    &:before {
+      transform: scaleX(0.666666);
+    }
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 2) {
-  [class*="v-bd-y"]:before,
-  [class*="v-bd-y"]:after {
-    transform: scaleY(0.5);
+  .v-bd-top,
+  .v-bd-bottom,
+  .v-bd-top-bottom {
+    &:after,
+    &:before {
+      transform: scaleY(0.5);
+    }
   }
-  [class*="v-bd-x"]:before, 
-  [class*="v-bd-x"]:after {
-    transform: scaleX(0.5);
+  .v-bd-left,
+  .v-bd-right,
+  .v-bd-left-right {
+    &:after,
+    &:before {
+      transform: scaleX(0.5);
+    }
   }
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 3) {
-  [class*="v-bd-y"]:before,
-  [class*="v-bd-y"]:after {
-    transform: scaleY(0.333333);
+  .v-bd-top,
+  .v-bd-bottom,
+  .v-bd-top-bottom {
+    &:after,
+    &:before {
+      transform: scaleY(0.333333);
+    }
   }
-  [class*="v-bd-x"]:before, 
-  [class*="v-bd-x"]:after {
-    transform: scaleX(0.333333);
+  .v-bd-left,
+  .v-bd-right,
+  .v-bd-left-right {
+    &:after,
+    &:before {
+      transform: scaleX(0.333333);
+    }
   }
 }

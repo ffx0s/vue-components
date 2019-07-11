@@ -6,10 +6,14 @@
     @touchend="pointerup"
     @mousedown="onMousedown"
   >
-    <div class="v-pull-refresh-main" :style="style">
-      <div class="v-pull-refresh-head" :class="stateClass">
+    <div class="v-pull-refresh__main" :style="style">
+      <div class="v-pull-refresh__head" :class="stateClass">
         <slot name="head">
-          <div class="v-pull-refresh-wave" :style="waveStyle" v-show="showWave">
+          <div
+            class="v-pull-refresh__wave"
+            :style="waveStyle"
+            v-show="showWave"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="currentcolor"
@@ -19,15 +23,15 @@
             </svg>
           </div>
           <!-- 上下拉状态 -->
-          <div class="v-pull-refresh-arrow"></div>
+          <div class="v-pull-refresh__arrow"></div>
           <!-- 刷新中 -->
           <transition name="v-fade">
             <Loading v-show="stateClass === loadingClass" size="32" />
           </transition>
           <!-- 刷新成功 -->
-          <div class="v-pull-refresh-checkmark"></div>
+          <div class="v-pull-refresh__checkmark"></div>
           <!-- 加载失败 -->
-          <div class="v-pull-refresh-failed-content">{{ failedText }}</div>
+          <div class="v-pull-refresh__text">{{ failedText }}</div>
         </slot>
       </div>
       <slot />
@@ -78,29 +82,29 @@ export default {
     },
     downClass: {
       type: String,
-      default: 'v-pull-refresh-down'
+      default: 'v-pull-refresh--down'
     },
     upClass: {
       type: String,
-      default: 'v-pull-refresh-up'
+      default: 'v-pull-refresh--up'
     },
     loadingClass: {
       type: String,
-      default: 'v-pull-refresh-loading'
+      default: 'v-pull-refresh--loading'
     },
     successClass: {
       type: String,
-      default: 'v-pull-refresh-success'
+      default: 'v-pull-refresh--success'
     },
     failedClass: {
       type: String,
-      default: 'v-pull-refresh-failed'
+      default: 'v-pull-refresh--failed'
     },
     disabled: {
       type: Boolean,
       default: false
     },
-    backgroundColor: {
+    waveColor: {
       type: String,
       default: 'rgba(0, 0, 0, 0)'
     },
@@ -139,7 +143,7 @@ export default {
       return {
         transitionDuration: `${this.duration}ms`,
         transform: `translate3d(0, ${this.waveTranslateY}px, 0)`,
-        color: this.backgroundColor
+        color: this.waveColor
       }
     },
     sholudLoad() {
@@ -254,12 +258,12 @@ export default {
   user-select: none;
   overflow: hidden;
 }
-.v-pull-refresh-main {
+.v-pull-refresh__main {
   position: relative;
   height: 100%;
   transition-property: transform;
 }
-.v-pull-refresh-head {
+.v-pull-refresh__head {
   position: absolute;
   top: -50px;
   width: 100%;
@@ -281,35 +285,35 @@ export default {
 }
 
 /* 默认加载动画 */
-.v-pull-refresh-down .v-pull-refresh-arrow {
+.v-pull-refresh--down .v-pull-refresh__arrow {
   opacity: 1;
 }
-.v-pull-refresh-up .v-pull-refresh-arrow {
+.v-pull-refresh--up .v-pull-refresh__arrow {
   opacity: 1;
   transform: rotate(45deg);
 }
-.v-pull-refresh-loading {
-  & .v-pull-refresh-arrow {
+.v-pull-refresh--loading {
+  & .v-pull-refresh__arrow {
     opacity: 0;
     transform: rotate(45deg);
   }
 }
-.v-pull-refresh-success {
-  & .v-pull-refresh-checkmark {
+.v-pull-refresh--success {
+  & .v-pull-refresh__checkmark {
     display: block;
   }
 }
-.v-pull-refresh-failed {
-  & .v-pull-refresh-failed-content {
+.v-pull-refresh--failed {
+  & .v-pull-refresh__text {
     opacity: 1;
   }
 }
-.v-pull-refresh-failed-content {
+.v-pull-refresh__text {
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: 1;
 }
-.v-pull-refresh-arrow {
+.v-pull-refresh__arrow {
   position: absolute;
   left: 0;
   top: 0;
@@ -324,7 +328,7 @@ export default {
   opacity: 0;
   transition: 0.3s ease;
 }
-.v-pull-refresh-checkmark {
+.v-pull-refresh__checkmark {
   position: absolute;
   left: 0;
   top: 0;
@@ -370,7 +374,7 @@ export default {
     opacity: 1;
   }
 }
-.v-pull-refresh-wave {
+.v-pull-refresh__wave {
   position: absolute;
   top: 0;
   left: 0;

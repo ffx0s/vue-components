@@ -2,30 +2,27 @@
   <div
     class="v-cell"
     :class="{
-      'v-cell-clickable': isLink || clickable
+      'v-cell--clickable': isLink || clickable
     }"
     @click="click"
   >
-    <div class="v-cell-icon" v-if="$slots.icon"><slot name="icon" /></div>
-    <div
-      class="v-cell-content v-bd-y-bottom"
-      :class="['v-cell-align-' + alignItems]"
-    >
+    <div class="v-cell__icon" v-if="$slots.icon"><slot name="icon" /></div>
+    <div class="v-cell__content v-bd-bottom" :class="['v-cell--' + alignItems]">
       <div
         v-if="title || $slots.title"
-        class="v-cell-left"
+        class="v-cell__left"
         :style="[
           labelWidth && { width: labelWidth + 'px' },
           { 'text-align': labelAlign }
         ]"
       >
-        <div class="v-cell-title" :class="{ 'v-cell-required': required }">
+        <div class="v-cell__title" :class="{ 'v-cell--required': required }">
           <slot name="title">{{ title }}</slot>
         </div>
       </div>
-      <div class="v-cell-right" :class="['v-cell-value-' + valueAlign]">
+      <div class="v-cell__right" :class="['v-cell--' + valueAlign]">
         <slot>{{ value }}</slot>
-        <slot name="arrow"> <i v-if="isLink" class="v-cell-arrow"></i> </slot>
+        <slot name="arrow"> <i v-if="isLink" class="v-cell__arrow"></i> </slot>
       </div>
     </div>
     <slot name="bottom" />
@@ -109,14 +106,11 @@ export default {
   word-break: break-all;
   display: flex;
 }
-.v-cell-clickable {
-  user-select: none;
-  transition: background 200ms;
-  &:active {
-    background-color: var(--border);
-  }
+.v-cell__left {
+  min-width: 65px;
+  color: var(--textPrimary);
 }
-.v-cell-content {
+.v-cell__content {
   padding: 11px 0;
   flex: 1;
   display: flex;
@@ -124,61 +118,12 @@ export default {
   min-height: 46px;
   box-sizing: border-box;
 }
-.v-cell-align-center {
-  align-items: center;
-}
-.v-cell-align-start {
-  align-items: flex-start;
-}
-.v-cell-align-end {
-  align-items: flex-end;
-}
-.v-cell-value-left {
-  margin-left: 20px;
-  justify-content: flex-start;
-}
-.v-cell-value-right {
-  text-align: right;
-  justify-content: flex-end;
-}
-.v-cell-left {
-  min-width: 65px;
-  color: var(--textPrimary);
-}
-.v-cell-right {
+.v-cell__right {
   display: flex;
   flex: 1;
   margin-right: 14px;
   color: var(--textRegular);
   align-items: center;
-}
-.v-cell-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-right: 14px;
-  min-width: 25px;
-  font-size: 22px;
-}
-.v-cell-arrow {
-  margin-left: 6px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M321.5 990.025L225.828 905.4l393.325-392.192-388.205-389.34L319.78 34.67l478.683 478.427-476.965 476.928z' fill='%23c7c7c8'/%3E%3C/svg%3E");
-  background-position: 2px center;
-  background-repeat: no-repeat;
-  width: 15px;
-  height: 15px;
-  display: block;
-}
-.v-cell-required {
-  margin-left: -6px;
-  &::before {
-    content: '*';
-    font-size: 14px;
-    font-family: sans-serif;
-    color: var(--error);
-  }
-}
-.v-cell-right {
   & input[type='text'],
   & input[type='password'],
   & input[type='number'],
@@ -207,6 +152,56 @@ export default {
     &::placeholder {
       color: var(--textRegular);
     }
+  }
+}
+.v-cell__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 14px;
+  min-width: 25px;
+  font-size: 22px;
+}
+.v-cell__arrow {
+  margin-left: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M321.5 990.025L225.828 905.4l393.325-392.192-388.205-389.34L319.78 34.67l478.683 478.427-476.965 476.928z' fill='%23c7c7c8'/%3E%3C/svg%3E");
+  background-position: 2px center;
+  background-repeat: no-repeat;
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+.v-cell--clickable {
+  user-select: none;
+  transition: background 200ms;
+  &:active {
+    background-color: var(--border);
+  }
+}
+.v-cell--center {
+  align-items: center;
+}
+.v-cell--start {
+  align-items: flex-start;
+}
+.v-cell--end {
+  align-items: flex-end;
+}
+.v-cell--left {
+  margin-left: 20px;
+  justify-content: flex-start;
+}
+.v-cell--right {
+  text-align: right;
+  justify-content: flex-end;
+}
+.v-cell--required {
+  margin-left: -6px;
+  &::before {
+    content: '*';
+    font-size: 14px;
+    font-family: sans-serif;
+    color: var(--error);
   }
 }
 </style>

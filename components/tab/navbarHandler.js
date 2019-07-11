@@ -7,10 +7,10 @@ import {
 } from '../utils/shared'
 import animate from '../utils/animate'
 
-export default class ScrollHandler extends BaseHandler {
+export default class NavbarHandler extends BaseHandler {
   constructor(tabEl, swipeItems, options) {
     super(tabEl, swipeItems)
-    this.options = Object.assign({}, ScrollHandler.defaultOptions, options)
+    this.options = Object.assign({}, NavbarHandler.defaultOptions, options)
     this.lastScrollTop = 0
     this.action = ''
     this.bind()

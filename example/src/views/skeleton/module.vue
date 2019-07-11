@@ -1,5 +1,5 @@
 <template>
-  <div class="page-spacing">
+  <div class="app--spacing">
     <Card1 v-once loading v-if="loading" />
     <Card1 :item="item" v-else />
     <br />

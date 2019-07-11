@@ -1,8 +1,8 @@
 <template>
   <div class="v-drawer" v-if="loaded" v-show="show" :style="drawerStyle">
-    <div class="v-drawer-content"><slot /></div>
+    <div class="v-drawer__content"><slot /></div>
     <div
-      class="v-drawer-overlay"
+      class="v-drawer__overlay"
       :style="overlayStyle"
       @click="close"
       @touchmove.prevent
@@ -32,7 +32,7 @@ export default {
     },
     transitionClass: {
       type: String,
-      default: 'v-drawer-transition'
+      default: 'v-drawer--transition'
     },
     width: {
       type: [String, Number],
@@ -128,15 +128,15 @@ export default {
   width: 260px;
   height: 100%;
 }
-.v-drawer-content {
+.v-drawer__content {
   overflow: auto;
   height: 100%;
   -webkit-overflow-scrolling: touch;
 }
-.v-drawer-transition {
+.v-drawer--transition {
   transition: transform 0.4s;
 }
-.v-drawer-overlay {
+.v-drawer__overlay {
   position: fixed;
   top: 0;
   width: 100%;

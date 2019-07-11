@@ -4,22 +4,22 @@
       <slot name="header">
         <header
           v-if="title || describe"
-          class="v-actionsheet-header v-bd-y-bottom"
+          class="v-actionsheet__header v-bd-bottom"
         >
-          <h4 class="v-actionsheet-title">{{ title }}</h4>
-          <p class="v-actionsheet-describe">{{ describe }}</p>
+          <h4 class="v-actionsheet__title">{{ title }}</h4>
+          <p class="v-actionsheet__describe">{{ describe }}</p>
         </header>
       </slot>
       <slot>
-        <ul class="v-actionsheet-default">
+        <ul class="v-actionsheet__items">
           <li
-            class="v-actionsheet-item v-bd-y-top"
+            class="v-actionsheet__item v-bd-top"
             v-for="(action, index) in actions"
             :key="index"
             :class="[
-              'v-actionsheet-align-' + align,
-              'v-actionsheet-item-' + (action.type || 'default'),
-              { 'v-actionsheet-item-disabled': action.loading },
+              'v-actionsheet--' + align,
+              'v-actionsheet--' + (action.type || 'default'),
+              { 'v-actionsheet--disabled': action.loading },
               action.className
             ]"
             @click="clickHandler(action)"
@@ -28,7 +28,7 @@
             <span v-else>{{ action.name }}</span>
           </li>
           <li
-            class="v-actionsheet-item v-actionsheet-align-center v-actionsheet-cancel"
+            class="v-actionsheet__item v-actionsheet--center v-actionsheet__cancel"
             v-if="cancelText"
             @click="cancel"
           >
@@ -113,30 +113,30 @@ export default {
   color: var(--textPrimary);
 }
 
-.v-actionsheet-header {
+.v-actionsheet__header {
   padding: 12px;
   background-color: white;
   text-align: center;
 }
-.v-actionsheet-title {
+.v-actionsheet__title {
   font-size: 17px;
   margin: 0;
   padding: 0;
   font-weight: 400;
 }
-.v-actionsheet-describe {
+.v-actionsheet__describe {
   margin: 0;
   color: var(--textRegular);
   font-size: 14px;
 }
 
-.v-actionsheet-default {
+.v-actionsheet__items {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.v-actionsheet-item {
+.v-actionsheet__item {
   display: flex;
   align-items: center;
   padding-left: 20px;
@@ -144,7 +144,7 @@ export default {
   height: 48px;
   font-size: 16px;
   background-color: #fff;
-  &:first-child.v-bd-y-top:before {
+  &:first-child.v-bd-top:before {
     display: none;
   }
   &:active {
@@ -152,34 +152,34 @@ export default {
   }
 }
 
-.v-actionsheet-item-default {
+.v-actionsheet--default {
   color: var(--textPrimary);
 }
 
-.v-actionsheet-item-primary {
+.v-actionsheet--primary {
   color: var(--primary);
 }
 
-.v-actionsheet-item-warning {
+.v-actionsheet--warning {
   color: var(--error);
 }
 
-.v-actionsheet-item-disabled {
+.v-actionsheet--disabled {
   color: var(--textSecondary);
   &:active {
     background-color: #fff;
   }
 }
 
-.v-actionsheet-align-center {
+.v-actionsheet--center {
   justify-content: center;
 }
 
-.v-actionsheet-align-left {
+.v-actionsheet--left {
   justify-content: left;
 }
 
-.v-actionsheet-cancel {
+.v-actionsheet__cancel {
   margin-top: 10px;
 }
 </style>

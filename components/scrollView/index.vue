@@ -2,25 +2,28 @@
   <div
     class="v-scroll-view"
     :class="[
-      { 'v-scroll-view-hidebar': !scrollBar },
-      { 'v-scroll-view-disabled': !scrollable }
+      { 'v-scroll-view--hidebar': !scrollBar },
+      { 'v-scroll-view--disabled': !scrollable }
     ]"
   >
     <!-- 垂直滚动 -->
     <template v-if="vertical">
-      <div class="v-scroll-view-scroller v-scroll-view-vertical" ref="scroller">
-        <div class="v-scroll-view-slot"><slot /></div>
+      <div
+        class="v-scroll-view__scroller v-scroll-view--vertical"
+        ref="scroller"
+      >
+        <div class="v-scroll-view__slot"><slot /></div>
       </div>
       <template v-if="gradient">
         <div
-          class="v-scroll-view-overlay-vertical"
+          class="v-scroll-view__voverlay"
           :style="{
             top: 0,
             background: setStyle('bottom')
           }"
         />
         <div
-          class="v-scroll-view-overlay-vertical"
+          class="v-scroll-view__voverlay"
           :style="{
             bottom: 0,
             background: setStyle('top')
@@ -31,23 +34,23 @@
     <!-- 水平滚动 -->
     <template v-else>
       <div
-        class="v-scroll-view-scroller v-scroll-view-horizontal"
+        class="v-scroll-view__scroller v-scroll-view--horizontal"
         ref="scroller"
       >
         <div :style="{ width }">
-          <div class="v-scroll-view-slot" :style="slotStyle"><slot /></div>
+          <div class="v-scroll-view__slot" :style="slotStyle"><slot /></div>
         </div>
       </div>
       <template v-if="gradient">
         <div
-          class="v-scroll-view-overlay-horizontal"
+          class="v-scroll-view__hoverlay"
           :style="{
             left: 0,
             background: setStyle('right')
           }"
         />
         <div
-          class="v-scroll-view-overlay-horizontal"
+          class="v-scroll-view__hoverlay"
           :style="{
             right: 0,
             background: setStyle('left')
@@ -152,59 +155,59 @@ export default {
   background-color: #fff;
 }
 
-.v-scroll-view-scroller {
+.v-scroll-view__scroller {
   width: 100%;
   height: 100%;
   user-select: none;
   -webkit-overflow-scrolling: touch;
 }
 
-.v-scroll-view-vertical {
+.v-scroll-view--vertical {
   overflow-y: auto;
   overflow-x: hidden;
   touch-action: pan-y;
-  & .v-scroll-view-slot {
+  & .v-scroll-view__slot {
     padding: 16px 0;
   }
 }
 
-.v-scroll-view-horizontal {
+.v-scroll-view--horizontal {
   overflow-x: auto;
   overflow-y: hidden;
   touch-action: pan-x;
-  & .v-scroll-view-slot {
+  & .v-scroll-view__slot {
     padding: 0 16px;
   }
 }
 
-.v-scroll-view-disabled {
-  & .v-scroll-view-scroller {
+.v-scroll-view--disabled {
+  & .v-scroll-view__scroller {
     overflow: hidden;
     touch-action: none;
   }
-  & .v-scroll-view-overlay-horizontal,
-  & .v-scroll-view-overlay-vertical {
+  & .v-scroll-view__hoverlay,
+  & .v-scroll-view__voverlay {
     display: none;
   }
-  & .v-scroll-view-slot {
+  & .v-scroll-view__slot {
     padding: 0;
   }
 }
 
-.v-scroll-view-hidebar {
+.v-scroll-view--hidebar {
   overflow: hidden;
-  & .v-scroll-view-scroller::-webkit-scrollbar {
+  & .v-scroll-view__scroller::-webkit-scrollbar {
     display: none;
   }
-  & .v-scroll-view-vertical {
+  & .v-scroll-view--vertical {
     padding-right: 15px;
   }
-  & .v-scroll-view-horizontal {
+  & .v-scroll-view--horizontal {
     padding-bottom: 15px;
   }
 }
 
-.v-scroll-view-overlay-horizontal {
+.v-scroll-view__hoverlay {
   position: absolute;
   top: 0;
   height: 100%;
@@ -212,7 +215,7 @@ export default {
   pointer-events: none;
 }
 
-.v-scroll-view-overlay-vertical {
+.v-scroll-view__voverlay {
   position: absolute;
   left: 0;
   width: 100%;

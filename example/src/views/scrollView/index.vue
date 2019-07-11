@@ -1,10 +1,10 @@
 <template>
-  <div class="page-scroll-view">
+  <div class="scroll-view">
     <Navbar title="ScrollView" />
-    <div class="page-spacing">
+    <div class="app--spacing">
       <h4 class="text-center">ScrollView X</h4>
-      <ScrollView class="page-scroll-view-x" ref="x">
-        <div class="page-scroll-item" v-for="i in items" :key="i">{{ i }}</div>
+      <ScrollView class="scroll-view__x" ref="x">
+        <div class="scroll-view__item" v-for="i in items" :key="i">{{ i }}</div>
       </ScrollView>
       <br />
       <div class="text-center">
@@ -12,8 +12,8 @@
         <VButton type="primary" @click="scrollTo">滚到300像素</VButton>
       </div>
       <h4 class="text-center">ScrollView Y</h4>
-      <ScrollView class="page-scroll-view-y" vertical ref="y">
-        <div class="page-scroll-item" v-for="i in items" :key="i">{{ i }}</div>
+      <ScrollView class="scroll-view__y" vertical ref="y">
+        <div class="scroll-view__item" v-for="i in items" :key="i">{{ i }}</div>
       </ScrollView>
     </div>
   </div>
@@ -46,25 +46,28 @@ export default {
 </script>
 
 <style lang="postcss">
-.page-scroll-view-x {
+.scroll-view {
+  background-color: #fff;
+}
+.scroll-view__x {
   margin: 0 auto;
   max-width: 500px;
   width: 90%;
   height: 100px;
-  & .page-scroll-item {
+  & .scroll-view__item {
     margin-right: 10px;
     float: left;
   }
 }
-.page-scroll-view-y {
+.scroll-view__y {
   margin: 0 auto;
   width: 100px;
   height: 300px;
-  & .page-scroll-item {
+  & .scroll-view__item {
     margin-bottom: 10px;
   }
 }
-.page-scroll-item {
+.scroll-view__item {
   width: 100px;
   height: 100px;
   line-height: 100px;
@@ -74,8 +77,5 @@ export default {
     margin-right: 0;
     margin-bottom: 0;
   }
-}
-.page-scroll-view {
-  background-color: #fff;
 }
 </style>

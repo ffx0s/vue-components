@@ -1,7 +1,7 @@
 <template>
   <div>
     <Navbar title="Ring" />
-    <div class="page-spacing">
+    <div class="app--spacing">
       <Ring v-model="progress" />
       <br />
       <Ring

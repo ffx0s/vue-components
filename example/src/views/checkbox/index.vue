@@ -32,7 +32,7 @@
       </Group>
     </CheckboxGroup>
 
-    <div class="page-spacing" style="background-color: #fff">
+    <div class="app--spacing" style="background-color: #fff">
       <p>多选 - 平铺 - 最多选<strong style="color: red;">2</strong>个</p>
       <CheckboxGroup v-model="selectCitys2" :max="2" @change="change">
         <Checkbox v-for="city in citys" :key="city.id" :label="city.name" />
