@@ -7,18 +7,27 @@
   <img src="https://static.webfed.cn/o_1dcle8l7rr941kov1s9015ir1let9.png" alt="vue-components-qrcode" />
 </a>  
 
-### 组件列表  
+### SwipeTabView  
+
+<img src="https://static.webfed.cn/o_1dffs3tkr13fj1vjnquq1jv31l9a9.gif" alt="vue-components-SwipeTabView" />  
+
+### ImageViewer  
+
+<img src="https://static.webfed.cn/o_1dffsvfqm1qfflc44t21ae0crue.gif" alt="vue-components-ImageViewer">
+
+### 其它组件  
 ```
 .
 ├── actionsheet
-├── animatedRoute
 ├── badge
 ├── button
+├── card
 ├── cell
 ├── checkbox
 ├── city
 ├── delay
 ├── drawer
+├── headroom
 ├── imageViewer
 ├── infiniteScroll
 ├── loading
@@ -30,8 +39,9 @@
 ├── pullRefresh
 ├── radio
 ├── ring
-├── headroom
+├── route
 ├── scrollView
+├── styles
 ├── swipe
 ├── swipeCell
 ├── switch
@@ -41,5 +51,6 @@
 ├── toast
 ├── validator
 ├── virtualList
-└── vnode
+├── vnode
+└── withScroll
 ```
