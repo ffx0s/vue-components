@@ -20,7 +20,10 @@
   </noscript>
   <!-- <script src="http://192.168.3.14:9090/target/target-script-min.js#anonymous"></script> -->
   <div id="app"></div>
-  <!-- built files will be auto injected -->
+  <%= htmlWebpackPlugin.files.runtime %>
+  <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
+    <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
+  <% } %>
 </body>
 
 </html>
