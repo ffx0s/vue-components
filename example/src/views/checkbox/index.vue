@@ -85,7 +85,7 @@ export default {
   },
   methods: {
     change(values, value) {
-      console.log(values, value)
+      this.$toast(value)
     }
   }
 }

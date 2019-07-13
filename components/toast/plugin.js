@@ -12,7 +12,7 @@ defaultOptions.value = true
 
 function Toast(options) {
   if (Vue.prototype.$isServer) return
-  if (typeof options === 'string') {
+  if (typeof options === 'string' || typeof options === 'number') {
     options = { title: options }
   }
 

@@ -3,7 +3,7 @@
     <Navbar title="SwipeCell" />
     <Notice title="用移动设备查看" />
     <Group title="默认">
-      <SwipeCell @cancel="cancelHandler">
+      <SwipeCell @cancel="cancelHandler" @delete="deleteHandler">
         <template slot="title">
           <div>左右可滑动</div>
           <div class="swipe-cell__describe">左滑取消删除，右滑回复</div>
@@ -12,12 +12,13 @@
           <div
             class="v-swipe-cell__item"
             style="color: #fff;background-color: #2196f3;"
+            @click="$toast('回复')"
           >
             回复
           </div>
         </template>
       </SwipeCell>
-      <SwipeCell cancelText="">
+      <SwipeCell cancelText="" @delete="deleteHandler">
         <template slot="title">
           <div>左滑</div>
           <div class="swipe-cell__describe">左滑删除</div>
@@ -62,7 +63,7 @@
         isLink
         confirmDeleteText=""
         @cancel="cancelHandler"
-        @delete="deleteHandler(index)"
+        @delete="deleteHandler2(index)"
       >
         <template slot="title">
           <div>左滑</div>
@@ -104,12 +105,17 @@ export default {
     }
   },
   methods: {
-    deleteHandler(index) {
+    cancelHandler(close) {
+      this.$toast('取消')
+      close()
+    },
+    deleteHandler(close) {
+      this.$toast('删除')
+      close()
+    },
+    deleteHandler2(index) {
       this.deleteIndex = index
       this.showDeleteMenus = true
-    },
-    cancelHandler(close) {
-      close()
     },
     confirmDelete(action) {
       if (action.delete) {

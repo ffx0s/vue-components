@@ -20,7 +20,6 @@ request.interceptors.request.use(
   },
   error => {
     // Do something with request error
-    console.log(error) // for debug
     Promise.reject(error)
   }
 )
@@ -38,7 +37,6 @@ request.interceptors.response.use(
     return result
   },
   error => {
-    console.log(error) // for debug
     Modal(error.message)
     return Promise.reject(error)
   }

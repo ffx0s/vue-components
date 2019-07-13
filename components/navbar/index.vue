@@ -44,8 +44,13 @@
 </template>
 
 <script>
+import VButton from '../button'
+
 export default {
   name: 'Navbar',
+  components: {
+    VButton
+  },
   props: {
     fixed: {
       type: Boolean,

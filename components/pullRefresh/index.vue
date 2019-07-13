@@ -6,13 +6,14 @@
     @touchend="pointerup"
     @mousedown="onMousedown"
   >
-    <div class="v-pull-refresh__main" :style="style">
+    <div class="v-pull-refresh__main" ref="main">
       <div class="v-pull-refresh__head" :class="stateClass">
         <slot name="head">
           <div
             class="v-pull-refresh__wave"
-            :style="waveStyle"
-            v-show="showWave"
+            v-if="showWave"
+            :style="{ color: waveColor }"
+            ref="wave"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -124,42 +125,24 @@ export default {
   },
   data() {
     return {
-      duration: 0,
-      translateY: 0,
-      waveTranslateY: 0,
       stateClass: '',
       isLoading: false,
       showWave: false
     }
   },
-  computed: {
-    style() {
-      return {
-        transitionDuration: `${this.duration}ms`,
-        transform: `translate3d(0, ${this.translateY}px, 0)`
-      }
-    },
-    waveStyle() {
-      return {
-        transitionDuration: `${this.duration}ms`,
-        transform: `translate3d(0, ${this.waveTranslateY}px, 0)`,
-        color: this.waveColor
-      }
-    },
-    sholudLoad() {
-      return this.translateY > this.threshold
-    }
-  },
   watch: {
     value: {
       handler: function(isLoading) {
-        isLoading ? this.load() : this.loaded()
+        isLoading ? this.$nextTick(this.load) : this.loaded()
       },
       immediate: true
     }
   },
   created() {
     this.scrollTop = 0
+    this.duration = 0
+    this.mainOffset = 0
+    this.waveOffset = 0
     this.handler = new Handler({
       isPreventDefault: this.isPreventDefault,
       isStopPropagation: this.isStopPropagation,
@@ -181,20 +164,24 @@ export default {
   methods: {
     pointerdown(event) {
       if (this.disabled) return
-      this.duration = 0
+
+      this.setDuration(0)
       this.handler.start(event)
     },
     pointermove(event) {
       if (this.disabled) return
+
       this.scrollTop = getScrollTop(this.scrollEl)
       this.handler.move(event)
     },
     pointerup() {
       if (this.disabled) return
+
       this.handler.up()
-      if (this.sholudLoad && this.shouldUpdate()) {
+
+      if (this.sholudLoad() && this.shouldUpdate()) {
         this.load()
-      } else if (this.translateY !== 0) {
+      } else if (this.mainOffset !== 0) {
         this.reset()
       }
     },
@@ -212,37 +199,75 @@ export default {
     },
     update(x, y) {
       if (!this.shouldUpdate()) return
-      this.stateClass = this.sholudLoad ? this.upClass : this.downClass
-      this.translateY += y / 2
-      this.waveTranslateY = Math.min(this.translateY, 50)
+
+      const value = this.mainOffset + y / 2
+
+      this.setTranslate('main', value).setTranslate('wave', Math.min(value, 50))
+      this.stateClass = this.sholudLoad() ? this.upClass : this.downClass
     },
     async load() {
       if (this.isLoading) return
-      this.duration = this.animationDuration
+
       this.isLoading = true
-      this.translateY = this.threshold
-      this.waveTranslateY = 0
+      this.setDuration(this.animationDuration)
+        .setTranslate('main', this.threshold)
+        .setTranslate('wave', 0)
       this.stateClass = this.loadingClass
+
       await sleep(this.loadingDuration)
+
       this.$emit('input', true)
       this.$emit('refresh', this.loaded)
     },
     async loaded() {
       if (this.isLoading) {
         this.stateClass = this.failed ? this.failedClass : this.successClass
+
         await sleep(this.wait)
+
         this.reset()
         this.$emit('input', false)
       }
+    },
+    sholudLoad() {
+      return this.mainOffset > this.threshold
     },
     shouldUpdate() {
       return !this.isLoading && this.handler.moved && this.scrollTop === 0
     },
     reset() {
-      this.translateY = this.waveTranslateY = 0
-      this.duration = this.animationDuration
+      this.setDuration(this.animationDuration)
+        .setTranslate('main', 0)
+        .setTranslate('wave', 0)
       this.stateClass = ''
       this.isLoading = false
+    },
+    setTranslate(name, value) {
+      const el = this.$refs[name]
+
+      if (el) {
+        const style = el.style
+        style.transform = style.webkitTransform = `translate3d(0, ${value}px, 0)`
+        this[`${name}Offset`] = value
+      }
+
+      return this
+    },
+    setDuration(duration) {
+      ;['main', 'wave'].forEach(name => {
+        const el = this.$refs[name]
+
+        if (el) {
+          const style = el.style
+          // eslint-disable-next-line prettier/prettier
+          style.transitionDuration =
+          style.webkitTransitionDuration = `${duration}ms`
+        }
+      })
+
+      this.duration = duration
+
+      return this
     }
   }
 }

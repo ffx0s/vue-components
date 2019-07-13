@@ -4,7 +4,7 @@ module.exports = {
     primary: '#2196f3',
     success: '#4caf50',
     error: '#ff5252',
-    warning: '#fb8c00',
+    warning: '#ffa93a',
     // 通用颜色
     lightGray: '#e5e5e5', // 浅灰
     // 文字颜色

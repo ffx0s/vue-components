@@ -1,13 +1,13 @@
 <template>
   <Cell
     class="v-swipe-cell"
-    :style="style"
     v-bind="$attrs"
     v-on="$listeners"
-    @touchstart.stop.native="pointerdown"
+    @touchstart.native="pointerdown"
     @touchmove.native="pointermove"
     @touchend.native="pointerup"
     @mousedown.native="onMousedown"
+    ref="cell"
   >
     <slot slot="title" name="title" />
     <div
@@ -55,6 +55,7 @@ import { Handler, mouseMove } from '../utils/event'
 import { addListener, isTouchDevice } from '../utils/shared'
 
 const instances = []
+let closing = false
 
 let bindGlobalCloseEvent = function() {
   addListener(document.body, 'touchstart', closeAll)
@@ -62,10 +63,13 @@ let bindGlobalCloseEvent = function() {
 }
 
 function closeAll(exclude) {
-  instances.forEach(vm => {
-    if (exclude === vm) return
-    vm.close()
-  })
+  if (!closing) {
+    closing = true
+    instances.forEach(vm => {
+      if (exclude === vm) return
+      vm.close()
+    })
+  }
 }
 
 export default {
@@ -94,6 +98,11 @@ export default {
       type: Number,
       default: -30
     },
+    // 滑动的距离，超过这个值则显示对应操作项
+    distance: {
+      type: Number,
+      default: 30
+    },
     // 不能移动时的摩擦力
     friction: {
       type: Number,
@@ -112,23 +121,15 @@ export default {
       default: '确定删除'
     }
   },
-  computed: {
-    style() {
-      return {
-        transitionDuration: `${this.duration}ms`,
-        transform: `translateX(${this.translate}px)`
-      }
-    }
-  },
   data() {
     return {
-      duration: this.animationDuration,
-      translate: 0,
       renderHandler: false,
       confirmDelete: false
     }
   },
   created() {
+    this.duration = 0
+    this.translate = 0
     this.handler = new Handler({
       panleft: this.update,
       panright: this.update,
@@ -142,9 +143,11 @@ export default {
     if (index !== -1) {
       instances.splice(index, 1)
     }
+    this.swipeCellEl = null
   },
   mounted() {
     bindGlobalCloseEvent()
+    this.swipeCellEl = this.$refs.cell.$el
   },
   methods: {
     pointerdown(event) {
@@ -158,7 +161,10 @@ export default {
     },
     pointerup() {
       this.handler.up()
+      closing = false
+
       const action = this.shouldSlide()
+
       if (!action) return
       if (action.restore) return this.restore()
       if (action.close) return this.close()
@@ -174,31 +180,28 @@ export default {
     update(x) {
       if (x < this.min) x = this.min
       else if (x > this.max) x = this.max
+
       const width = this.getItemsWidth()
       const value =
         Math.abs(this.translate) > width || width === 0 ? this.friction * x : x
-      this.duration = 0
-      this.translate += value
+
+      this.setTranslate(this.translate + value, 0)
     },
     isPreventDefault() {
       return this.handler.is('panleft') || this.handler.is('panright')
     },
     openLeft() {
-      this.duration = this.animationDuration
-      this.translate = this.getLeftItemsWidth()
+      this.setTranslate(this.getLeftItemsWidth(), this.animationDuration)
     },
     openRight() {
-      this.duration = this.animationDuration
-      this.translate = -this.getRightItemsWidth()
+      this.setTranslate(-this.getRightItemsWidth(), this.animationDuration)
     },
     close() {
-      this.duration = this.animationDuration
-      this.translate = 0
+      this.setTranslate(0, this.animationDuration)
       this.confirmDelete = false
     },
     restore() {
-      this.duration = this.animationDuration
-      this.translate = this.startTranslate
+      this.setTranslate(this.startTranslate, this.animationDuration)
     },
     getLeftItemsWidth() {
       return (
@@ -218,10 +221,10 @@ export default {
         : this.getLeftItemsWidth()
     },
     shouldSlide() {
+      if (!this.handler.moved && this.translate) return { close: true }
+
       const panleft = this.handler.is('panleft')
       const panright = this.handler.is('panright')
-
-      if (!this.handler.moved && this.translate) return { close: true }
 
       if (!panleft && !panright) return false
 
@@ -240,18 +243,20 @@ export default {
         }
       }
 
-      const minSlideDistance = width / 4
       const slideDistance = Math.abs(this.translate - this.startTranslate)
-      const value = slideDistance > minSlideDistance
-      const openLeft = this.translate > 0 && value
-      const openRight = this.translate < 0 && value
+      const shouldSlide = slideDistance > this.distance
+      const openLeft = shouldSlide && this.translate > 0
+      const openRight = shouldSlide && this.translate < 0
       const restore = !openLeft && !openRight
+      const close =
+        (this.translate > this.startTranslate && openRight) ||
+        (this.translate < this.startTranslate && openLeft)
 
       return {
         restore,
         openRight,
         openLeft,
-        close: Math.abs(this.translate) < minSlideDistance
+        close
       }
     },
     handleCancel() {
@@ -263,6 +268,17 @@ export default {
       } else {
         this.$emit('delete', this.close)
       }
+    },
+    setTranslate(translate, duration) {
+      const style = this.swipeCellEl.style
+
+      style.transform = style.webkitTransform = `translateX(${translate}px)`
+      // eslint-disable-next-line prettier/prettier
+      style.transitionDuration =
+      style.webkitTransitionDuration = `${duration}ms`
+
+      this.translate = translate
+      this.duration = duration
     }
   }
 }

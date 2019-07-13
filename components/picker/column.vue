@@ -1,6 +1,6 @@
 <template>
   <div class="v-picker__column" :class="column.className">
-    <ul class="v-picker__items" :style="style">
+    <ul class="v-picker__items" ref="column">
       <li
         class="v-picker__item"
         :class="{
@@ -31,29 +31,24 @@ export default {
       default: 40
     }
   },
-  computed: {
-    style() {
-      return {
-        transitionDuration: `${this.duration}ms`,
-        transform: `translate3d(0, ${this.translate}px, 0)`
-      }
-    }
-  },
   data() {
     return {
-      vy: 0,
-      duration: 0,
-      translate: 0,
       selectedIndex: this.column.selectedIndex || 0,
       getValue: this.$parent.getValue
     }
   },
   created() {
+    this.vy = 0
+    this.duration = 0
+    this.translate = 0
+  },
+  mounted() {
     this.select(this.selectedIndex, 0)
   },
   methods: {
     select(index, duration, emit = true) {
       if (typeof index !== 'number') return
+
       const selectedIndex = this.selectedIndex
       const maxIndex = Math.max(this.column.values.length - 1, 0)
 
@@ -66,11 +61,21 @@ export default {
         index = selectedIndex
       }
 
-      this.duration = duration
-      this.translate = -(index - 2) * this.itemHeight
+      this.setTranslate(-(index - 2) * this.itemHeight, duration)
       this.selectedIndex = index
 
       if (index !== selectedIndex && emit) this.$emit('change')
+    },
+    setTranslate(translate, duration) {
+      const style = this.$refs.column.style
+
+      style.transform = style.webkitTransform = `translate3d(0, ${translate}px, 0)`
+      // eslint-disable-next-line prettier/prettier
+      style.transitionDuration =
+      style.webkitTransitionDuration = `${duration}ms`
+
+      this.translate = translate
+      this.duration = duration
     }
   }
 }

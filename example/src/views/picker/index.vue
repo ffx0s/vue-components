@@ -50,13 +50,16 @@ export default {
       dateValue: '',
       date: [
         {
-          values: [2019, 2018, 2017]
+          values: [2019, 2018, 2017, 2016, 2015, 2014, 2013],
+          selectedIndex: 3
         },
         {
-          values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+          values: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          selectedIndex: 7
         },
         {
-          values: [8, 18, 28]
+          values: Array.from({ length: 30 }, (v, k) => k),
+          selectedIndex: 8
         }
       ],
       showCity: false,

@@ -59,7 +59,7 @@ export default {
     },
     animationDuration: {
       type: Number,
-      default: 300
+      default: 400
     },
     // 快速切换阀值
     threshold: {
@@ -93,13 +93,12 @@ export default {
   },
   data() {
     const valueKey = this.valueKey
-    const getValue = valueKey ? value => value[valueKey] : value => value
     return {
-      getValue,
-      currentColumnIndex: 0
+      getValue: valueKey ? value => value[valueKey] : value => value
     }
   },
   created() {
+    this.currentColumnIndex = 0
     this.handler = new Handler({
       panup: this.update,
       pandown: this.update,
@@ -110,30 +109,41 @@ export default {
   methods: {
     pointerdown(event) {
       this.currentColumnIndex = +event.target.dataset.index
+
       if (this.isEmptyColumn()) return
+
       this.handler.start(event)
+
       const column = this.getCurrentColumn()
-      column.duration = 0
+
       column.vy = 0
+      column.setTranslate(column.translate, 0)
     },
     pointermove(event) {
       if (this.isEmptyColumn()) return
+
       this.handler.move(event)
     },
     pointerup() {
       if (this.isEmptyColumn()) return
+
       this.handler.up()
+
       const column = this.getCurrentColumn()
+
       if (this.handler.moved) {
         let translate = column.translate
+
         if (column.vy) {
-          translate += column.vy
+          translate += column.vy * 2
         }
+
         const selectedIndex = Math.abs(
           Math.round(
             Math.min(translate, column.itemHeight * 2) / column.itemHeight - 2
           )
         )
+
         column.select(selectedIndex, this.animationDuration)
       } else {
         column.select(column.selectedIndex + 1, this.animationDuration)
@@ -141,18 +151,23 @@ export default {
     },
     onMousedown(event) {
       if (isTouchDevice()) return
+
       event.preventDefault()
+
       this.pointerdown(event)
+
       mouseMove(this.pointermove, this.pointerup)
     },
     update(x, y) {
       const column = this.getCurrentColumn()
+
       if (this.handler.isFast) {
         column.vy += y * 2
       } else {
         column.vy = 0
       }
-      column.translate += y
+
+      column.setTranslate(column.translate + y, 0)
     },
     change() {
       const values = this.getValues()
@@ -210,6 +225,7 @@ export default {
           value,
           this.columns[columnIndex].values
         )
+
         if (selectedIndex !== -1) {
           this.setColumnValue(columnIndex, value, selectedIndex)
         }
@@ -220,10 +236,12 @@ export default {
         typeof selectedIndex === 'number'
           ? selectedIndex
           : this.findValueIndex(value, this.columns[columnIndex].values)
+
       if (selectedIndex !== -1) {
         if (typeof value === 'object') {
           this.columns[columnIndex].values[selectedIndex] = value
         }
+
         this.$refs.columns[columnIndex].select(
           selectedIndex,
           this.animationDuration,
@@ -237,10 +255,13 @@ export default {
     },
     findValueIndex(value, values) {
       value = value.hasOwnProperty(this.valueKey) ? value[this.valueKey] : value
+
       const length = values.length
+
       for (let i = 0; i < length; i++) {
         if (value === this.getValue(values[i])) return i
       }
+
       return -1
     }
   }
