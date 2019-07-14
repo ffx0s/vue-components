@@ -8,18 +8,101 @@
     content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <title>vue-components</title>
+  <style>
+    .app__loading {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.3s, visibility 0.3s, background 0.3s;
+      visibility: visible;
+      opacity: 1;
+      background-color: #a5d7ff;
+      z-index: 999;
+    }
+  
+    .app__loader {
+      position: absolute;
+      top: calc(50% - 20px);
+      left: calc(50% - 20px);
+    }
+  
+    @keyframes loader {
+      0% {
+        left: -100px;
+      }
+  
+      100% {
+        left: 110%;
+      }
+    }
+  
+    .app__loader-box {
+      width: 50px;
+      height: 50px;
+      background-color: #fff;
+      animation: animate 0.5s linear infinite;
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-radius: 3px;
+    }
+  
+    @keyframes animate {
+      17% {
+        border-bottom-right-radius: 3px;
+      }
+  
+      25% {
+        transform: translateY(9px) rotate(22.5deg);
+      }
+  
+      50% {
+        transform: translateY(18px) scale(1, 0.9) rotate(45deg);
+        border-bottom-right-radius: 40px;
+      }
+  
+      75% {
+        transform: translateY(9px) rotate(67.5deg);
+      }
+  
+      100% {
+        transform: translateY(0) rotate(90deg);
+      }
+    }
+  
+    .app__loader-shadow {
+      width: 50px;
+      height: 5px;
+      background: #000;
+      opacity: 0.1;
+      position: absolute;
+      top: 59px;
+      left: 0;
+      border-radius: 50%;
+      animation: shadow 0.5s linear infinite;
+    }
+  
+    @keyframes shadow {
+      50% {
+        transform: scale(1.2, 1);
+      }
+    }
+  </style>
   <script>
     window.Promise || document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/es6-promise/4.1.1/es6-promise.auto.min.js"><\/script>');
   </script>
 </head>
 
-<body>
-  <noscript>
-    <strong>We're sorry but vue-components doesn't work properly without JavaScript enabled. Please enable it to
-      continue.</strong>
-  </noscript>
+<body style="margin: 0">
   <!-- <script src="http://192.168.3.14:9090/target/target-script-min.js#anonymous"></script> -->
-  <div id="app"></div>
+  <div id="app">
+    <div class="app__loading">
+      <div class="app__loader">
+        <div class="app__loader-shadow"></div>
+        <div class="app__loader-box"></div>
+      </div>
+    </div>
+  </div>
   <%= htmlWebpackPlugin.files.runtime %>
   <% for (var chunk in htmlWebpackPlugin.files.chunks) { %>
     <script src="<%= htmlWebpackPlugin.files.chunks[chunk].entry %>"></script>
