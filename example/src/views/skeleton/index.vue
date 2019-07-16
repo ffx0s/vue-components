@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import VSwitch from 'vue-components/switch'
+import VSwitch from 'muvc/switch'
 import Module from './module'
 
 export default {

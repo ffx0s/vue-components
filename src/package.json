@@ -1,7 +1,18 @@
 {
-  "name": "vue-components",
+  "name": "muvc",
   "version": "0.1.0",
-  "private": true,
+  "description": "Mobile ui components for vue",
+  "keywords": [
+    "mobile",
+    "ui components",
+    "vue components"
+  ],
+  "repository": "ffx0s/muvc",
+  "author": {
+    "name": "ffx0s",
+    "url": "https://webfed.cn"
+  },
+  "license": "MIT",
   "devDependencies": {
     "@vue/cli-plugin-eslint": "^3.8.0",
     "@vue/eslint-config-prettier": "^4.0.1",

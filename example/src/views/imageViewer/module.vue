@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ImageViewer from 'vue-components/imageViewer'
+import ImageViewer from 'muvc/imageViewer'
 
 export default {
   components: {

@@ -29,11 +29,11 @@
 </template>
 
 <script>
-import Picker from 'vue-components/picker'
-import City from 'vue-components/city'
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import Popup from 'vue-components/popup'
+import Picker from 'muvc/picker'
+import City from 'muvc/city'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import Popup from 'muvc/popup'
 
 export default {
   name: 'page-picker',

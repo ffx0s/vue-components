@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import VirtualList from 'vue-components/virtualList'
-import Actionsheet from 'vue-components/actionsheet'
+import VirtualList from 'muvc/virtualList'
+import Actionsheet from 'muvc/actionsheet'
 
 function getData(number) {
   const data = []

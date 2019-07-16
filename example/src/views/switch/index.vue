@@ -24,9 +24,9 @@
 </template>
 
 <script>
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import VSwitch from 'vue-components/switch'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import VSwitch from 'muvc/switch'
 
 export default {
   name: 'page-switch',

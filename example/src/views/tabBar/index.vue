@@ -93,8 +93,8 @@
 </template>
 
 <script>
-import TabBar from 'vue-components/tabBar/tabBar'
-import TabBarItem from 'vue-components/tabBar/item'
+import TabBar from 'muvc/tabBar/tabBar'
+import TabBarItem from 'muvc/tabBar/item'
 
 export default {
   name: 'page-tabBar',

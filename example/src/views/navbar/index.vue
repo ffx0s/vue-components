@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import Headroom from 'vue-components/headroom'
+import Headroom from 'muvc/headroom'
 
 export default {
   name: 'page-navbar',

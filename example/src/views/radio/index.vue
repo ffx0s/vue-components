@@ -33,10 +33,10 @@
 </template>
 
 <script>
-import Radio from 'vue-components/radio'
-import RadioGroup from 'vue-components/radio/group'
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
+import Radio from 'muvc/radio'
+import RadioGroup from 'muvc/radio/group'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
 
 export default {
   name: 'page-radio',

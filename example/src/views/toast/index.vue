@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import Toast from 'vue-components/toast'
+import Toast from 'muvc/toast'
 
 export default {
   name: 'page-toast',

@@ -117,11 +117,11 @@
 </template>
 
 <script>
-import Validator from 'vue-components/validator'
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import Radio from 'vue-components/radio'
-import Checkbox from 'vue-components/checkbox'
+import Validator from 'muvc/validator'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import Radio from 'muvc/radio'
+import Checkbox from 'muvc/checkbox'
 
 export default {
   components: {

@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import Headroom from 'vue-components/headroom'
-import VButton from 'vue-components/button'
+import Headroom from 'muvc/headroom'
+import VButton from 'muvc/button'
 
 export default {
   name: 'page-headroom',

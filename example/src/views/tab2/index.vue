@@ -89,12 +89,12 @@
 </template>
 
 <script>
-import Tabs from 'vue-components/tab/tabs'
-import Tab from 'vue-components/tab/item'
-import Headroom from 'vue-components/headroom'
-import PullRefresh from 'vue-components/pullRefresh'
-import Notice from 'vue-components/notice'
-import { sleep } from 'vue-components/utils/shared'
+import Tabs from 'muvc/tab/tabs'
+import Tab from 'muvc/tab/item'
+import Headroom from 'muvc/headroom'
+import PullRefresh from 'muvc/pullRefresh'
+import Notice from 'muvc/notice'
+import { sleep } from 'muvc/utils/shared'
 import showModal from '../../mixins/showModal'
 
 export default {

@@ -21,10 +21,10 @@
 </template>
 
 <script>
-import Card1 from 'vue-components/card/c1'
-import Card2 from 'vue-components/card/c2'
-import Card3 from 'vue-components/card/c3'
-import Card4 from 'vue-components/card/c4'
+import Card1 from 'muvc/card/c1'
+import Card2 from 'muvc/card/c2'
+import Card3 from 'muvc/card/c3'
+import Card4 from 'muvc/card/c4'
 
 export default {
   components: {

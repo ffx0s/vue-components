@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import Badge from 'vue-components/badge'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import Badge from 'muvc/badge'
 
 export default {
   name: 'page-badge',

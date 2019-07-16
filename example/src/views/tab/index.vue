@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import Tabs from 'vue-components/tab/tabs'
-import Tab from 'vue-components/tab/item'
+import Tabs from 'muvc/tab/tabs'
+import Tab from 'muvc/tab/item'
 import InfiniteScrollModule from '../infiniteScroll/module'
 import PullRefreshModule from '../pullRefresh/module'
 import SwipeModule from '../swipe/module'

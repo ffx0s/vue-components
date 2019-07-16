@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import VTextarea from 'vue-components/textarea'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import VTextarea from 'muvc/textarea'
 
 export default {
   components: {

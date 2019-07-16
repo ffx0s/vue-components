@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import Popup from 'vue-components/popup'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import Popup from 'muvc/popup'
 
 export default {
   name: 'page-popup',

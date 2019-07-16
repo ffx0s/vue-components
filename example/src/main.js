@@ -2,12 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from '@/store'
 import router from './router'
-import Navbar from 'vue-components/navbar'
-import VButton from 'vue-components/button'
-import Toast from 'vue-components/toast/plugin'
-import Modal from 'vue-components/modal/plugin'
-import transferDom from 'vue-components/directives/transferDom'
-import 'vue-components/utils/rAF'
+import Navbar from 'muvc/navbar'
+import VButton from 'muvc/button'
+import Toast from 'muvc/toast/plugin'
+import Modal from 'muvc/modal/plugin'
+import transferDom from 'muvc/directives/transferDom'
+import 'muvc/utils/rAF'
 
 Vue.component('Navbar', Navbar)
 Vue.component('VButton', VButton)

@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import Swipe from 'vue-components/swipe/swipe'
-import SwipeItem from 'vue-components/swipe/item'
+import Swipe from 'muvc/swipe/swipe'
+import SwipeItem from 'muvc/swipe/item'
 
 export default {
   components: {

@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import VirtualList from 'vue-components/virtualList/variable'
-import Actionsheet from 'vue-components/actionsheet'
+import VirtualList from 'muvc/virtualList/variable'
+import Actionsheet from 'muvc/actionsheet'
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min)

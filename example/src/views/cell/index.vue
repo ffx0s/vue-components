@@ -83,11 +83,11 @@
 </template>
 
 <script>
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import Badge from 'vue-components/badge'
-import Radio from 'vue-components/radio'
-import VTextarea from 'vue-components/textarea'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import Badge from 'muvc/badge'
+import Radio from 'muvc/radio'
+import VTextarea from 'muvc/textarea'
 
 export default {
   name: 'page-cell',

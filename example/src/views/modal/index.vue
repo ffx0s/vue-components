@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import VModal from 'vue-components/modal'
+import VModal from 'muvc/modal'
 
 export default {
   name: 'page-modal',

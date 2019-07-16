@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import Card from 'vue-components/card/c2'
-import InfiniteScroll from 'vue-components/infiniteScroll'
+import Card from 'muvc/card/c2'
+import InfiniteScroll from 'muvc/infiniteScroll'
 import { getProducts } from '../../api/product'
 
 export default {

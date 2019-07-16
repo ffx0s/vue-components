@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import AnimatedRoute from 'vue-components/route'
-import Gruop from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import Drawer from 'vue-components/drawer'
+import AnimatedRoute from 'muvc/route'
+import Gruop from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import Drawer from 'muvc/drawer'
 
 export default {
   name: 'App',
@@ -62,10 +62,10 @@ export default {
 </script>
 
 <style lang="postcss">
-@import '~vue-components/styles/1px.css';
-@import '~vue-components/styles/animate.css';
-@import '~vue-components/styles/color.css';
-@import '~vue-components/styles/skeleton.css';
+@import '~muvc/styles/1px.css';
+@import '~muvc/styles/animate.css';
+@import '~muvc/styles/color.css';
+@import '~muvc/styles/skeleton.css';
 @import './assets/font/css/fontello.css';
 
 a {

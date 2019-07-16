@@ -1,4 +1,4 @@
-import { browser } from 'vue-components/utils/shared'
+import { browser } from 'muvc/utils/shared'
 
 export default {
   mounted() {

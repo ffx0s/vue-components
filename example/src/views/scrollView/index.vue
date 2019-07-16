@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import ScrollView from 'vue-components/scrollView'
+import ScrollView from 'muvc/scrollView'
 
 export default {
   name: 'page-scroll-view',

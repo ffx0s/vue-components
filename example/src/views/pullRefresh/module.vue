@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import Card from 'vue-components/card/c3'
-import PullRefresh from 'vue-components/pullRefresh'
+import Card from 'muvc/card/c3'
+import PullRefresh from 'muvc/pullRefresh'
 import { getComments } from '../../api/product'
 
 export default {

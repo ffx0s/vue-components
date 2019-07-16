@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Ring from 'vue-components/ring'
+import Ring from 'muvc/ring'
 
 export default {
   components: {

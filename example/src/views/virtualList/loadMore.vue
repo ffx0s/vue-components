@@ -63,10 +63,10 @@
 </template>
 
 <script>
-import InfiniteScroll from 'vue-components/infiniteScroll'
-import VirtualList from 'vue-components/virtualList/variable'
-import Actionsheet from 'vue-components/actionsheet'
-import { view } from 'vue-components/utils/shared'
+import InfiniteScroll from 'muvc/infiniteScroll'
+import VirtualList from 'muvc/virtualList/variable'
+import Actionsheet from 'muvc/actionsheet'
+import { view } from 'muvc/utils/shared'
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min)

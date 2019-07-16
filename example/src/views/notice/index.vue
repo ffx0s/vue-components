@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Notice from 'vue-components/notice'
+import Notice from 'muvc/notice'
 
 export default {
   name: 'page-notice',

@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import Actionsheet from 'vue-components/actionsheet'
+import Actionsheet from 'muvc/actionsheet'
 export default {
   name: 'page-actionsheet',
   components: {

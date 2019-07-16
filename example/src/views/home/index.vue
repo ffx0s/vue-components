@@ -74,10 +74,10 @@
 </template>
 
 <script>
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
-import RadioGroup from 'vue-components/radio/group'
-import Radio from 'vue-components/radio'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
+import RadioGroup from 'muvc/radio/group'
+import Radio from 'muvc/radio'
 
 export default {
   name: 'page-home',

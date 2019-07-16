@@ -83,10 +83,10 @@
 </template>
 
 <script>
-import Group from 'vue-components/cell/group'
-import SwipeCell from 'vue-components/swipeCell'
-import ActionSheet from 'vue-components/actionsheet'
-import Notice from 'vue-components/notice'
+import Group from 'muvc/cell/group'
+import SwipeCell from 'muvc/swipeCell'
+import ActionSheet from 'muvc/actionsheet'
+import Notice from 'muvc/notice'
 
 export default {
   name: 'page-swipe-cell',

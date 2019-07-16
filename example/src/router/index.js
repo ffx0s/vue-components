@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Toast from 'vue-components/toast/plugin'
+import Toast from 'muvc/toast/plugin'
 
 Vue.use(Router)
 

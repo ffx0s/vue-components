@@ -54,10 +54,10 @@
 </template>
 
 <script>
-import CheckboxGroup from 'vue-components/checkbox/group'
-import Checkbox from 'vue-components/checkbox'
-import Group from 'vue-components/cell/group'
-import Cell from 'vue-components/cell'
+import CheckboxGroup from 'muvc/checkbox/group'
+import Checkbox from 'muvc/checkbox'
+import Group from 'muvc/cell/group'
+import Cell from 'muvc/cell'
 
 export default {
   name: 'page-checkbox',

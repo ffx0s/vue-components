@@ -1,4 +1,4 @@
-const { properties } = require('vue-components/styles/variables')
+const { properties } = require('muvc/styles/variables')
 
 module.exports = {
   plugins: {
