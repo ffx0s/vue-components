@@ -182,11 +182,8 @@ export default class Handler {
       return
     }
 
-    // 前面标记的状态，如果是 true 则不再触发移动
-    if (!this.disabled) {
-      const style = this.options.getCurrentStyle().style
-      this.options.setStyle({ x: style.x + x, y: style.y + y, duration: 0 })
-    }
+    const style = this.options.getCurrentStyle().style
+    this.options.setStyle({ x: style.x + x, y: style.y + y, duration: 0 })
   }
 
   // 主要校验图片位置、大小是否合法，不合法则重置位置

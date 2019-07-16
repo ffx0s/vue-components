@@ -196,8 +196,8 @@ export default {
       this.handler.move(event)
     },
     touchend(event) {
-      this.$refs.swipe.removeMouseEvents()
       if (this.handler.disabled) return
+      this.$refs.swipe.removeMouseEvents()
       event.stopPropagation()
       this.handler.up(event)
     },

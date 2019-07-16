@@ -43,7 +43,6 @@ export default {
 <style lang="postcss">
 .swipe {
   margin: 0 auto;
-  width: 100%;
   height: 200px;
   background: #fff;
   & .img {

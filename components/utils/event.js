@@ -110,10 +110,10 @@ export function mouseMove(moveFn, upFn, capture = false) {
   function mouseup(event) {
     upFn(event)
     remove()
-    removeListener(document, 'mouseup', mouseup, { capture })
   }
   function remove() {
     removeListener(document, 'mousemove', moveFn, { capture })
+    removeListener(document, 'mouseup', mouseup, { capture })
   }
   addListener(document, 'mousemove', moveFn, { passive: false, capture })
   addListener(document, 'mouseup', mouseup, { capture })
