@@ -15,9 +15,6 @@ export default class NavbarHandler extends BaseHandler {
     this.action = ''
     this.bind()
   }
-  static defaultOptions = {
-    offset: 0
-  }
   handleWrapStart(event) {
     const { clientX, clientY } = event.touches[0]
     this.last = { x: clientX, y: clientY }
@@ -92,4 +89,9 @@ export default class NavbarHandler extends BaseHandler {
       }
     })
   }
+}
+
+NavbarHandler.defaultOptions = {
+  offset: 0,
+  tabIndex: 0
 }

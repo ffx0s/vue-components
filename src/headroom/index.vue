@@ -19,10 +19,12 @@
 <script>
 import WithScroll from '../withScroll'
 import transformFixed from '../mixins/transformFixed'
+import transferDom from '../directives/transferDom'
 
 export default {
   name: 'Headroom',
   mixins: [transformFixed],
+  directives: { transferDom },
   components: {
     WithScroll
   },

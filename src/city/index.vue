@@ -18,6 +18,7 @@
 import Picker from '../picker'
 import Popup from '../popup'
 import { jsonp } from '../utils/shared'
+import transferDom from '../directives/transferDom'
 
 const cities = {}
 
@@ -27,6 +28,7 @@ export default {
     Picker,
     Popup
   },
+  directives: { transferDom },
   props: {
     value: Boolean,
     cityId: {

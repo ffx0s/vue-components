@@ -19,10 +19,6 @@ export default class ScrollHandler extends BaseHandler {
     this.handleWrapEnd = this.handleWrapEnd.bind(this)
     this.bind()
   }
-  static defaultOptions = {
-    offset: 0,
-    tabIndex: 0
-  }
   handleTabScroll(event) {
     const scrollTop = event.target.scrollTop
 
@@ -236,4 +232,9 @@ export default class ScrollHandler extends BaseHandler {
       }
     })
   }
+}
+
+ScrollHandler.defaultOptions = {
+  offset: 0,
+  tabIndex: 0
 }

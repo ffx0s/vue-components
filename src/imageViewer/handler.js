@@ -13,7 +13,12 @@ export default class Handler {
       dif: { x: 0, y: 0, time: 0 },
       centerPoint: { x: 0, y: 0 }
     }
-    this.position = Handler.initPosition(true)
+    this.position = {
+      isLeft: true,
+      isRight: true,
+      isTop: true,
+      isBottom: true
+    }
     this.move = rAFThrottle(this.move)
   }
   start(event) {
@@ -402,14 +407,5 @@ export default class Handler {
         this.inAnimation = false
       }
     })
-  }
-
-  static initPosition = function(value) {
-    return {
-      isLeft: value,
-      isRight: value,
-      isTop: value,
-      isBottom: value
-    }
   }
 }

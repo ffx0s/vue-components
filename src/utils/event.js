@@ -10,24 +10,6 @@ export class Handler {
     this.options = Object.assign({}, Handler.defaultOptions, options)
   }
 
-  static defaultOptions = {
-    touchDelay: 3,
-    threshold: 10,
-    isPreventDefault() {
-      return false
-    },
-    isStopPropagation() {
-      return false
-    }
-  }
-  static HORIZONTAL = 'horizontal'
-  static VERTICAL = 'vertical'
-  static actions = ['panleft', 'panright', 'panup', 'pandown']
-  static propsMap = {
-    [Handler.HORIZONTAL]: [Handler.actions[0], Handler.actions[1]],
-    [Handler.VERTICAL]: [Handler.actions[2], Handler.actions[3]]
-  }
-
   start(event) {
     const point = getPoint(event)
     this.lastX = point.clientX
@@ -119,4 +101,26 @@ export function mouseMove(moveFn, upFn, capture = false) {
   addListener(document, 'mouseup', mouseup, { capture })
 
   return remove
+}
+
+Handler.defaultOptions = {
+  touchDelay: 3,
+  threshold: 10,
+  isPreventDefault() {
+    return false
+  },
+  isStopPropagation() {
+    return false
+  }
+}
+
+Handler.HORIZONTAL = 'horizontal'
+
+Handler.VERTICAL = 'vertical'
+
+Handler.actions = ['panleft', 'panright', 'panup', 'pandown']
+
+Handler.propsMap = {
+  [Handler.HORIZONTAL]: [Handler.actions[0], Handler.actions[1]],
+  [Handler.VERTICAL]: [Handler.actions[2], Handler.actions[3]]
 }
