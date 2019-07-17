@@ -19,8 +19,7 @@ const defaultVars = {
 let customVars = {}
 
 try {
-  const filePath = require('./customVariables')
-  customVars = require(`${filePath}`)
+  customVars = require('./customVariables')
 } catch {
   // ..
 }

@@ -7,9 +7,8 @@ try {
 
   if (typeof customVariables === 'object') {
     const writePath = path.join(__dirname, './styles/customVariables.js')
-    const data = `module.exports = '${filePath}'\n`
 
-    fs.writeFile(writePath, data, err => {
+    fs.copyFile(filePath, writePath, err => {
       if (err) throw err
       console.log('操作成功')
     })
