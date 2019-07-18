@@ -16,13 +16,7 @@ const defaultVars = {
   background: '#f0eff5'
 }
 
-let customVars = {}
-
-try {
-  customVars = require('./customVariables')
-} catch {
-  // ..
-}
+const customVars = require('./customVariables')
 
 module.exports = {
   properties: Object.assign(defaultVars, customVars)

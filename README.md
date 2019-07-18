@@ -55,7 +55,7 @@
 └── withScroll
 ```  
 
-### 自定义颜色变量  
+### 修改颜色变量  
 
 ```
 // 到项目根目录
@@ -73,6 +73,12 @@ module.exports = {
 // 执行
 node node_modules/muvc/var.js ../../../variables.js
 ```  
+
+### 移除颜色变量  
+
+```
+node node_modules/muvc/var.js  
+```
 
 默认变量：
 ```  
