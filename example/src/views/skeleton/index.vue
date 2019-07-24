@@ -1,8 +1,10 @@
 <template>
   <div>
-    <Navbar title="Skeleton">
-      <VSwitch slot="right" v-model="loading" />
-    </Navbar>
+    <div style="height:46px;">
+      <Navbar fixed title="Skeleton" v-transfer-dom>
+        <VSwitch slot="right" v-model="loading" />
+      </Navbar>
+    </div>
     <Module v-model="loading" />
   </div>
 </template>

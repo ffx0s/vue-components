@@ -1,6 +1,8 @@
 <template>
   <Cell
     class="v-swipe-cell"
+    :class="{ 'v-swipe-cell--active': active }"
+    :clickable="false"
     v-bind="$attrs"
     v-on="$listeners"
     @touchstart.native="pointerdown"
@@ -10,6 +12,7 @@
     ref="cell"
   >
     <slot slot="title" name="title" />
+    <slot slot="describe" name="describe" />
     <div
       slot="bottom"
       class="v-swipe-cell__handler"
@@ -67,7 +70,9 @@ function closeAll(exclude) {
     closing = true
     instances.forEach(vm => {
       if (exclude === vm) return
-      vm.close()
+      if (vm.translate !== 0) {
+        vm.close()
+      }
     })
   }
 }
@@ -124,7 +129,8 @@ export default {
   data() {
     return {
       renderHandler: false,
-      confirmDelete: false
+      confirmDelete: false,
+      active: false
     }
   },
   created() {
@@ -151,6 +157,9 @@ export default {
   },
   methods: {
     pointerdown(event) {
+      if (this.translate !== 0) {
+        event.preventDefault()
+      }
       closeAll(this)
       this.handler.start(event)
       this.startTranslate = this.translate
@@ -165,7 +174,10 @@ export default {
 
       const action = this.shouldSlide()
 
-      if (!action) return
+      if (!action) {
+        this.setActive()
+        return
+      }
       if (action.restore) return this.restore()
       if (action.close) return this.close()
       if (action.openRight) return this.openRight()
@@ -202,6 +214,16 @@ export default {
     },
     restore() {
       this.setTranslate(this.startTranslate, this.animationDuration)
+    },
+    setActive() {
+      const isLink = this.$refs.cell.isLink
+      if (isLink) {
+        this.active = isLink
+        clearTimeout(this.activeTimer)
+        this.activeTimer = setTimeout(() => {
+          this.active = false
+        }, 200)
+      }
     },
     getLeftItemsWidth() {
       return (
@@ -287,12 +309,16 @@ export default {
 <style lang="postcss">
 .v-swipe-cell {
   transition-property: transform;
+  background-color: #fff;
 }
 .v-swipe-cell__items {
   position: absolute;
   top: 0;
   height: 100%;
   display: flex;
+}
+.v-swipe-cell--active {
+  background-color: var(--border);
 }
 .v-swipe-cell--left {
   left: 0;

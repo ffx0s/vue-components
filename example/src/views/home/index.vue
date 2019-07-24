@@ -2,20 +2,20 @@
   <div>
     <RadioGroup v-model="animatedType">
       <Group title="路由切换动画">
-        <Cell clickable>
-          <template slot="title">
-            <Radio name="animatedType" label="ios">IOS</Radio>
-          </template>
+        <Cell tag="label" clickable>
+          <Radio slot="title" tag="div" name="animatedType" label="ios">
+            IOS
+          </Radio>
         </Cell>
-        <Cell clickable>
-          <template slot="title">
-            <Radio name="animatedType" label="android">Android</Radio>
-          </template>
+        <Cell tag="label" clickable>
+          <Radio slot="title" tag="div" name="animatedType" label="android">
+            Android
+          </Radio>
         </Cell>
-        <Cell clickable>
-          <template slot="title">
-            <Radio name="animatedType" label="fade">Fade</Radio>
-          </template>
+        <Cell tag="label" clickable>
+          <Radio slot="title" tag="div" name="animatedType" label="fade">
+            Fade
+          </Radio>
         </Cell>
       </Group>
     </RadioGroup>
@@ -33,6 +33,7 @@
       <Cell title="Picker" to="/picker" isLink />
       <Cell title="Button" to="/button" isLink />
       <Cell title="Cell" to="/cell" isLink />
+      <Cell title="Loading" to="/loading" isLink />
       <Cell title="Toast" to="/toast" isLink />
       <Cell title="Modal" to="/modal" isLink />
       <Cell title="Actionsheet" to="/actionsheet" isLink />

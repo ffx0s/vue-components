@@ -3,10 +3,10 @@
     <Navbar title="Popup" />
     <br />
     <Group>
-      <Cell title="默认" isLink @click="toggle('bottom')" />
-      <Cell title="顶部滑入" isLink @click="toggle('top')" />
-      <Cell title="左侧滑入" isLink @click="toggle('left')" />
-      <Cell title="右侧滑入" isLink @click="toggle('right')" />
+      <Cell title="默认" isLink @click.native="toggle('bottom')" />
+      <Cell title="顶部滑入" isLink @click.native="toggle('top')" />
+      <Cell title="左侧滑入" isLink @click.native="toggle('left')" />
+      <Cell title="右侧滑入" isLink @click.native="toggle('right')" />
     </Group>
     <Popup
       v-transfer-dom

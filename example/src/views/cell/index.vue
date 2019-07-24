@@ -11,7 +11,7 @@
       <Cell title="显示箭头" value="isLink" isLink />
       <Cell title="显示箭头" isLink />
       <Cell title="路由跳转" isLink :to="{ name: 'swipe' }"> Swipe </Cell>
-      <Cell title="链接跳转" isLink link="//127.0.0.1"> 127.0.0.1 </Cell>
+      <Cell title="链接跳转" isLink href="//127.0.0.1"> 127.0.0.1 </Cell>
       <Cell title="左边自适应左边自适应左边自适应"> 值 </Cell>
       <Cell
         title="左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应"

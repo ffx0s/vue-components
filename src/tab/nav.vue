@@ -62,10 +62,6 @@ export default {
       type: Number,
       default: 44
     },
-    scrollThreshold: {
-      type: Number,
-      default: 4
-    },
     activeClass: {
       type: String,
       default: 'v-tab__nav--active'

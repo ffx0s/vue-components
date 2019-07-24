@@ -1,12 +1,16 @@
 <template>
-  <components :is="tag" class="v-group">
+  <div class="v-group">
     <div v-if="title || $slots.title" class="v-group__title">
       <slot name="title">{{ title }}</slot>
     </div>
-    <div class="v-group__cells" :class="{ 'v-bd-top-bottom': border }">
+    <components
+      :is="tag"
+      class="v-group__cells"
+      :class="{ 'v-bd-top-bottom': border }"
+    >
       <slot />
-    </div>
-  </components>
+    </components>
+  </div>
 </template>
 
 <script>

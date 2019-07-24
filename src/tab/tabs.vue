@@ -19,6 +19,7 @@
       :touchmove="move"
       :showPrev="scrollToTop"
       :showNext="scrollToTop"
+      :animationDuration="swipeAnimationDuration"
       v-model="index"
       @up="up"
       @beforeChange="beforeChange"
@@ -44,6 +45,7 @@ import Swipe from '../swipe/swipe'
 import SwipeItem from '../swipe/item'
 import NavbarHandler from './navbarHandler'
 import HeaderHandler from './headerHandler'
+import { fixedSpringback } from '../utils/shared'
 
 export default {
   name: 'Tab',
@@ -71,7 +73,8 @@ export default {
     header: {
       type: Boolean,
       default: false
-    }
+    },
+    swipeAnimationDuration: Number
   },
   computed: {
     index: {
@@ -107,6 +110,7 @@ export default {
         offset: this.offset,
         tabIndex: this.value
       })
+      fixedSpringback(document.body)
     }
   },
   beforeDestroy() {

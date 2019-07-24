@@ -1,16 +1,15 @@
 <template>
-  <label
+  <component
+    :is="tag"
     class="v-checkbox"
     :class="{
       'v-checkbox--disbled': disabled
     }"
   >
-    <template v-if="textAlign === 'left'">
-      <span class="v-checkbox__text">
-        <slot>{{ label }}</slot>
-      </span>
-      &nbsp;
-    </template>
+    <span v-if="textAlign === 'left'" class="v-checkbox__text">
+      <slot>{{ label }}</slot>
+    </span>
+
     <input
       type="checkbox"
       class="v-checkbox__input"
@@ -19,13 +18,11 @@
       :disabled="disabled"
       @change="change($event.target.checked)"
     />
-    <template v-if="textAlign === 'right'">
-      &nbsp;
-      <span class="v-checkbox__text">
-        <slot>{{ label }}</slot>
-      </span>
-    </template>
-  </label>
+
+    <span v-if="textAlign === 'right'" class="v-checkbox__text">
+      <slot>{{ label }}</slot>
+    </span>
+  </component>
 </template>
 
 <script>
@@ -36,6 +33,10 @@ export default {
   name: 'Checkbox',
   props: {
     value: null,
+    tag: {
+      type: String,
+      default: 'label'
+    },
     label: {
       type: [String, Number],
       default: ''
@@ -111,7 +112,6 @@ export default {
   position: relative;
   display: inline-block;
   vertical-align: middle;
-  font-size: 0;
   cursor: pointer;
   user-select: none;
   & + .v-checkbox {
@@ -167,7 +167,6 @@ export default {
 }
 .v-checkbox__text {
   padding-left: 6px;
-  font-size: 14px;
   display: inline-block;
   vertical-align: middle;
 }

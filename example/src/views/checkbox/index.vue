@@ -3,37 +3,25 @@
     <Navbar title="Checkbox" />
 
     <CheckboxGroup v-model="selectCitys">
-      <Group title="多选 - 左对齐">
+      <Group title="CheckboxGroup">
         <Cell
           v-for="(city, index) in citys"
           :key="index"
           :clickable="city.id !== 3"
-        >
-          <template slot="title">
-            <Checkbox :label="city.name" :disabled="city.id === 3" />
-          </template>
-        </Cell>
-      </Group>
-    </CheckboxGroup>
-
-    <CheckboxGroup v-model="selectCitys">
-      <Group title="多选 - 右对齐">
-        <Cell
-          v-for="(city, index) in citys"
-          :key="index"
-          :clickable="city.id !== 3"
+          tag="label"
         >
           <Checkbox
+            slot="title"
+            tag="div"
             :label="city.name"
             :disabled="city.id === 3"
-            textAlign="left"
           />
         </Cell>
       </Group>
     </CheckboxGroup>
 
     <div class="app--spacing" style="background-color: #fff">
-      <p>多选 - 平铺 - 最多选<strong style="color: red;">2</strong>个</p>
+      <p>限制可选数，max：<strong style="color: red;">2</strong></p>
       <CheckboxGroup v-model="selectCitys2" :max="2" @change="change">
         <Checkbox v-for="city in citys" :key="city.id" :label="city.name" />
       </CheckboxGroup>
@@ -85,7 +73,7 @@ export default {
   },
   methods: {
     change(values, value) {
-      this.$toast(value)
+      this.$toast(value.label)
     }
   }
 }

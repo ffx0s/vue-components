@@ -1,11 +1,13 @@
 <template>
-  <label class="v-radio" :class="{ 'v-radio--disabled': disabled }">
-    <template v-if="textAlign === 'left'">
-      <span class="v-radio__text">
-        <slot>{{ label }}</slot>
-      </span>
-      &nbsp;
-    </template>
+  <component
+    :is="tag"
+    class="v-radio"
+    :class="{ 'v-radio--disabled': disabled }"
+  >
+    <span v-if="textAlign === 'left'" class="v-radio__text">
+      <slot>{{ label }}</slot>
+    </span>
+
     <input
       class="v-radio__input"
       type="radio"
@@ -14,13 +16,11 @@
       :disabled="disabled"
       @change="change($event.target.checked)"
     />
-    <template v-if="textAlign === 'right'">
-      &nbsp;
-      <span class="v-radio__text">
-        <slot>{{ label }}</slot>
-      </span>
-    </template>
-  </label>
+
+    <span v-if="textAlign === 'right'" class="v-radio__text">
+      <slot>{{ label }}</slot>
+    </span>
+  </component>
 </template>
 
 <script>
@@ -30,6 +30,10 @@ export default {
   name: 'Radio',
   props: {
     value: null,
+    tag: {
+      type: String,
+      default: 'label'
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -76,7 +80,6 @@ export default {
 .v-radio {
   position: relative;
   display: inline-block;
-  font-size: 0;
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
@@ -135,7 +138,6 @@ export default {
 }
 .v-radio__text {
   padding-left: 6px;
-  font-size: 16px;
   display: inline-block;
   vertical-align: middle;
 }

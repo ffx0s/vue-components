@@ -23,7 +23,7 @@ export default {
     },
     size: {
       type: [String, Number],
-      default: 40
+      default: 30
     },
     strokeWidth: {
       type: [String, Number],

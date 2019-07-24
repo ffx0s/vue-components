@@ -58,6 +58,7 @@ export default {
   user-select: none;
   transition: background 0.3s, border-color 0.3s;
   cursor: pointer;
+  transform: translateZ(0);
 }
 .v-switch__circle {
   position: absolute;

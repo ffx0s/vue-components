@@ -182,7 +182,8 @@ body.custom-scrollbar {
   }
 }
 
-.v-route {
+.v-route,
+body {
   background: var(--background);
 }
 

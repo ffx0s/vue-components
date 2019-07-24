@@ -1,13 +1,19 @@
 <template>
-  <div
+  <component
+    :is="tag"
     class="v-cell"
     :class="{
-      'v-cell--clickable': isLink || clickable
+      'v-cell--clickable': isClickable
     }"
     @click="click"
   >
-    <div class="v-cell__icon" v-if="$slots.icon"><slot name="icon" /></div>
+    <!-- icon -->
+    <div class="v-cell__icon" v-if="$slots.icon">
+      <slot name="icon" />
+    </div>
+
     <div class="v-cell__content v-bd-bottom" :class="['v-cell--' + alignItems]">
+      <!-- cell left -->
       <div
         v-if="title || $slots.title"
         class="v-cell__left"
@@ -17,16 +23,30 @@
         ]"
       >
         <div class="v-cell__title" :class="{ 'v-cell--required': required }">
+          <!-- title -->
           <slot name="title">{{ title }}</slot>
+          <!-- describe -->
+          <slot name="describe">
+            <p class="v-cell__describe">{{ describe }}</p>
+          </slot>
         </div>
       </div>
+
+      <!-- cell right -->
       <div class="v-cell__right" :class="['v-cell--' + valueAlign]">
+        <!-- value -->
         <slot>{{ value }}</slot>
-        <slot name="arrow"> <i v-if="isLink" class="v-cell__arrow"></i> </slot>
+
+        <!-- arrow -->
+        <slot name="arrow">
+          <i v-if="isLink" class="v-cell__arrow"></i>
+        </slot>
       </div>
     </div>
+
+    <!-- bottom -->
     <slot name="bottom" />
-  </div>
+  </component>
 </template>
 
 <script>
@@ -35,7 +55,15 @@ import { getVMParent } from '../utils/shared'
 export default {
   name: 'Cell',
   props: {
+    tag: {
+      type: String,
+      default: 'div'
+    },
     title: {
+      type: [String, Number],
+      required: false
+    },
+    describe: {
       type: [String, Number],
       required: false
     },
@@ -43,7 +71,7 @@ export default {
       type: Boolean,
       default: false
     },
-    link: {
+    href: {
       type: String,
       required: false
     },
@@ -56,8 +84,8 @@ export default {
       required: false
     },
     clickable: {
-      type: Boolean,
-      default: false
+      type: [Boolean, undefined],
+      default: undefined
     },
     alignItems: {
       type: String,
@@ -77,6 +105,10 @@ export default {
     },
     valueAlign() {
       return this.parent.valueAlign
+    },
+    isClickable() {
+      if (this.clickable === false) return false
+      return this.isLink || this.clickable
     }
   },
   data() {
@@ -88,10 +120,8 @@ export default {
     click() {
       if (this.to && this.$router) {
         this.$router.push(this.to)
-      } else if (this.link) {
-        location.href = this.link
-      } else {
-        this.$emit('click')
+      } else if (this.href) {
+        location.href = this.href
       }
     }
   }
@@ -134,7 +164,6 @@ export default {
     padding: 0;
     width: 100%;
     font-size: 16px;
-    height: 24px;
     line-height: 21px;
     background-color: transparent;
     &:disabled {
@@ -170,6 +199,11 @@ export default {
   width: 15px;
   height: 15px;
   display: block;
+}
+.v-cell__describe {
+  margin: 0;
+  font-size: 14px;
+  color: var(--textRegular);
 }
 .v-cell--clickable {
   user-select: none;

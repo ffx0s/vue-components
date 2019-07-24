@@ -3,48 +3,47 @@
     <Navbar title="SwipeCell" />
     <Notice title="用移动设备查看" />
     <Group title="默认">
-      <SwipeCell @cancel="cancelHandler" @delete="deleteHandler">
-        <template slot="title">
-          <div>左右可滑动</div>
-          <div class="swipe-cell__describe">左滑取消删除，右滑回复</div>
-        </template>
-        <template slot="left">
-          <div
-            class="v-swipe-cell__item"
-            style="color: #fff;background-color: #2196f3;"
-            @click="$toast('回复')"
-          >
-            回复
-          </div>
-        </template>
+      <SwipeCell
+        @cancel="cancelHandler"
+        @delete="deleteHandler"
+        title="左右可滑动"
+        describe="左滑取消删除，右滑回复"
+      >
+        <div
+          slot="left"
+          class="v-swipe-cell__item"
+          style="color: #fff;background-color: #2196f3;"
+          @click="$toast('回复')"
+        >
+          回复
+        </div>
       </SwipeCell>
-      <SwipeCell cancelText="" @delete="deleteHandler">
-        <template slot="title">
-          <div>左滑</div>
-          <div class="swipe-cell__describe">左滑删除</div>
-        </template>
-      </SwipeCell>
-      <SwipeCell deleteText="" @cancel="cancelHandler">
-        <template slot="title">
-          <div>左滑</div>
-          <div class="swipe-cell__describe">左滑取消</div>
-        </template>
-      </SwipeCell>
+      <SwipeCell
+        cancelText=""
+        @delete="deleteHandler"
+        title="左滑"
+        describe="左滑删除"
+      />
+      <SwipeCell
+        deleteText=""
+        @cancel="cancelHandler"
+        title="左滑"
+        describe="左滑取消"
+      />
     </Group>
 
     <Group title="自定义内容">
       <SwipeCell title="右侧自定义">
-        <template slot="right">
-          <div
-            class="v-swipe-cell__item"
-            style="color: #fff;background-color: pink;"
-          >
-            置顶
-          </div>
-        </template>
+        <div
+          slot="right"
+          class="v-swipe-cell__item"
+          style="color: #fff;background-color: pink;"
+        >
+          置顶
+        </div>
       </SwipeCell>
       <SwipeCell deleteText="" cancelText="" title="左侧自定义">
-        <div style="background-color: white;" slot="left">
+        <div slot="left" style="background-color: white;">
           <VButton type="icon">
             <img
               src="../../assets/icon-delete.svg"
@@ -60,16 +59,14 @@
         v-for="(item, index) in items"
         :key="item"
         :value="item"
-        isLink
-        confirmDeleteText=""
         @cancel="cancelHandler"
         @delete="deleteHandler2(index)"
-      >
-        <template slot="title">
-          <div>左滑</div>
-          <div class="swipe-cell__describe">左滑删除</div>
-        </template>
-      </SwipeCell>
+        confirmDeleteText=""
+        title="左滑"
+        describe="左滑删除"
+        isLink
+        @click.native="$toast(`Index ${index}`)"
+      />
     </Group>
 
     <ActionSheet
@@ -126,10 +123,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss">
-.swipe-cell__describe {
-  color: var(--textRegular);
-  font-size: 14px;
-}
-</style>

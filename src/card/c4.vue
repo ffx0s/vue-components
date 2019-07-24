@@ -1,5 +1,5 @@
 <template>
-  <div class="v-c4">
+  <div v-if="!loading" class="v-c4">
     <div class="v-c4__header v-c4_between">
       <div class="v-c4__header-shopname" :class="loadingClass">
         {{ item.shopname }}
@@ -33,6 +33,28 @@
     <div class="v-c4__footer v-c4_between v-bd-top">
       <span class="v-color-error">{{ item.message }}</span>
       <div class="v-c4__footer-actions"><slot name="btns" /></div>
+    </div>
+  </div>
+  <div v-else class="v-c4 v-skeleton--animate">
+    <div class="v-c4__header v-c4_between">
+      <div class="v-c4__header-shopname v-skeleton">
+        {{ item.shopname }}
+      </div>
+      <div class="v-color-warning v-skeleton">{{ item.status }}</div>
+    </div>
+    <div class="v-c4__content">
+      <ul class="v-c4__list">
+        <li class="v-c4_row">
+          <div class="v-c4__item-image v-skeleton" />
+          <div class="v-c4__item-info v-c4_between v-skeleton"></div>
+        </li>
+      </ul>
+      <div class="v-c4__total">
+        <span class="v-skeleton">
+          <span class="v-c4__item-number">共{{ item.number }}件商品</span>
+          &nbsp;合计: ￥{{ item.price }}
+        </span>
+      </div>
     </div>
   </div>
 </template>

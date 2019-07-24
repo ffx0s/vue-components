@@ -1,16 +1,12 @@
 <template>
   <div class="app--spacing">
-    <Card1 v-once loading v-if="loading" />
-    <Card1 :item="item" v-else />
+    <Card1 :loading="loading" :item="item" />
     <br />
-    <Card2 v-once loading v-if="loading" />
-    <Card2 :item="item2" v-else />
+    <Card2 :loading="loading" :item="item2" />
     <br />
-    <Card3 v-once loading v-if="loading" />
-    <Card3 :item="item3" v-else />
+    <Card3 :loading="loading" :item="item3" />
     <br />
-    <Card4 v-once loading v-if="loading" />
-    <Card4 :item="item4" v-else>
+    <Card4 :loading="loading" :item="item4">
       <template slot="btns">
         <VButton small outline>查看物流</VButton>
         <VButton small outline>延长收货</VButton>

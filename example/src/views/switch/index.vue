@@ -4,20 +4,16 @@
     <br />
     <Group>
       <Cell title="默认">
-        <div class="switch"><VSwitch v-model="checked" /></div>
+        <VSwitch v-model="checked" />
       </Cell>
       <Cell title="修改颜色">
-        <div class="switch">
-          <VSwitch color="#2196f3" v-model="checked" />
-        </div>
+        <VSwitch color="#2196f3" v-model="checked" />
       </Cell>
       <Cell title="修改大小">
-        <div class="switch">
-          <VSwitch color="pink" size="20" v-model="checked" />
-        </div>
+        <VSwitch color="pink" size="20" v-model="checked" />
       </Cell>
       <Cell title="禁用">
-        <div class="switch"><VSwitch disabled v-model="checked" /></div>
+        <VSwitch disabled v-model="checked" />
       </Cell>
     </Group>
   </div>
@@ -42,9 +38,3 @@ export default {
   }
 }
 </script>
-
-<style lang="postcss">
-.switch {
-  font-size: 0;
-}
-</style>

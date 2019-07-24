@@ -5,7 +5,7 @@
       @refresh="refresh"
       :failed="failed"
       waveColor="#f0eff5"
-      class="tab2"
+      class="tab2-pullRefresh"
     >
       <Headroom
         :maxTop="30"
@@ -139,7 +139,7 @@ export default {
 </script>
 
 <style lang="postcss">
-.tab2 {
+.tab2-pullRefresh {
   overflow: visible;
   height: 100%;
 }

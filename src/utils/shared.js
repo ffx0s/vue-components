@@ -138,6 +138,8 @@ export function getScrollEventTarget(element) {
 
 // 在页面底部/顶部滚动时，阻止默认事件。可以解决 safari 页面滚动不了的问题。
 export function fixedSpringback(touchTarget) {
+  if (fixedSpringback.isBind) return
+
   let lastY = 0
   let scroller = null
 
@@ -168,6 +170,8 @@ export function fixedSpringback(touchTarget) {
 
   addListener(touchTarget, 'touchstart', touchstart)
   addListener(touchTarget, 'touchmove', touchmove, { passive: false })
+
+  fixedSpringback.isBind = true
 }
 
 /**

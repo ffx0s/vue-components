@@ -7,12 +7,11 @@
       <Ring
         v-model="progress"
         :size="80"
-        :strokeWidth="0"
+        :strokeWidth="4"
         :innerStrokeWidth="5"
-        color="#fff"
-        textColor="#fff"
-        backgroundColor="rgba(0,0,0,.5)"
-        outerColor="rgba(0,0,0,.5)"
+        color="pink"
+        textColor="pink"
+        outerColor="#e8e8e8"
       />
       <br />
       <Ring
@@ -22,6 +21,7 @@
         :innerStrokeWidth="5"
         color="#f00"
         textColor="#f00"
+        outerColor="#fdd3d3"
         backgroundColor="#fff"
       />
       <br />

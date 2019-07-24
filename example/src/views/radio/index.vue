@@ -12,20 +12,19 @@
       </Cell>
     </Group>
     <RadioGroup v-model="payType">
-      <Group title="支付方式 - 左对齐">
-        <Cell clickable v-for="type in payTypes" :key="type.id">
-          <template slot="title">
-            <Radio name="payType" :label="type.id">{{ type.name }}</Radio>
-          </template>
+      <Group title="RadioGroup">
+        <Cell tag="label" clickable v-for="type in payTypes" :key="type.id">
+          <Radio slot="title" tag="div" name="payType" :label="type.id">
+            {{ type.name }}
+          </Radio>
         </Cell>
       </Group>
-      <Group title="支付方式 - 右对齐">
-        <Cell clickable v-for="type in payTypes" :key="type.id">
-          <template>
-            <Radio textAlign="left" name="payType" :label="type.id">
-              {{ type.name }}
-            </Radio>
-          </template>
+      <Group>
+        <Cell tag="label" clickable v-for="type in payTypes" :key="type.id">
+          <div slot="title">{{ type.name }}</div>
+          <Radio tag="div" textAlign="left" name="payType" :label="type.id">
+            &nbsp;
+          </Radio>
         </Cell>
       </Group>
     </RadioGroup>

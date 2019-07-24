@@ -1,13 +1,20 @@
 <template>
-  <div class="v-c1">
-    <div class="v-c1__image" :class="loadingClass">
+  <div v-if="!loading" class="v-c1">
+    <div class="v-c1__image">
       <img v-if="item.image" :src="item.image" />
     </div>
     <div class="v-c1__detail">
-      <div class="v-c1__title" :class="loadingClass">{{ item.title }}</div>
-      <div class="v-c1__description" :class="loadingClass">
+      <div class="v-c1__title">{{ item.title }}</div>
+      <div class="v-c1__description">
         {{ item.description }}
       </div>
+    </div>
+  </div>
+  <div v-else class="v-c1 v-skeleton--animate">
+    <div class="v-c1__image v-skeleton"></div>
+    <div class="v-c1__detail">
+      <div class="v-c1__title v-skeleton"></div>
+      <div class="v-c1__description v-skeleton"></div>
     </div>
   </div>
 </template>
@@ -29,11 +36,6 @@ export default {
           description: ''
         }
       }
-    }
-  },
-  computed: {
-    loadingClass() {
-      return this.loading ? 'v-skeleton' : ''
     }
   }
 }

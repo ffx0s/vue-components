@@ -1,15 +1,23 @@
 <template>
-  <component :is="tag" class="v-c3">
+  <component v-if="!loading" :is="tag" class="v-c3">
     <div class="v-c3__head">
-      <div class="v-c3__head-image" :class="loadingClass">
+      <div class="v-c3__head-image">
         <img v-if="item.image" :src="item.image" />
       </div>
-      <p class="v-c3__head-name" :class="loadingClass">{{ item.name }}</p>
+      <p class="v-c3__head-name">{{ item.name }}</p>
     </div>
-    <p class="v-c3__head-type" :class="loadingClass">{{ item.date }}</p>
-    <div class="v-c3__head-content" :class="loadingClass">
+    <p class="v-c3__head-type">{{ item.date }}</p>
+    <div class="v-c3__head-content">
       {{ item.content }}
     </div>
+  </component>
+  <component v-else :is="tag" class="v-c3 v-skeleton--animate">
+    <div class="v-c3__head">
+      <div class="v-c3__head-image v-skeleton"></div>
+      <p class="v-c3__head-name v-skeleton"></p>
+    </div>
+    <p class="v-c3__head-type v-skeleton"></p>
+    <div class="v-c3__head-content v-skeleton"></div>
   </component>
 </template>
 
@@ -35,11 +43,6 @@ export default {
           content: ''
         }
       }
-    }
-  },
-  computed: {
-    loadingClass() {
-      return this.loading ? 'v-skeleton' : ''
     }
   }
 }
@@ -74,7 +77,7 @@ export default {
 }
 .v-c3__head-type {
   margin: 10px 0 0;
-  min-height: 10px;
+  min-height: 14px;
   font-size: 12px;
   color: var(--textRegular);
 }

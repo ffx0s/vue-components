@@ -144,8 +144,8 @@ export default {
     this.mainOffset = 0
     this.waveOffset = 0
     this.handler = new Handler({
-      isPreventDefault: this.isPreventDefault,
-      isStopPropagation: this.isStopPropagation,
+      isPreventDefault: this.inUpdate,
+      isStopPropagation: this.inUpdate,
       pandown: this.update,
       panup: this.update
     })
@@ -165,7 +165,6 @@ export default {
     pointerdown(event) {
       if (this.disabled) return
 
-      this.setDuration(0)
       this.handler.start(event)
     },
     pointermove(event) {
@@ -181,7 +180,7 @@ export default {
 
       if (this.sholudLoad() && this.shouldUpdate()) {
         this.load()
-      } else if (this.mainOffset !== 0) {
+      } else if (!this.isLoading && this.mainOffset !== 0) {
         this.reset()
       }
     },
@@ -191,16 +190,17 @@ export default {
       this.pointerdown(event)
       mouseMove(this.pointermove, this.pointerup)
     },
-    isPreventDefault() {
-      return this.scrollTop <= 0 && this.handler.is('pandown')
-    },
-    isStopPropagation() {
-      return this.stopPropagation && this.handler.is('pandown')
+    inUpdate() {
+      return !this.isLoading && this.mainOffset > 0
     },
     update(x, y) {
       if (!this.shouldUpdate()) return
 
       const value = this.mainOffset + y / 2
+
+      if (this.duration) {
+        this.setDuration(0)
+      }
 
       this.setTranslate('main', value).setTranslate('wave', Math.min(value, 50))
       this.stateClass = this.sholudLoad() ? this.upClass : this.downClass
@@ -209,6 +209,7 @@ export default {
       if (this.isLoading) return
 
       this.isLoading = true
+
       this.setDuration(this.animationDuration)
         .setTranslate('main', this.threshold)
         .setTranslate('wave', 0)
@@ -216,7 +217,6 @@ export default {
 
       await sleep(this.loadingDuration)
 
-      this.$emit('input', true)
       this.$emit('refresh', this.loaded)
     },
     async loaded() {
@@ -247,7 +247,9 @@ export default {
 
       if (el) {
         const style = el.style
-        style.transform = style.webkitTransform = `translate3d(0, ${value}px, 0)`
+        const transform = value === 0 ? null : `translate3d(0, ${value}px, 0)`
+
+        style.transform = style.webkitTransform = transform
         this[`${name}Offset`] = value
       }
 
