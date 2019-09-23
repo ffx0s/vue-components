@@ -1,4 +1,4 @@
-## lvan
+## Lvan
 基于 Vue 的移动端 UI 组件库 (Alpha - 开发测试中)
   
 <a href="https://ffx0s.github.io/lvan/example/demo.html" target="_blank">https://ffx0s.github.io/lvan/example/demo.html</a>  
