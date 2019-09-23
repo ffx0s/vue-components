@@ -35,8 +35,8 @@
 </template>
 
 <script>
-import Headroom from 'muvc/headroom'
-import VButton from 'muvc/button'
+import Headroom from 'lvan/headroom'
+import VButton from 'lvan/button'
 
 export default {
   name: 'page-headroom',

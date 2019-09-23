@@ -68,17 +68,18 @@
       <Cell title="Field" to="/field" isLink />
     </Group>
 
-    <Group title="样式">
+    <Group title="其它">
       <Cell title="1px" to="/1px" isLink />
+      <Cell title="Touch gestures" to="/touch" isLink />
     </Group>
   </div>
 </template>
 
 <script>
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import RadioGroup from 'muvc/radio/group'
-import Radio from 'muvc/radio'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import RadioGroup from 'lvan/radio/group'
+import Radio from 'lvan/radio'
 
 export default {
   name: 'page-home',

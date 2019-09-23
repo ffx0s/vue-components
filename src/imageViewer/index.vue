@@ -1,15 +1,12 @@
 <template>
   <transition
     name="v-image-viewer"
+    @beforeEnter="beforeEnter"
     @afterEnter="afterEnter"
     @beforeLeave="beforeLeave"
+    @afterLeave="afterLeave"
   >
-    <div
-      class="v-image-viewer"
-      :class="{ 'v-image-viewer--lock': lock }"
-      v-if="loaded"
-      v-show="value"
-    >
+    <div class="v-image-viewer" v-if="loaded" v-show="value">
       <div
         class="v-image-viewer__toolbar"
         :class="{ [toolbarShowClass]: showToolbar }"
@@ -20,23 +17,17 @@
           </div>
         </slot>
       </div>
-      <div
-        class="v-image-viewer__touch"
-        @touchstart.capture="touchstart"
-        @touchmove.capture="touchmove"
-        @touchend.capture="touchend"
-        @mousedown.capture="mousedown"
-      >
+      <div class="v-image-viewer__touch" ref="touch">
         <Swipe
           class="v-image-viewer__swipe"
           ref="swipe"
           v-model="index"
-          :showPrev="showPrevOrNext"
-          :showNext="showPrevOrNext"
+          @showPrev="setInitStyle"
+          @showNext="setInitStyle"
           @beforeChange="beforeSwipeChange"
           @change="showLoading"
           @resize="resize"
-          @up="restore"
+          :animationDuration="swipeAnimationDuration"
           :preload="preload"
           :dot="false"
           :offset="20"
@@ -44,27 +35,23 @@
         >
           <SwipeItem
             class="v-image-viewer__item"
+            ref="swipeItems"
             v-for="(item, i) in items"
             :key="item.uid"
             lazy
           >
-            <div
-              class="v-image-viewer__zoom"
-              :id="'v-image-viewer__zoom-' + item.uid"
-            >
-              <img
-                v-if="!item.loaded || item.error"
-                class="v-image-viewer__img"
-                :src="images[i].thumbnail"
-              />
-              <img
-                class="v-image-viewer__img"
-                :src="images[i].src"
-                @load="onload(i)"
-                @error="onerror(i)"
-                v-if="!item.error"
-              />
-            </div>
+            <img
+              v-if="!item.loaded || item.error"
+              class="v-image-viewer__img"
+              :src="images[i].thumbnail"
+            />
+            <img
+              v-if="!item.error"
+              class="v-image-viewer__img"
+              :src="images[i].src"
+              @load="onload(i)"
+              @error="onerror(i)"
+            />
           </SwipeItem>
         </Swipe>
       </div>
@@ -94,15 +81,15 @@
 </template>
 
 <script>
-import LazyLoad from '../mixins/lazyLoad'
+import lazyLoad from '../mixins/lazyLoad'
+import touch from './touch'
 import Swipe from '../swipe/swipe'
 import SwipeItem from '../swipe/item'
 import Ring from '../ring'
 import Delay from '../delay'
-import { view, isTouchDevice, toFixed } from '../utils/shared'
-import { mouseMove } from '../utils/event'
-import { imgContain, originZoom } from './helpers'
-import Handler from './handler'
+import ETouch from '../utils/etouch'
+import { view, toFixed } from '../utils/shared'
+import { imgContain } from './helpers'
 
 let uid = 0
 
@@ -114,13 +101,17 @@ export default {
     Ring,
     Delay
   },
-  mixins: [LazyLoad],
+  mixins: [lazyLoad, touch],
   props: {
     images: {
       type: Array,
       default: () => []
     },
     zoomAnimationDuration: {
+      type: Number,
+      default: 350
+    },
+    swipeAnimationDuration: {
       type: Number,
       default: 350
     },
@@ -135,13 +126,16 @@ export default {
     clickHidden: {
       type: Boolean,
       default: true
+    },
+    hideScale: {
+      type: Number,
+      default: 0.8
     }
   },
   data() {
     return {
       index: 0,
       value: false,
-      lock: false,
       items: [],
       loading: false,
       loadingDelay: 500,
@@ -152,21 +146,23 @@ export default {
   watch: {
     images: {
       handler: function(images) {
-        // 标记更换了 images 的状态
-        if (this.$refs.swipe) {
-          this.isChange = true
-        }
+        this.imagesChange = true
 
         const items = []
         const styles = []
 
-        images.forEach(() => {
+        images.forEach(image => {
           items.push({
             loaded: false,
             error: false,
             uid: ++uid
           })
-          styles.push({})
+          styles.push({
+            style: {
+              width: image.w,
+              height: image.h
+            }
+          })
         })
 
         this.styles = styles
@@ -176,38 +172,17 @@ export default {
     }
   },
   created() {
-    this.handler = new Handler({
-      hide: this.hide,
-      setStyle: this.setStyle,
-      scaleTo: this.scaleTo,
-      click: this.click,
-      dobuleClick: this.dobuleClick,
-      getCurrentStyle: this.getCurrentStyle,
-      updateOverlayOpcity: this.updateOverlayOpcity
-    })
+    this.rafSetStyle = ETouch.rAFThrottle(this.setStyle)
+  },
+  beforeDestroy() {
+    if (this.touch) {
+      this.touch.destroy()
+      this.touch = null
+    }
   },
   methods: {
-    touchstart(event) {
-      this.handler.start(event)
-    },
-    touchmove(event) {
-      if (this.handler.disabled) return
-      event.stopPropagation()
-      this.handler.move(event)
-    },
-    touchend(event) {
-      if (this.handler.disabled) return
-      this.$refs.swipe.removeMouseEvents()
-      event.stopPropagation()
-      this.handler.up(event)
-    },
-    mousedown(event) {
-      if (isTouchDevice()) return
-      this.touchstart(event)
-      mouseMove(this.touchmove, this.touchend, true)
-    },
     showLoading() {
-      if (this.getCurrentItem().loaded) {
+      if (this.items[this.index].loaded) {
         this.loading = false
       } else {
         // 假进度
@@ -218,143 +193,62 @@ export default {
     show({ selector, index }) {
       if (this.value) return
 
-      this.lock = true
+      this.value = true
       this.showing = true
-
-      this.setCurrentEl(-1)
-
-      const swipe = this.$refs.swipe
-
-      // 修复当前的项没有加载和显示的问题
-      if (this.isChange && index === this.index) {
-        swipe.showItem(index)
-        this.isChange = false
-      }
-
-      // 显示的时候不需要 swipe 组件的切换动画，但是需要触发它的 transitionend 事件，所以设置动画时间为1ms
-      if (swipe) {
-        const swipeAnimationDuration = 1
-        swipe.slide(index, swipeAnimationDuration)
-      } else {
-        this.index = index
-      }
-
       this.selector = selector
       this.items[index].error = false
 
-      this.value = true
-      this.showing = false
+      const swipe = this.$refs.swipe
 
-      this.$nextTick(() => {
-        // 放大效果
-        const thumbnail = selector && this.getThumbnail(index)
-
-        if (thumbnail) {
-          const thumbnailRect = thumbnail.getBoundingClientRect()
-          const style = {
-            x: thumbnailRect.left,
-            y: thumbnailRect.top,
-            scale: thumbnailRect.width / this.images[index].w,
-            duration: 0
-          }
-
-          this.setStyle(style, index)
-
-          setTimeout(() => {
-            this.setInitStyle(index, this.zoomAnimationDuration)
-          }, 50)
-        } else {
-          this.setInitStyle(index)
+      if (swipe) {
+        if (this.imagesChange && index === this.index) {
+          swipe.showItem(index)
+          this.imagesChange = false
         }
-
-        this.showLoading()
-
-        if (this.overlayOpacity < 1) {
-          this.updateOverlayOpcity(1)
-        }
-      })
-    },
-    hide() {
-      this.lock = true
-
-      let x, y, scale
-      const thumbnail = this.selector && this.getThumbnail(this.index)
-
-      if (thumbnail) {
-        const rect = thumbnail.getBoundingClientRect()
-        x = rect.left
-        y = rect.top
-        scale = rect.width / this.images[this.index].w
-      } else {
-        x = view.width() / 2
-        y = view.height() / 2
-        scale = 0
+        swipe.showCurrentItem(index)
       }
 
-      this.setStyle({
-        x,
-        y,
-        scale,
-        duration: this.zoomAnimationDuration
-      })
-
+      this.index = index
+    },
+    hide() {
+      this.zoomOutAnimation()
       this.value = false
     },
     getThumbnail(index) {
       return document.querySelectorAll(this.selector)[index]
     },
-    getCurrentItem() {
-      return this.items[this.index]
-    },
     getCurrentStyle() {
-      return this.styles[this.index]
+      return this.styles[this.index].style
+    },
+    getCurrentInitStyle() {
+      return this.styles[this.index].initStyle
     },
     getInitStyle(index) {
-      if (!this.styles[index].initStyle) {
-        const image = this.images[index]
-        this.styles[index].initStyle = imgContain(
-          image.w,
-          image.h,
+      const current = this.styles[index]
+
+      if (!current.initStyle) {
+        current.initStyle = imgContain(
+          current.style.width,
+          current.style.height,
           view.width(),
           view.height()
         )
       }
-      return this.styles[index].initStyle
+
+      return current.initStyle
     },
     setInitStyle(index, duration = 0) {
       const style = this.styles[index].style
       const { x, y, scale } = this.getInitStyle(index)
 
-      if (!style || style.x !== x || style.y !== y || style.scale !== scale) {
-        this.setStyle({ x, y, duration, scale }, index)
+      if (style.x !== x || style.y !== y || style.scale !== scale) {
+        this.rafSetStyle.cancel()
+        this.updateElement({ x, y, duration, scale }, index)
       }
     },
     setStyle(style, index) {
-      if (index === undefined) index = this.index
-
-      const currentStyle = this.styles[index].style || {}
-
-      const {
-        x = currentStyle.x,
-        y = currentStyle.y,
-        scale = currentStyle.scale,
-        duration = currentStyle.duration,
-        width = currentStyle.width || this.images[index].w,
-        height = currentStyle.height || this.images[index].h
-      } = style
-
-      this.styles[index].style = {
-        x,
-        y,
-        scale,
-        duration,
-        width,
-        height
-      }
-
-      if (!this.currentEl) this.setCurrentEl(index)
-
-      const elStyle = this.currentEl.style
+      const { x, y, scale, duration, width, height } = style
+      const elStyle = this.$refs.swipeItems[index].$el.children[0].style
 
       // eslint-disable-next-line prettier/prettier
       elStyle.transitionDuration =
@@ -366,70 +260,14 @@ export default {
       elStyle.width = width + 'px'
       elStyle.height = height + 'px'
     },
-    setCurrentEl(index) {
-      this.currentEl =
-        index >= 0
-          ? this.$el.querySelector(
-              '#v-image-viewer__zoom-' + this.items[index].uid
-            )
-          : null
+    updateElement(style, index) {
+      if (index === undefined) index = this.index
+
+      this.rafSetStyle(Object.assign(this.styles[index].style, style), index)
     },
-    updateOverlayOpcity(value) {
+    updateoverlayOpacity(value) {
       this.$refs.overlay.style.opacity = toFixed(value, 4)
       this.overlayOpacity = value
-    },
-    scaleTo(point, scale, transition = true, check = true) {
-      const style = this.getCurrentStyle().style
-
-      if (scale === style.scale) return
-
-      let { x, y } = originZoom(style, point, scale)
-
-      if (check) {
-        const position = this.handler.checkPosition({
-          x,
-          y,
-          scale,
-          width: style.width,
-          height: style.height
-        })
-        x = position.x
-        y = position.y
-      }
-
-      this.setStyle({
-        x,
-        y,
-        scale,
-        duration: transition ? this.zoomAnimationDuration : 0
-      })
-    },
-    click() {
-      if (this.clickHidden) {
-        this.hide()
-      }
-      this.$emit('singleClick')
-    },
-    dobuleClick(point) {
-      const style = this.getCurrentStyle().style
-      const { x, y, scale } = this.getInitStyle(this.index)
-      if (style.scale !== scale) {
-        this.setStyle({
-          x,
-          y,
-          scale,
-          duration: this.zoomAnimationDuration
-        })
-      } else {
-        const { w, h } = this.images[this.index]
-        const fillWidth = false
-        let scale =
-          w / h > 1
-            ? imgContain(w, h, view.width(), view.height(), fillWidth).scale
-            : 1
-        this.scaleTo(point, scale, true)
-      }
-      this.$emit('dobuleClick', style.scale)
     },
     onload(index) {
       const current = this.items[index]
@@ -444,43 +282,89 @@ export default {
       this.loading = false
       this.$emit('error', index)
     },
-    showPrevOrNext(index) {
-      if (!this.styles[index].style) {
-        clearTimeout(this.showTimer)
-        this.showTimer = setTimeout(() => {
-          this.setCurrentEl(-1)
-          this.setInitStyle(index)
-        }, 10)
-      } else {
-        this.setCurrentEl(-1)
-        this.setInitStyle(index)
-      }
-    },
     beforeSwipeChange(index) {
       if (this.showing) return
-      this.setCurrentEl(-1)
       this.setInitStyle(index)
       this.items[index].error = false
-    },
-    restore(action) {
-      if (!action || action.restore) {
-        this.setCurrentEl(-1)
-        this.handler.validation(null, true)
-      }
     },
     resize() {
       this.items.forEach(item => {
         item.initStyle = null
       })
       this.getInitStyle(this.index)
-      this.handler.validation(null, true)
+      this.validation(null, true)
+    },
+    zoomInAnimation() {
+      const index = this.index
+      const thumbnail = this.selector && this.getThumbnail(index)
+
+      if (thumbnail) {
+        const position = thumbnail.getBoundingClientRect()
+        const style = this.getCurrentStyle()
+
+        Object.assign(style, {
+          x: position.left,
+          y: position.top,
+          scale: position.width / style.width,
+          duration: 0
+        })
+
+        this.setStyle(style, index)
+
+        setTimeout(() => {
+          this.setInitStyle(index, this.zoomAnimationDuration)
+        }, 50)
+      } else {
+        this.setInitStyle(index)
+      }
+    },
+    zoomOutAnimation() {
+      let x, y, scale
+      const thumbnail = this.selector && this.getThumbnail(this.index)
+
+      if (thumbnail) {
+        const rect = thumbnail.getBoundingClientRect()
+        x = rect.left
+        y = rect.top
+        scale = rect.width / this.getCurrentStyle().width
+      } else {
+        x = view.width() / 2
+        y = view.height() / 2
+        scale = 0
+      }
+
+      this.updateElement({
+        x,
+        y,
+        scale,
+        duration: this.zoomAnimationDuration
+      })
+    },
+    beforeEnter() {
+      this.lock = true
+
+      this.zoomInAnimation()
+      this.showLoading()
+
+      if (this.overlayOpacity < 1) {
+        this.updateoverlayOpacity(1)
+      }
+
+      if (!this.touch) {
+        this.createTouch()
+      }
     },
     afterEnter() {
       this.lock = false
+      this.showing = false
       this.showToolbar = true
     },
     beforeLeave() {
+      this.lock = true
       this.showToolbar = false
+    },
+    afterLeave() {
+      this.lock = true
     }
   }
 }
@@ -494,9 +378,6 @@ export default {
   z-index: 10000;
   width: 100%;
   height: 100%;
-}
-.v-image-viewer--lock {
-  pointer-events: none;
 }
 .v-image-viewer__touch {
   position: absolute;
@@ -513,7 +394,7 @@ export default {
   overflow: hidden;
   width: 100%;
 }
-.v-image-viewer__zoom {
+.v-image-viewer .v-swipe__content {
   position: absolute;
   left: 0;
   top: 0;

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Loading from 'muvc/loading'
+import Loading from 'lvan/loading'
 
 export default {
   components: {

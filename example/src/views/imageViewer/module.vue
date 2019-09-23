@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import ImageViewer from 'muvc/imageViewer'
+import ImageViewer from 'lvan/imageViewer'
 
 export default {
   components: {

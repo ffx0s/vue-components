@@ -38,7 +38,6 @@ export default {
     }
   },
   created() {
-    this.vy = 0
     this.duration = 0
     this.translate = 0
   },

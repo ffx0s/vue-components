@@ -29,11 +29,11 @@
 </template>
 
 <script>
-import Picker from 'muvc/picker'
-import City from 'muvc/city'
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import Popup from 'muvc/popup'
+import Picker from 'lvan/picker'
+import City from 'lvan/city'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import Popup from 'lvan/popup'
 
 export default {
   name: 'page-picker',

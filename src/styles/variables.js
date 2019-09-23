@@ -19,5 +19,5 @@ const defaultVars = {
 const customVars = require('./customVariables')
 
 module.exports = {
-  properties: Object.assign(defaultVars, customVars)
+  properties: Object.assign({}, defaultVars, customVars)
 }

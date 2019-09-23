@@ -16,12 +16,12 @@
       }"
       :dot="false"
       :stopPropagation="false"
-      :touchmove="move"
-      :showPrev="scrollToTop"
-      :showNext="scrollToTop"
       :animationDuration="swipeAnimationDuration"
       v-model="index"
-      @up="up"
+      @showPrev="scrollToTop"
+      @showNext="scrollToTop"
+      @panmove="lineMove"
+      @panend="lineMoveTo"
       @beforeChange="beforeChange"
       @change="change"
       optimization
@@ -132,10 +132,10 @@ export default {
       this.handler && this.handler.resetState()
       this.$emit('change', index)
     },
-    move(current, x) {
+    lineMove(current, x) {
       this.$refs.nav.lineMove(x)
     },
-    up() {
+    lineMoveTo() {
       this.$refs.nav.lineMoveTo(this.value)
     },
     itemClick(index) {

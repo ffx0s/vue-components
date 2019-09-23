@@ -12,6 +12,7 @@
       <Cell title="显示箭头" isLink />
       <Cell title="路由跳转" isLink :to="{ name: 'swipe' }"> Swipe </Cell>
       <Cell title="链接跳转" isLink href="//127.0.0.1"> 127.0.0.1 </Cell>
+      <Cell title="点击事件" @click="$toast('click')" isLink></Cell>
       <Cell title="左边自适应左边自适应左边自适应"> 值 </Cell>
       <Cell
         title="左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应左边自适应"
@@ -83,11 +84,11 @@
 </template>
 
 <script>
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import Badge from 'muvc/badge'
-import Radio from 'muvc/radio'
-import VTextarea from 'muvc/textarea'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import Badge from 'lvan/badge'
+import Radio from 'lvan/radio'
+import VTextarea from 'lvan/textarea'
 
 export default {
   name: 'page-cell',

@@ -1,7 +1,7 @@
 <template>
   <div class="v-swipe__item">
-    <div class="v-swipe__content" v-if="loaded" v-show="show">
-      <slot />
+    <div class="v-swipe__content" v-show="show">
+      <slot v-if="loaded" />
     </div>
   </div>
 </template>

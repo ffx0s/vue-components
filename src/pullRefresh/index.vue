@@ -1,11 +1,5 @@
 <template>
-  <div
-    class="v-pull-refresh"
-    @touchstart="pointerdown"
-    @touchmove="pointermove"
-    @touchend="pointerup"
-    @mousedown="onMousedown"
-  >
+  <div class="v-pull-refresh">
     <div class="v-pull-refresh__main" ref="main">
       <div class="v-pull-refresh__head" :class="stateClass">
         <slot name="head">
@@ -42,13 +36,12 @@
 
 <script>
 import Loading from '../loading'
-import { Handler, mouseMove } from '../utils/event'
+import ETouch from '../utils/etouch'
 import {
   sleep,
   browser,
   getScrollEventTarget,
-  getScrollTop,
-  isTouchDevice
+  getScrollTop
 } from '../utils/shared'
 
 export default {
@@ -120,7 +113,7 @@ export default {
     // 下拉滑动的时候是否阻止冒泡
     stopPropagation: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   data() {
@@ -143,40 +136,49 @@ export default {
     this.duration = 0
     this.mainOffset = 0
     this.waveOffset = 0
-    this.handler = new Handler({
-      isPreventDefault: this.inUpdate,
-      isStopPropagation: this.inUpdate,
-      pandown: this.update,
-      panup: this.update
-    })
   },
   mounted() {
     const { android, ios } = browser()
     if (ios || (android && parseFloat(android) >= 5.1)) {
       this.showWave = this.wave
     }
+
+    this.updateElement = ETouch.rAFThrottle(this.updateElement)
+
+    this.touch = new ETouch({
+      el: this.$el,
+      lockDirection: ETouch.VERTICAL
+    })
+      .on('pandown panup', this.panmove)
+      .on('panend', this.panend)
+
     this.scrollEl = getScrollEventTarget(this.$el)
   },
   beforeDestroy() {
-    this.handler = null
+    this.touch.destroy()
+    this.touch = null
     this.scrollEl = null
   },
   methods: {
-    pointerdown(event) {
-      if (this.disabled) return
-
-      this.handler.start(event)
-    },
-    pointermove(event) {
+    panmove(event) {
       if (this.disabled) return
 
       this.scrollTop = getScrollTop(this.scrollEl)
-      this.handler.move(event)
-    },
-    pointerup() {
-      if (this.disabled) return
 
-      this.handler.up()
+      if (!this.isLoading) {
+        if (this.touch.is('pandown') && this.scrollTop === 0) {
+          ETouch.preventDefault(event)
+        }
+
+        if (this.stopPropagation && this.mainOffset > 0) {
+          event.stopPropagation()
+        }
+      }
+
+      this.updateElement()
+    },
+    panend() {
+      if (this.disabled) return
 
       if (this.sholudLoad() && this.shouldUpdate()) {
         this.load()
@@ -184,19 +186,10 @@ export default {
         this.reset()
       }
     },
-    onMousedown(event) {
-      if (isTouchDevice()) return
-      event.preventDefault()
-      this.pointerdown(event)
-      mouseMove(this.pointermove, this.pointerup)
-    },
-    inUpdate() {
-      return !this.isLoading && this.mainOffset > 0
-    },
-    update(x, y) {
+    updateElement() {
       if (!this.shouldUpdate()) return
 
-      const value = this.mainOffset + y / 2
+      const value = Math.max(this.mainOffset + this.touch.data.vy / 2, 0)
 
       if (this.duration) {
         this.setDuration(0)
@@ -233,7 +226,7 @@ export default {
       return this.mainOffset > this.threshold
     },
     shouldUpdate() {
-      return !this.isLoading && this.handler.moved && this.scrollTop === 0
+      return !this.isLoading && this.touch.moved && this.scrollTop <= 0
     },
     reset() {
       this.setDuration(this.animationDuration)
@@ -282,7 +275,6 @@ export default {
 }
 .v-pull-refresh {
   min-height: 70%;
-  user-select: none;
   overflow: hidden;
 }
 .v-pull-refresh__main {

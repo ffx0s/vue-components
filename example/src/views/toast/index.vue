@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import Toast from 'muvc/toast'
+import Toast from 'lvan/toast'
 
 export default {
   name: 'page-toast',

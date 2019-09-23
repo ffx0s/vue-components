@@ -8,10 +8,7 @@
   >
     <!-- 垂直滚动 -->
     <template v-if="vertical">
-      <div
-        class="v-scroll-view__scroller v-scroll-view--vertical"
-        ref="scroller"
-      >
+      <div class="v-scroll-view__area v-scroll-view--vertical" ref="scroller">
         <div class="v-scroll-view__slot"><slot /></div>
       </div>
       <template v-if="gradient">
@@ -33,10 +30,7 @@
     </template>
     <!-- 水平滚动 -->
     <template v-else>
-      <div
-        class="v-scroll-view__scroller v-scroll-view--horizontal"
-        ref="scroller"
-      >
+      <div class="v-scroll-view__area v-scroll-view--horizontal" ref="scroller">
         <div :style="{ width }">
           <div class="v-scroll-view__slot" :style="slotStyle"><slot /></div>
         </div>
@@ -155,7 +149,7 @@ export default {
   background-color: #fff;
 }
 
-.v-scroll-view__scroller {
+.v-scroll-view__area {
   width: 100%;
   height: 100%;
   user-select: none;
@@ -181,7 +175,7 @@ export default {
 }
 
 .v-scroll-view--disabled {
-  & .v-scroll-view__scroller {
+  & .v-scroll-view__area {
     overflow: hidden;
     touch-action: none;
   }
@@ -196,7 +190,7 @@ export default {
 
 .v-scroll-view--hidebar {
   overflow: hidden;
-  & .v-scroll-view__scroller::-webkit-scrollbar {
+  & .v-scroll-view__area::-webkit-scrollbar {
     display: none;
   }
   & .v-scroll-view--vertical {

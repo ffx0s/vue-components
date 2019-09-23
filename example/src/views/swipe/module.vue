@@ -7,17 +7,25 @@
       </SwipeItem>
     </Swipe>
     <h4 class="text-center">Swpie 垂直</h4>
-    <Swipe v-model="index2" class="swipe" vertical optimization preload>
+    <Swipe
+      v-model="index2"
+      class="swipe"
+      @down="down"
+      vertical
+      optimization
+      preload
+    >
       <SwipeItem v-for="img in imgs" :key="img" lazy>
         <img class="img" :src="img" />
       </SwipeItem>
     </Swipe>
+    <div style="height: 500px"></div>
   </div>
 </template>
 
 <script>
-import Swipe from 'muvc/swipe/swipe'
-import SwipeItem from 'muvc/swipe/item'
+import Swipe from 'lvan/swipe/swipe'
+import SwipeItem from 'lvan/swipe/item'
 
 export default {
   components: {
@@ -35,6 +43,11 @@ export default {
         'https://static.webfed.cn/o_1d9u7gc8cnpnke014pnu1g25ch.jpg?imageView2/0/w/700',
         'https://static.webfed.cn/o_1d9u7gc8ceef1kip1f6kg0jb67g.jpg?imageView2/0/w/700'
       ]
+    }
+  },
+  methods: {
+    down(event) {
+      event.preventDefault()
     }
   }
 }

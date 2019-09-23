@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Toast from 'muvc/toast/plugin'
+import Toast from 'lvan/toast/plugin'
 
 Vue.use(Router)
 
@@ -127,6 +127,16 @@ const routes = [
     path: '/1px',
     name: '1px',
     component: loadRoute('1px')
+  },
+  {
+    path: '/touch',
+    name: 'touch',
+    component: loadRoute('touch')
+  },
+  {
+    path: '/scroll',
+    name: 'scroll',
+    component: loadRoute('scroll')
   },
   {
     path: '/picker',

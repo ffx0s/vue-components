@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import Actionsheet from 'muvc/actionsheet'
+import Actionsheet from 'lvan/actionsheet'
 export default {
   name: 'page-actionsheet',
   components: {

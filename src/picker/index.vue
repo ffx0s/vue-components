@@ -12,13 +12,7 @@
       </div>
     </slot>
     <div class="v-picker__main">
-      <div
-        class="v-picker__columns"
-        @touchstart="pointerdown"
-        @touchmove="pointermove"
-        @touchend="pointerup"
-        @mousedown="onMousedown"
-      >
+      <div class="v-picker__columns" ref="touchTarget">
         <Column
           v-for="(column, index) in columns"
           :key="index"
@@ -37,8 +31,7 @@
 </template>
 
 <script>
-import { Handler, mouseMove } from '../utils/event'
-import { isTouchDevice } from '../utils/shared'
+import ETouch from '../utils/etouch'
 import Column from './column'
 import Loading from '../loading'
 import VButton from '../button'
@@ -97,77 +90,69 @@ export default {
       getValue: valueKey ? value => value[valueKey] : value => value
     }
   },
-  created() {
+  mounted() {
     this.currentColumnIndex = 0
-    this.handler = new Handler({
-      panup: this.update,
-      pandown: this.update,
+
+    this.touch = new ETouch({
+      el: this.$refs.touchTarget,
       threshold: this.threshold,
-      isPreventDefault: () => true
+      lockDirection: ETouch.VERTICAL
     })
+      .on('down', this.down)
+      .on('panstart', this.panstart)
+      .on('panup pandown', this.panmove)
+      .on('panend', this.panend)
+      .on('tap', this.tap)
+  },
+  beforeDestroy() {
+    this.touch.destroy()
+    this.touch = null
   },
   methods: {
-    pointerdown(event) {
+    down(event) {
+      ETouch.preventDefault(event)
       this.currentColumnIndex = +event.target.dataset.index
-
+    },
+    panstart() {
       if (this.isEmptyColumn()) return
-
-      this.handler.start(event)
 
       const column = this.getCurrentColumn()
 
-      column.vy = 0
       column.setTranslate(column.translate, 0)
     },
-    pointermove(event) {
+    panmove(event, { vy }) {
       if (this.isEmptyColumn()) return
 
-      this.handler.move(event)
-    },
-    pointerup() {
-      if (this.isEmptyColumn()) return
-
-      this.handler.up()
+      ETouch.preventDefault(event)
 
       const column = this.getCurrentColumn()
 
-      if (this.handler.moved) {
-        let translate = column.translate
+      column.setTranslate(column.translate + vy, 0)
+    },
+    panend(event, { vy }) {
+      if (this.isEmptyColumn()) return
 
-        if (column.vy) {
-          translate += column.vy * 2
-        }
+      const column = this.getCurrentColumn()
 
-        const selectedIndex = Math.abs(
-          Math.round(
-            Math.min(translate, column.itemHeight * 2) / column.itemHeight - 2
-          )
+      let translate = column.translate
+
+      if (this.touch.isSwipe) {
+        translate += vy * 10
+      }
+
+      const selectedIndex = Math.abs(
+        Math.round(
+          Math.min(translate, column.itemHeight * 2) / column.itemHeight - 2
         )
+      )
 
-        column.select(selectedIndex, this.animationDuration)
-      } else {
-        column.select(column.selectedIndex + 1, this.animationDuration)
-      }
+      column.select(selectedIndex, this.animationDuration)
     },
-    onMousedown(event) {
-      if (isTouchDevice()) return
+    tap() {
+      if (this.isEmptyColumn()) return
 
-      event.preventDefault()
-
-      this.pointerdown(event)
-
-      mouseMove(this.pointermove, this.pointerup)
-    },
-    update(x, y) {
       const column = this.getCurrentColumn()
-
-      if (this.handler.isFast) {
-        column.vy += y * 2
-      } else {
-        column.vy = 0
-      }
-
-      column.setTranslate(column.translate + y, 0)
+      column.select(column.selectedIndex + 1, this.animationDuration)
     },
     change() {
       const values = this.getValues()

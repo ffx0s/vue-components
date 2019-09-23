@@ -43,8 +43,8 @@
 </template>
 
 <script>
-import VirtualList from 'muvc/virtualList'
-import Actionsheet from 'muvc/actionsheet'
+import VirtualList from 'lvan/virtualList'
+import Actionsheet from 'lvan/actionsheet'
 
 function getData(number) {
   const data = []

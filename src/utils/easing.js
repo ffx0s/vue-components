@@ -6,7 +6,7 @@
  * d：总时间
  */
 
-const Easing = {
+export default {
   linear(t, b, c, d) {
     return (c * t) / d + b
   },
@@ -36,5 +36,3 @@ const Easing = {
     return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b
   }
 }
-
-export default Easing

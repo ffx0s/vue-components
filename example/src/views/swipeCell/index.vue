@@ -8,6 +8,7 @@
         @delete="deleteHandler"
         title="左右可滑动"
         describe="左滑取消删除，右滑回复"
+        isLink
       >
         <div
           slot="left"
@@ -26,6 +27,7 @@
       />
       <SwipeCell
         deleteText=""
+        cancelText="自定义取消文案"
         @cancel="cancelHandler"
         title="左滑"
         describe="左滑取消"
@@ -61,11 +63,11 @@
         :value="item"
         @cancel="cancelHandler"
         @delete="deleteHandler2(index)"
+        @click="$toast(`Index ${index}`)"
         confirmDeleteText=""
         title="左滑"
         describe="左滑删除"
         isLink
-        @click.native="$toast(`Index ${index}`)"
       />
     </Group>
 
@@ -80,10 +82,10 @@
 </template>
 
 <script>
-import Group from 'muvc/cell/group'
-import SwipeCell from 'muvc/swipeCell'
-import ActionSheet from 'muvc/actionsheet'
-import Notice from 'muvc/notice'
+import Group from 'lvan/cell/group'
+import SwipeCell from 'lvan/swipeCell'
+import ActionSheet from 'lvan/actionsheet'
+import Notice from 'lvan/notice'
 
 export default {
   name: 'page-swipe-cell',

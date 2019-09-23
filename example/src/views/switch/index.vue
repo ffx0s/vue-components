@@ -20,9 +20,9 @@
 </template>
 
 <script>
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import VSwitch from 'muvc/switch'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import VSwitch from 'lvan/switch'
 
 export default {
   name: 'page-switch',

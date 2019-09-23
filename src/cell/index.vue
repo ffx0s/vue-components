@@ -5,7 +5,7 @@
     :class="{
       'v-cell--clickable': isClickable
     }"
-    @click="click"
+    v-on="{ click: $listeners.click || click }"
   >
     <!-- icon -->
     <div class="v-cell__icon" v-if="$slots.icon">

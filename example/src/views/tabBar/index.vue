@@ -93,8 +93,8 @@
 </template>
 
 <script>
-import TabBar from 'muvc/tabBar/tabBar'
-import TabBarItem from 'muvc/tabBar/item'
+import TabBar from 'lvan/tabBar/tabBar'
+import TabBarItem from 'lvan/tabBar/item'
 
 export default {
   name: 'page-tabBar',

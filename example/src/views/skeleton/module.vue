@@ -17,10 +17,10 @@
 </template>
 
 <script>
-import Card1 from 'muvc/card/c1'
-import Card2 from 'muvc/card/c2'
-import Card3 from 'muvc/card/c3'
-import Card4 from 'muvc/card/c4'
+import Card1 from 'lvan/card/c1'
+import Card2 from 'lvan/card/c2'
+import Card3 from 'lvan/card/c3'
+import Card4 from 'lvan/card/c4'
 
 export default {
   components: {

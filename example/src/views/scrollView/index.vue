@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import ScrollView from 'muvc/scrollView'
+import ScrollView from 'lvan/scrollView'
 
 export default {
   name: 'page-scroll-view',

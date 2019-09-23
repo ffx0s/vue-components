@@ -1,5 +1,5 @@
 {
-  "name": "muvc",
+  "name": "lvan",
   "version": "0.1.4",
   "description": "Mobile ui components for vue",
   "keywords": [
@@ -7,7 +7,7 @@
     "ui components",
     "vue components"
   ],
-  "repository": "ffx0s/muvc",
+  "repository": "ffx0s/lvan",
   "author": {
     "name": "ffx0s",
     "url": "https://webfed.cn"

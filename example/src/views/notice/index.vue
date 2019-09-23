@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import Notice from 'muvc/notice'
+import Notice from 'lvan/notice'
 
 export default {
   name: 'page-notice',

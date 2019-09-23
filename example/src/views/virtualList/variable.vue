@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import VirtualList from 'muvc/virtualList/variable'
-import Actionsheet from 'muvc/actionsheet'
+import VirtualList from 'lvan/virtualList/variable'
+import Actionsheet from 'lvan/actionsheet'
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min)

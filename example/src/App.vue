@@ -24,10 +24,10 @@
 </template>
 
 <script>
-import AnimatedRoute from 'muvc/route'
-import Gruop from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import Drawer from 'muvc/drawer'
+import AnimatedRoute from 'lvan/route'
+import Gruop from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import Drawer from 'lvan/drawer'
 
 export default {
   name: 'App',
@@ -62,10 +62,10 @@ export default {
 </script>
 
 <style lang="postcss">
-@import '~muvc/styles/1px.css';
-@import '~muvc/styles/animate.css';
-@import '~muvc/styles/color.css';
-@import '~muvc/styles/skeleton.css';
+@import '~lvan/styles/1px.css';
+@import '~lvan/styles/animate.css';
+@import '~lvan/styles/color.css';
+@import '~lvan/styles/skeleton.css';
 @import './assets/font/css/fontello.css';
 
 a {
@@ -123,7 +123,7 @@ body {
 body.hide-scrollbar {
   & .v-route__view::-webkit-scrollbar,
   & .v-swipe__content::-webkit-scrollbar,
-  & .v-scroll-view__scroller::-webkit-scrollbar {
+  & .v-scroll-view__area::-webkit-scrollbar {
     display: none;
   }
 }
@@ -131,7 +131,7 @@ body.hide-scrollbar {
 body.custom-scrollbar {
   & .v-route__view,
   & .v-swipe__content,
-  & .v-scroll-view__scroller {
+  & .v-scroll-view__area {
     &::-webkit-scrollbar {
       width: 5px;
     }

@@ -117,11 +117,11 @@
 </template>
 
 <script>
-import Validator from 'muvc/validator'
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import Radio from 'muvc/radio'
-import Checkbox from 'muvc/checkbox'
+import Validator from 'lvan/validator'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import Radio from 'lvan/radio'
+import Checkbox from 'lvan/checkbox'
 
 export default {
   components: {

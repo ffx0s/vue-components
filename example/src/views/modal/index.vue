@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import VModal from 'muvc/modal'
+import VModal from 'lvan/modal'
 
 export default {
   name: 'page-modal',

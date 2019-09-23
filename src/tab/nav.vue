@@ -6,8 +6,6 @@
     :scrollWidth="scrollWidth"
     :scrollable="scrollable"
     :flex="flex"
-    @touchstart.native.passive="touchstart"
-    @touchmove.native="touchmove"
     ref="scrollView"
   >
     <dl
@@ -25,7 +23,7 @@
         <span v-if="tab.title"> {{ tab.title }} </span>
         <VNode v-else-if="tab.$slots.title" :node="tab.$slots.title[0]" />
       </dt>
-      <dd class="v-tab__nav-line" :style="lineStyle"></dd>
+      <dd class="v-tab__nav-line" :style="lineStyle" ref="line"></dd>
     </dl>
   </ScrollView>
 </template>
@@ -33,7 +31,7 @@
 <script>
 import ScrollView from '../scrollView'
 import VNode from '../vnode'
-import { Handler } from '../utils/event'
+import ETouch from '../utils/etouch'
 import { view } from '../utils/shared'
 import { properties } from '../styles/variables'
 
@@ -70,8 +68,6 @@ export default {
   data() {
     return {
       lineWidth: 0,
-      translate: 0,
-      duration: 0,
       scrollWidth: 5000,
       scrollable: true,
       flex: false
@@ -82,8 +78,6 @@ export default {
       return {
         width: this.lineWidth + 'px',
         height: this.lineHeight + 'px',
-        transitionDuration: `${this.duration}ms`,
-        transform: `translateX(${this.translate}px)`,
         backgroundColor: this.lineColor
       }
     },
@@ -96,11 +90,14 @@ export default {
   },
   mounted() {
     this.padding = 16
+    this.translate = 0
+    this.duration = 0
 
-    this.handler = new Handler({
-      isStopPropagation: this.isStopPropagation,
-      isPreventDefault: this.isPreventDefault
+    this.touch = new ETouch({
+      el: this.$el
     })
+      .on('down up', this.stopPropagation)
+      .on('panstart panmove', this.panmove)
 
     this.$nextTick(() => {
       this.getScrollWidth()
@@ -115,7 +112,20 @@ export default {
       })
     })
   },
+  beforeDestroy() {
+    this.touch.destroy()
+    this.touch = null
+  },
   methods: {
+    panmove(event) {
+      const action = this.touch.action
+
+      this.stopPropagation(event)
+
+      if (action === 'panup' || action === 'pandown') {
+        ETouch.preventDefault(event)
+      }
+    },
     getScrollWidth() {
       const scrollWidth =
         this.$refs.nav.getBoundingClientRect().width + this.padding * 2
@@ -147,22 +157,25 @@ export default {
       this.lineWidth = width
       this.duration = transition ? this.lineAnimationDuration : 0
       this.translate = this.getItemOffsetLeft(index)
+
+      this.updateLineStyle()
     },
     lineMove(x) {
       this.duration = 0
       this.translate -= x * 0.1
+
+      this.updateLineStyle()
     },
-    touchstart(event) {
-      this.handler.start(event)
+    updateLineStyle() {
+      const style = this.$refs.line.style
+
+      // eslint-disable-next-line prettier/prettier
+      style.transitionDuration = style.webkitTransitionDuration = `${this.duration}ms`
+      // eslint-disable-next-line prettier/prettier
+      style.transform = style.webkitTransform = `translateX(${this.translate}px)`
     },
-    touchmove(event) {
-      this.handler.move(event)
-    },
-    isStopPropagation() {
-      return this.handler.is('panleft') || this.handler.is('panright')
-    },
-    isPreventDefault() {
-      return this.handler.is('panup') || this.handler.is('pandown')
+    stopPropagation(event) {
+      event.stopPropagation()
     }
   }
 }

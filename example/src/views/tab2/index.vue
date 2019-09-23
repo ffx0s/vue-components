@@ -89,12 +89,12 @@
 </template>
 
 <script>
-import Tabs from 'muvc/tab/tabs'
-import Tab from 'muvc/tab/item'
-import Headroom from 'muvc/headroom'
-import PullRefresh from 'muvc/pullRefresh'
-import Notice from 'muvc/notice'
-import { sleep } from 'muvc/utils/shared'
+import Tabs from 'lvan/tab/tabs'
+import Tab from 'lvan/tab/item'
+import Headroom from 'lvan/headroom'
+import PullRefresh from 'lvan/pullRefresh'
+import Notice from 'lvan/notice'
+import { sleep } from 'lvan/utils/shared'
 import showModal from '../../mixins/showModal'
 
 export default {
@@ -130,9 +130,6 @@ export default {
       await this.fetchData()
       this.nums = 10
       done()
-    },
-    failure() {
-      this.failed = true
     }
   }
 }

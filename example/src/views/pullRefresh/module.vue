@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import Card from 'muvc/card/c3'
-import PullRefresh from 'muvc/pullRefresh'
+import Card from 'lvan/card/c3'
+import PullRefresh from 'lvan/pullRefresh'
 import { getComments } from '../../api/product'
 
 export default {

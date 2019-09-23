@@ -12,11 +12,11 @@
 
 <script>
 import { addListener, removeListener } from '../utils/shared'
-import LazyLoad from '../mixins/lazyLoad'
+import lazyLoad from '../mixins/lazyLoad'
 
 export default {
   name: 'Drawer',
-  mixins: [LazyLoad],
+  mixins: [lazyLoad],
   props: {
     value: {
       type: Boolean,

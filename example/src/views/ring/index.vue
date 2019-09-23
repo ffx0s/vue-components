@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import Ring from 'muvc/ring'
+import Ring from 'lvan/ring'
 
 export default {
   components: {

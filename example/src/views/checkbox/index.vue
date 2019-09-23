@@ -42,10 +42,10 @@
 </template>
 
 <script>
-import CheckboxGroup from 'muvc/checkbox/group'
-import Checkbox from 'muvc/checkbox'
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
+import CheckboxGroup from 'lvan/checkbox/group'
+import Checkbox from 'lvan/checkbox'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
 
 export default {
   name: 'page-checkbox',

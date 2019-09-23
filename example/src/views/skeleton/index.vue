@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import VSwitch from 'muvc/switch'
+import VSwitch from 'lvan/switch'
 import Module from './module'
 
 export default {

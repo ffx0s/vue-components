@@ -1,4 +1,4 @@
-import { browser } from 'muvc/utils/shared'
+import { browser } from 'lvan/utils/shared'
 
 export default {
   mounted() {

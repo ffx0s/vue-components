@@ -63,10 +63,10 @@
 </template>
 
 <script>
-import InfiniteScroll from 'muvc/infiniteScroll'
-import VirtualList from 'muvc/virtualList/variable'
-import Actionsheet from 'muvc/actionsheet'
-import { view } from 'muvc/utils/shared'
+import InfiniteScroll from 'lvan/infiniteScroll'
+import VirtualList from 'lvan/virtualList/variable'
+import Actionsheet from 'lvan/actionsheet'
+import { view } from 'lvan/utils/shared'
 
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min)

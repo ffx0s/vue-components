@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import Card from 'muvc/card/c2'
-import InfiniteScroll from 'muvc/infiniteScroll'
+import Card from 'lvan/card/c2'
+import InfiniteScroll from 'lvan/infiniteScroll'
 import { getProducts } from '../../api/product'
 
 export default {

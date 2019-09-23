@@ -1,6 +1,6 @@
 import axios from 'axios'
 // import store from '@/store'
-import Modal from 'muvc/modal/plugin'
+import Modal from 'lvan/modal/plugin'
 
 // create an axios instance
 const request = axios.create({

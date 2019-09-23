@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import VTextarea from 'muvc/textarea'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import VTextarea from 'lvan/textarea'
 
 export default {
   components: {

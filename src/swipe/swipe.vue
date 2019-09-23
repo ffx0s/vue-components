@@ -1,12 +1,5 @@
 <template>
-  <div
-    class="v-swipe"
-    :class="{ 'v-swipe--vertical': vertical }"
-    @touchstart="pointerdown"
-    @touchmove="pointermove"
-    @touchend="pointerup"
-    @mousedown="onMousedown"
-  >
+  <div class="v-swipe" :class="{ 'v-swipe--vertical': vertical }">
     <div
       class="v-swipe__items"
       @webkitTransitionEnd.self="transitionend"
@@ -26,15 +19,8 @@
 </template>
 
 <script>
-import { Handler, mouseMove } from '../utils/event'
-import {
-  debounce,
-  noop,
-  isTouchDevice,
-  toFixed,
-  addListener,
-  removeListener
-} from '../utils/shared'
+import ETouch from '../utils/etouch'
+import { debounce, toFixed, addListener, removeListener } from '../utils/shared'
 
 function directionMap(arr) {
   return {
@@ -102,25 +88,15 @@ export default {
       type: Boolean,
       default: true
     },
+    // 滑动的时候是否阻止默认事件
+    preventDefault: {
+      type: Boolean,
+      default: true
+    },
     // 预加载
     preload: {
       type: Boolean,
       default: false
-    },
-    // 滑动的回调
-    touchmove: {
-      type: Function,
-      required: false
-    },
-    // 移动时显示上一张的回调
-    showPrev: {
-      type: Function,
-      required: false
-    },
-    // 移动时显示下一张的回调
-    showNext: {
-      type: Function,
-      required: false
     },
     // 滑动的偏移量
     offset: {
@@ -147,7 +123,7 @@ export default {
     },
     vertical() {
       this.duration = 0
-      this.initActions()
+      this.initEvents()
       this.translateTo(this.currentIndex)
     }
   },
@@ -158,14 +134,12 @@ export default {
   },
   mounted() {
     this.handleResize = debounce(this.handleResize)
-    this.removeMouseEvents = noop
-    this.handler = new Handler({
-      touchDelay: 2,
-      threshold: this.threshold,
-      isPreventDefault: this.isPrevOrNextAction,
-      isStopPropagation: this.isStopPropagation
+    this.rAFUpdateElement = ETouch.rAFThrottle(this.updateElement)
+    this.touch = new ETouch({
+      el: this.$el,
+      threshold: this.threshold
     })
-    this.initActions()
+    this.initEvents()
     this.showItem(this.currentIndex)
     this.translateTo(this.currentIndex)
     this.bindResizeEvent()
@@ -181,59 +155,58 @@ export default {
   beforeDestroy() {
     clearTimeout(this.playTimer)
     this.removeResizeEvent()
-    this.handler = null
-    this.removeMouseEvents = null
+    this.touch.destroy()
+    this.touch = null
   },
   methods: {
-    pointerdown(event) {
-      this.handler.start(event)
+    down(event) {
+      this.$emit('down', event)
+      clearTimeout(this.playTimer)
+    },
+    panstart() {
       this.duration = 0
       this.startTranslate = this.translate
-      clearTimeout(this.playTimer)
-      this.$emit('down')
+      this.$emit('panstart')
     },
-    pointermove(event) {
-      this.handler.move(event)
-    },
-    pointerup() {
-      this.handler.up()
+    panmove(event, { vx, vy }) {
+      this.setPreventStop(event)
 
+      const friction = this.hasPrevNext(this.isNextAction()) ? 1 : this.friction
+      const vector = this.vertical ? vy : vx
+      const value = vector * friction
+
+      this.translate += value
+
+      this.showAdjacentItem()
+      this.rAFUpdateElement()
+
+      this.$emit('panmove', this.translate, value)
+    },
+    panend() {
       const action = this.shouldSlide()
 
-      this.$emit('up', action)
+      this.$emit('panend', action)
 
       if (!action) return
       if (action.restore) return this.slide(this.currentIndex)
       if (action.next) return this.next()
       if (action.prev) return this.prev()
     },
-    onMousedown(event) {
-      if (isTouchDevice()) return
-      event.preventDefault()
-      this.pointerdown(event)
-      this.removeMouseEvents = mouseMove(this.pointermove, this.pointerup)
+    setPreventStop(event) {
+      if (this.isPrevAction() || this.isNextAction()) {
+        if (this.stopPropagation) {
+          event.stopPropagation()
+        }
+        if (this.preventDefault) {
+          ETouch.preventDefault(event)
+        }
+      }
     },
-    isPrevOrNextAction() {
-      return (
-        this.handler.is(this.directionMap.nextAction) ||
-        this.handler.is(this.directionMap.prevAction)
-      )
+    isNextAction() {
+      return this.touch.is(this.directionMap.nextAction)
     },
-    isStopPropagation() {
-      return this.stopPropagation && this.isPrevOrNextAction()
-    },
-    update(x, y) {
-      const friction = this.hasPrevNext(
-        this.handler.is(this.directionMap.nextAction)
-      )
-        ? 1
-        : this.friction
-      const vector = this.vertical ? y : x
-      const value = vector * friction
-
-      this.showAdjacentItem()
-      this.setStyle(this.translate + value)
-      this.touchmove && this.touchmove(this.translate, value)
+    isPrevAction() {
+      return this.touch.is(this.directionMap.prevAction)
     },
     slide(nextIndex, duration) {
       nextIndex = this.getVaildIndex(nextIndex)
@@ -257,40 +230,34 @@ export default {
       this.slide(this.currentIndex - 1)
     },
     transitionend() {
-      if (this.optimization) {
-        this.showCurrentItem()
-      }
       this.play()
+      this.showCurrentItem(this.currentIndex)
       this.$emit('stop', this.currentIndex)
     },
     translateTo(index) {
-      const translate =
+      this.translate =
         -index * (this.getSwipeRect()[this.directionMap.size] + this.offset)
-      this.setStyle(translate)
+      this.updateElement()
     },
-    setStyle(translate) {
-      const el = this.$refs.items
+    updateElement() {
+      const style = this.$refs.items.style
+      const translate = toFixed(this.translate, 3)
 
       // eslint-disable-next-line prettier/prettier
-      el.style.transitionDuration =
-      el.style.webkitTransitionDuration = `${this.duration}ms`
+      style.transitionDuration =
+      style.webkitTransitionDuration = `${this.duration}ms`
 
-      el.style.transform = el.style.webkitTransform = this.vertical
-        ? `translate3d(0, ${toFixed(translate, 3)}px, 0)`
-        : `translate3d(${toFixed(translate, 3)}px, 0, 0)`
-
-      this.translate = translate
+      style.transform = style.webkitTransform = this.vertical
+        ? `translate3d(0, ${translate}px, 0)`
+        : `translate3d(${translate}px, 0, 0)`
     },
     shouldSlide() {
-      const isPrev = this.handler.is(this.directionMap.prevAction)
-      const isNext = this.handler.is(this.directionMap.nextAction)
-
-      if (!isPrev && !isNext) return false
-
+      const isPrev = this.isPrevAction()
+      const isNext = this.isNextAction()
       const hasPrev = this.isVaildIndex(this.currentIndex - 1)
       const hasNext = this.isVaildIndex(this.currentIndex + 1)
 
-      if (this.handler.isFast) {
+      if (this.touch.isSwipe) {
         const prev = isPrev && hasPrev
         const next = isNext && hasNext
         return {
@@ -336,18 +303,30 @@ export default {
         isLastItem ? this.slide(0) : this.next()
       }, this.playInterval)
     },
-    initActions() {
-      this.handler.removeActions()
+    initEvents() {
+      this.touch.off()
 
-      this.directionMap = directionMap(
-        this.vertical
-          ? ['panup', 'pandown', 'height']
-          : ['panleft', 'panright', 'width']
-      )
+      let data = []
+      let lockDirection = ''
+
+      if (this.vertical) {
+        data = ['panup', 'pandown', 'height']
+        lockDirection = ETouch.VERTICAL
+      } else {
+        data = ['panleft', 'panright', 'width']
+        lockDirection = ETouch.HORIZONTAL
+      }
+
+      this.directionMap = directionMap(data)
 
       const { prevAction, nextAction } = this.directionMap
-      const options = this.handler.options
-      options[prevAction] = options[nextAction] = this.update
+
+      this.touch
+        .setOptions({ lockDirection })
+        .on('down', this.down)
+        .on('panstart', this.panstart)
+        .on(prevAction + ' ' + nextAction, this.panmove)
+        .on('panend', this.panend)
     },
     preloadItem(mid) {
       const prevItem = this.items[mid - 1]
@@ -362,24 +341,26 @@ export default {
         this.preloadItem(index)
       }
     },
-    showCurrentItem() {
-      this.items.forEach((item, i) => {
-        item.show = i == this.currentIndex
-      })
+    showCurrentItem(index) {
+      if (this.optimization) {
+        this.items.forEach((item, i) => {
+          item.show = i == index
+        })
+      }
     },
     showAdjacentItem() {
-      if (this.handler.is(this.directionMap.prevAction)) {
+      if (this.isPrevAction()) {
         const index = this.currentIndex - 1
         const prevItem = this.items[index]
         if (prevItem) {
-          this.showPrev && this.showPrev(index)
+          this.$emit('showPrev', index)
           prevItem.loaded = prevItem.show = true
         }
-      } else if (this.handler.is(this.directionMap.nextAction)) {
+      } else if (this.isNextAction()) {
         const index = this.currentIndex + 1
         const nextItem = this.items[index]
         if (nextItem) {
-          this.showNext && this.showNext(index)
+          this.$emit('showNext', index)
           nextItem.loaded = nextItem.show = true
         }
       }
@@ -409,7 +390,6 @@ export default {
   z-index: 2;
   width: 100%;
   overflow: hidden;
-  user-select: none;
 }
 
 .v-swipe__items {

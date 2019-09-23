@@ -51,14 +51,11 @@ export function isNumber(value) {
 
 export function getTransform(el) {
   const styles = getComputedStyle(el)
-  const value = (styles.transform || styles.webkitTransform)
-    .replace(/[^0-9\-.,]/g, '')
-    .split(',')
+  const value = styles.transform || styles.webkitTransform
+  const matrix = value.split(')')[0].split(',')
   return {
-    scaleX: +value[0],
-    scaleY: +value[3],
-    x: +value[4],
-    y: +value[5]
+    x: +(matrix[12] || matrix[4] || 0),
+    y: +(matrix[13] || matrix[5] || 0)
   }
 }
 
@@ -140,10 +137,12 @@ export function getScrollEventTarget(element) {
 export function fixedSpringback(touchTarget) {
   if (fixedSpringback.isBind) return
 
+  let lastX = 0
   let lastY = 0
   let scroller = null
 
   function touchstart(event) {
+    lastX = event.touches[0].clientX
     lastY = event.touches[0].clientY
     scroller = getScrollEventTarget(event.target)
     if (scroller === window) scroller = null
@@ -152,19 +151,27 @@ export function fixedSpringback(touchTarget) {
   function touchmove(event) {
     if (!scroller) return
 
+    const clientX = event.touches[0].clientX
     const clientY = event.touches[0].clientY
+    const x = clientX - lastX
     const y = clientY - lastY
-    const pullUpAction = y <= 0
-    const scrollTop = scroller.scrollTop
+    const isVertical = Math.abs(x) <= Math.abs(y)
 
-    if (
-      (!pullUpAction && scrollTop <= 0) ||
-      (pullUpAction &&
-        Math.floor(scroller.scrollHeight - scroller.offsetHeight) <= scrollTop)
-    ) {
-      event.cancelable && event.preventDefault()
+    if (isVertical) {
+      const pullUpAction = y <= 0
+      const scrollTop = scroller.scrollTop
+
+      if (
+        (!pullUpAction && scrollTop <= 0) ||
+        (pullUpAction &&
+          Math.floor(scroller.scrollHeight - scroller.offsetHeight) <=
+            scrollTop)
+      ) {
+        event.cancelable && event.preventDefault()
+      }
     }
 
+    lastX = clientX
     lastY = clientY
   }
 

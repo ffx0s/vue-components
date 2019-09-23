@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import LazyLoad from '../mixins/lazyLoad'
+import lazyLoad from '../mixins/lazyLoad'
 import VButton from '../button'
 
 export default {
@@ -54,7 +54,7 @@ export default {
   components: {
     VButton
   },
-  mixins: [LazyLoad],
+  mixins: [lazyLoad],
   props: {
     value: {
       type: Boolean,

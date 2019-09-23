@@ -15,9 +15,9 @@
 </template>
 
 <script>
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
-import Badge from 'muvc/badge'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
+import Badge from 'lvan/badge'
 
 export default {
   name: 'page-badge',

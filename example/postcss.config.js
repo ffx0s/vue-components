@@ -1,4 +1,4 @@
-const { properties } = require('muvc/styles/variables')
+const { properties } = require('lvan/styles/variables')
 
 module.exports = {
   plugins: {

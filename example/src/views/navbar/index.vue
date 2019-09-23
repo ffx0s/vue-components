@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import Headroom from 'muvc/headroom'
+import Headroom from 'lvan/headroom'
 
 export default {
   name: 'page-navbar',

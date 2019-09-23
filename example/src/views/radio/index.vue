@@ -32,10 +32,10 @@
 </template>
 
 <script>
-import Radio from 'muvc/radio'
-import RadioGroup from 'muvc/radio/group'
-import Group from 'muvc/cell/group'
-import Cell from 'muvc/cell'
+import Radio from 'lvan/radio'
+import RadioGroup from 'lvan/radio/group'
+import Group from 'lvan/cell/group'
+import Cell from 'lvan/cell'
 
 export default {
   name: 'page-radio',

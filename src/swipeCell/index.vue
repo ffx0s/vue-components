@@ -4,11 +4,7 @@
     :class="{ 'v-swipe-cell--active': active }"
     :clickable="false"
     v-bind="$attrs"
-    v-on="$listeners"
-    @touchstart.native="pointerdown"
-    @touchmove.native="pointermove"
-    @touchend.native="pointerup"
-    @mousedown.native="onMousedown"
+    @click="noop"
     ref="cell"
   >
     <slot slot="title" name="title" />
@@ -54,27 +50,24 @@
 
 <script>
 import Cell from '../cell'
-import { Handler, mouseMove } from '../utils/event'
-import { addListener, isTouchDevice } from '../utils/shared'
+import ETouch from '../utils/etouch'
+import { addListener, noop } from '../utils/shared'
 
 const instances = []
-let closing = false
+let currentIndex = null
 
 let bindGlobalCloseEvent = function() {
   addListener(document.body, 'touchstart', closeAll)
-  bindGlobalCloseEvent = () => {}
+  bindGlobalCloseEvent = noop
 }
 
-function closeAll(exclude) {
-  if (!closing) {
-    closing = true
-    instances.forEach(vm => {
-      if (exclude === vm) return
-      if (vm.translate !== 0) {
-        vm.close()
-      }
-    })
-  }
+function closeAll() {
+  instances.forEach((vm, index) => {
+    if (index !== currentIndex && vm.translate !== 0) {
+      vm.close()
+    }
+  })
+  currentIndex = null
 }
 
 export default {
@@ -136,93 +129,91 @@ export default {
   created() {
     this.duration = 0
     this.translate = 0
-    this.handler = new Handler({
-      panleft: this.update,
-      panright: this.update,
-      threshold: this.threshold,
-      isPreventDefault: this.isPreventDefault
-    })
+
     instances.push(this)
+  },
+  mounted() {
+    bindGlobalCloseEvent()
+
+    this.setStyle = ETouch.rAFThrottle(this.setStyle)
+
+    this.touch = new ETouch({
+      el: this.$el,
+      lockDirection: ETouch.HORIZONTAL,
+      threshold: this.threshold
+    })
+      .on('down', this.down)
+      .on('panstart', this.panstart)
+      .on('panleft panright', this.panmove)
+      .on('up', this.up)
   },
   beforeDestroy() {
     const index = instances.indexOf(this)
     if (index !== -1) {
       instances.splice(index, 1)
     }
-    this.swipeCellEl = null
-  },
-  mounted() {
-    bindGlobalCloseEvent()
-    this.swipeCellEl = this.$refs.cell.$el
+    this.touch.destroy()
+    this.touch = null
   },
   methods: {
-    pointerdown(event) {
-      if (this.translate !== 0) {
-        event.preventDefault()
-      }
-      closeAll(this)
-      this.handler.start(event)
+    noop() {},
+    down() {
       this.startTranslate = this.translate
+      currentIndex = instances.indexOf(this)
     },
-    pointermove(event) {
-      this.renderHandler = true
-      this.handler.move(event)
-    },
-    pointerup() {
-      this.handler.up()
-      closing = false
-
+    up() {
       const action = this.shouldSlide()
 
-      if (!action) {
-        this.setActive()
-        return
-      }
+      if (!action) return
+      if (action.click) return this.click()
       if (action.restore) return this.restore()
       if (action.close) return this.close()
       if (action.openRight) return this.openRight()
       if (action.openLeft) this.openLeft()
     },
-    onMousedown(event) {
-      if (isTouchDevice()) return
-      event.preventDefault()
-      this.pointerdown(event)
-      mouseMove(this.pointermove, this.pointerup)
+    panstart() {
+      this.renderHandler = true
     },
-    update(x) {
-      if (x < this.min) x = this.min
-      else if (x > this.max) x = this.max
+    panmove(event, { vx }) {
+      ETouch.preventDefault(event)
+
+      if (vx < this.min) vx = this.min
+      else if (vx > this.max) vx = this.max
 
       const width = this.getItemsWidth()
       const value =
-        Math.abs(this.translate) > width || width === 0 ? this.friction * x : x
+        Math.abs(this.translate) > width || width === 0
+          ? this.friction * vx
+          : vx
 
-      this.setTranslate(this.translate + value, 0)
-    },
-    isPreventDefault() {
-      return this.handler.is('panleft') || this.handler.is('panright')
+      this.updateElement(this.translate + value, 0)
     },
     openLeft() {
-      this.setTranslate(this.getLeftItemsWidth(), this.animationDuration)
+      this.updateElement(this.getLeftItemsWidth(), this.animationDuration)
     },
     openRight() {
-      this.setTranslate(-this.getRightItemsWidth(), this.animationDuration)
+      this.updateElement(-this.getRightItemsWidth(), this.animationDuration)
     },
     close() {
-      this.setTranslate(0, this.animationDuration)
+      this.updateElement(0, this.animationDuration)
       this.confirmDelete = false
     },
     restore() {
-      this.setTranslate(this.startTranslate, this.animationDuration)
+      this.updateElement(this.startTranslate, this.animationDuration)
+    },
+    click() {
+      this.setActive()
+
+      const cell = this.$refs.cell
+      this.$listeners.click ? this.$emit('click') : cell.click()
     },
     setActive() {
-      const isLink = this.$refs.cell.isLink
-      if (isLink) {
-        this.active = isLink
+      if (this.$refs.cell.isLink) {
+        this.active = true
         clearTimeout(this.activeTimer)
         this.activeTimer = setTimeout(() => {
           this.active = false
-        }, 200)
+        }, 100)
       }
     },
     getLeftItemsWidth() {
@@ -243,16 +234,19 @@ export default {
         : this.getLeftItemsWidth()
     },
     shouldSlide() {
-      if (!this.handler.moved && this.translate) return { close: true }
+      if (!this.touch.moved) {
+        if (this.translate === 0) return { click: true }
+        if (this.translate !== 0) return { close: true }
+      }
 
-      const panleft = this.handler.is('panleft')
-      const panright = this.handler.is('panright')
+      const panleft = this.touch.is('panleft')
+      const panright = this.touch.is('panright')
 
       if (!panleft && !panright) return false
 
       const width = this.getItemsWidth()
 
-      if (this.handler.isFast) {
+      if (this.touch.isSwipe) {
         const isOpen = this.startTranslate !== 0
         const openRight = !isOpen && panleft
         const openLeft = !isOpen && panright
@@ -291,16 +285,20 @@ export default {
         this.$emit('delete', this.close)
       }
     },
-    setTranslate(translate, duration) {
-      const style = this.swipeCellEl.style
-
-      style.transform = style.webkitTransform = `translateX(${translate}px)`
-      // eslint-disable-next-line prettier/prettier
-      style.transitionDuration =
-      style.webkitTransitionDuration = `${duration}ms`
-
+    updateElement(translate, duration) {
       this.translate = translate
       this.duration = duration
+      this.setStyle()
+    },
+    setStyle() {
+      const style = this.$el.style
+
+      // eslint-disable-next-line prettier/prettier
+      style.transform = style.webkitTransform = `translateX(${this.translate}px)`
+
+      // eslint-disable-next-line prettier/prettier
+      style.transitionDuration =
+      style.webkitTransitionDuration = `${this.duration}ms`
     }
   }
 }
