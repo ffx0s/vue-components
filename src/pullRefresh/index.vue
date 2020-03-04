@@ -37,12 +37,8 @@
 <script>
 import Loading from '../loading'
 import ETouch from '../utils/etouch'
-import {
-  sleep,
-  browser,
-  getScrollEventTarget,
-  getScrollTop
-} from '../utils/shared'
+import { sleep, browser } from '../utils/shared'
+import { getScrollEventTarget, getScrollTop } from '../utils/scroll'
 
 export default {
   name: 'PullRefresh',
@@ -139,6 +135,7 @@ export default {
   },
   mounted() {
     const { android, ios } = browser()
+
     if (ios || (android && parseFloat(android) >= 5.1)) {
       this.showWave = this.wave
     }

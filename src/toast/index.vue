@@ -36,13 +36,10 @@ export default {
     Loading
   },
   props: {
+    title: String,
     value: {
       type: Boolean,
       required: true
-    },
-    title: {
-      type: String,
-      required: false
     },
     delay: {
       type: Number,
@@ -99,8 +96,8 @@ export default {
   transition: opacity 300ms;
 }
 .v-toast--large {
-  width: 94px;
-  height: 94px;
+  min-width: 94px;
+  min-height: 94px;
   & .v-toast__title {
     padding-top: 8px;
   }

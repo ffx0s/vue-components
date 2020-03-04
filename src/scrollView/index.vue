@@ -69,7 +69,6 @@ export default {
     // 滚动宽度，只作用于水平滚动
     scrollWidth: {
       type: Number,
-      required: false,
       default: 5000
     },
     // 两边遮罩层的渐变颜色

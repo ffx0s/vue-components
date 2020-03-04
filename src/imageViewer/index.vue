@@ -83,7 +83,7 @@
 <script>
 import lazyLoad from '../mixins/lazyLoad'
 import touch from './touch'
-import Swipe from '../swipe/swipe'
+import Swipe from '../swipe'
 import SwipeItem from '../swipe/item'
 import Ring from '../ring'
 import Delay from '../delay'

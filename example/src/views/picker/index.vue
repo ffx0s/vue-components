@@ -58,7 +58,7 @@ export default {
           selectedIndex: 7
         },
         {
-          values: Array.from({ length: 30 }, (v, k) => k),
+          values: Array.from({ length: 30 }, (v, k) => k + 1),
           selectedIndex: 8
         }
       ],

@@ -1,7 +1,10 @@
 <template>
   <transition :name="transitionName">
     <div class="v-popup" v-if="loaded" v-show="value">
-      <div class="v-popup__content" :class="'v-popup--' + position">
+      <div
+        class="v-popup__content"
+        :class="['v-popup--' + position, contentClass]"
+      >
         <slot />
       </div>
       <div
@@ -40,6 +43,10 @@ export default {
     position: {
       type: String,
       default: 'bottom'
+    },
+    contentClass: {
+      type: String,
+      default: ''
     }
   },
   methods: {

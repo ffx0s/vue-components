@@ -23,3 +23,13 @@
 .v-background-warning {
   background-color: var(--warning)
 }
+
+.v-text-primary {
+  color: var(--textPrimary);
+}
+.v-text-regular {
+  color: var(--textRegular);
+}
+.v-text-secondary {
+  color: var(--textSecondary);
+}

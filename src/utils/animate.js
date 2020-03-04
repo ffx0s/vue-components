@@ -1,9 +1,5 @@
 import easing from './easing'
 
-/**
- * 获取当前时间戳
- * @returns {Number} 时间戳
- */
 const now = () => new Date().getTime()
 
 /**

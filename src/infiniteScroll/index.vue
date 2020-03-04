@@ -1,5 +1,5 @@
 <template>
-  <WithScroll :onscroll="update" rAF>
+  <WithScroll @scroll="update" rAF>
     <component
       v-bind="$attrs"
       :is="pullRefresh ? 'PullRefresh' : 'div'"
@@ -48,6 +48,11 @@ export default {
     Loading
   },
   props: {
+    // 组件安装后，立即检查页面滚动位置是否需要加载数据
+    check: {
+      type: Boolean,
+      default: true
+    },
     // 加载中
     value: {
       type: Boolean,
@@ -96,7 +101,7 @@ export default {
     },
     failedClass: {
       type: String,
-      default: ''
+      default: 'v-infinite-scroll__failed'
     }
   },
   data() {
@@ -107,11 +112,22 @@ export default {
   },
   watch: {
     value: {
-      handler: function(value) {
-        value && this.load()
+      handler: function(loading) {
+        if (loading) {
+          this.load()
+        } else {
+          this.isLoading = false
+        }
       },
       immediate: true
     }
+  },
+  mounted() {
+    setTimeout(() => {
+      if (this.check) {
+        this.update()
+      }
+    }, 50)
   },
   methods: {
     update() {
@@ -158,11 +174,13 @@ export default {
   justify-content: center;
 }
 .v-infinite-scroll__empty {
-  min-height: 400px;
   display: flex;
   align-items: center;
 }
-.v-infinite-scroll__loading {
-  color: var(--textSecondary);
+.v-infinite-scroll__failed {
+  cursor: pointer;
+  &:hover {
+    color: var(--primary);
+  }
 }
 </style>

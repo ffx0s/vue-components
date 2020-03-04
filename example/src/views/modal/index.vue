@@ -13,26 +13,29 @@
         @confirm="confirmShow = false"
         @cancel="confirmShow = false"
         showCancelButton
-      >
-        <strong slot="header">活动开启啦</strong>
-        <div>你关注的活动已经开启，是否前往报名？</div>
-      </VModal>
+        title="活动开启啦"
+        content="你关注的活动已经开启，是否前往报名？"
+      />
 
-      <VModal v-transfer-dom v-model="alertShow" @confirm="alertShow = false">
-        <strong slot="header">视频上传失败</strong>
-        <div>网络已断开，请检查你的网络设置。</div>
-      </VModal>
+      <VModal
+        v-transfer-dom
+        v-model="alertShow"
+        @confirm="alertShow = false"
+        title="视频上传失败"
+        content="网络已断开，请检查你的网络设置。"
+      />
+
       <VModal v-transfer-dom v-model="customShow" :showConfirmButton="false">
-        自定义
+        <p>自定义</p>
       </VModal>
 
       <h4>属性</h4>
       <VButton
-        @click="$modal({ overlayClick: false, body: '点击遮罩层不关闭' })"
+        @click="$modal({ overlayClick: false, content: '点击遮罩层不关闭' })"
       >
         点击遮罩层不关闭
       </VButton>
-      <VButton @click="$modal({ overlay: false, body: '无遮罩层' })">
+      <VButton @click="$modal({ overlay: false, content: '无遮罩层' })">
         无遮罩层
       </VButton>
       <br />
@@ -40,7 +43,7 @@
       <VButton
         @click="
           $modal({
-            body: '修改按钮文案',
+            content: '修改按钮文案',
             showCancelButton: true,
             confirmText: 'Confirm',
             cancelText: 'Cancel'
@@ -49,7 +52,7 @@
       >
         按钮文案
       </VButton>
-      <VButton @click="$modal({ body: '有头部', header: '提示' })">
+      <VButton @click="$modal({ title: '提示', content: '有头部' })">
         有头部
       </VButton>
       <br />
@@ -77,7 +80,7 @@ export default {
   methods: {
     loadingAction() {
       this.$modal({
-        body: '确定后,等待2秒后关闭',
+        content: '确定后,等待2秒后关闭',
         overlayClick: false,
         showCancelButton: true,
         confirm(instance) {

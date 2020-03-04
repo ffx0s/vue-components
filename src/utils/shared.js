@@ -30,7 +30,6 @@ export let browser = function(userAgent) {
     webkit: u.indexOf('AppleWebKit') > -1,
     // 火狐
     gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') === -1,
-    // 移动终端
     mobile: !!u.match(/AppleWebKit.*Mobile.*/),
     // mac
     mac: u.indexOf('Mac') > -1,
@@ -39,9 +38,8 @@ export let browser = function(userAgent) {
     weixin: u.indexOf('MicroMessenger') > -1
   }
 
-  info.safari = info.ios && !info.chromeIOS
-
   browser = () => info
+
   return info
 }
 
@@ -102,85 +100,6 @@ export function removeListener(
   element.removeEventListener(type, fn, options.capture)
 }
 
-export function getScrollTop(el) {
-  if (el && el.nodeType) return el.scrollTop
-  return (
-    window.pageYOffset ||
-    document.documentElement.scrollTop ||
-    document.body.scrollTop
-  )
-}
-
-export function setScrollTop(el, scrollTop) {
-  if (el.nodeType) el.scrollTop = scrollTop
-  else el.scrollTo(0, scrollTop)
-}
-
-export function getScrollEventTarget(element) {
-  let currentNode = element
-  while (
-    currentNode &&
-    currentNode.tagName !== 'HTML' &&
-    currentNode.tagName !== 'BODY' &&
-    currentNode.nodeType === 1
-  ) {
-    const overflowY = getComputedStyle(currentNode).overflowY
-    if (overflowY === 'scroll' || overflowY === 'auto') {
-      return currentNode
-    }
-    currentNode = currentNode.parentNode
-  }
-  return window
-}
-
-// 在页面底部/顶部滚动时，阻止默认事件。可以解决 safari 页面滚动不了的问题。
-export function fixedSpringback(touchTarget) {
-  if (fixedSpringback.isBind) return
-
-  let lastX = 0
-  let lastY = 0
-  let scroller = null
-
-  function touchstart(event) {
-    lastX = event.touches[0].clientX
-    lastY = event.touches[0].clientY
-    scroller = getScrollEventTarget(event.target)
-    if (scroller === window) scroller = null
-  }
-
-  function touchmove(event) {
-    if (!scroller) return
-
-    const clientX = event.touches[0].clientX
-    const clientY = event.touches[0].clientY
-    const x = clientX - lastX
-    const y = clientY - lastY
-    const isVertical = Math.abs(x) <= Math.abs(y)
-
-    if (isVertical) {
-      const pullUpAction = y <= 0
-      const scrollTop = scroller.scrollTop
-
-      if (
-        (!pullUpAction && scrollTop <= 0) ||
-        (pullUpAction &&
-          Math.floor(scroller.scrollHeight - scroller.offsetHeight) <=
-            scrollTop)
-      ) {
-        event.cancelable && event.preventDefault()
-      }
-    }
-
-    lastX = clientX
-    lastY = clientY
-  }
-
-  addListener(touchTarget, 'touchstart', touchstart)
-  addListener(touchTarget, 'touchmove', touchmove, { passive: false })
-
-  fixedSpringback.isBind = true
-}
-
 /**
  * 获取当前组件的父级
  * @param {Object} current 当前组件实例
@@ -192,6 +111,25 @@ export function getVMParent(current, name) {
     parent = parent.$parent
   }
   return parent
+}
+
+export function loadCSS(id, href) {
+  if (!document.getElementById(id)) {
+    const head = document.getElementsByTagName('head')[0]
+    const link = document.createElement('link')
+    link.id = id
+    link.rel = 'stylesheet'
+    link.type = 'text/css'
+    link.href = href
+    head.appendChild(link)
+  }
+
+  return function remove() {
+    const styleEl = document.getElementById(id)
+    if (styleEl) {
+      styleEl.remove()
+    }
+  }
 }
 
 export function loadJS(url) {
@@ -207,18 +145,21 @@ export function loadJS(url) {
 
 export function jsonp(url, options) {
   return new Promise((resolve, reject) => {
-    const callbackKey = 'callback'
-    const callbackName = 'jsonp_' + Date.now()
-    options = Object.assign({ callbackKey, callbackName }, options)
-    url += `${url.split('?')[1] ? '&' : '?'}${options.callbackKey}=${
-      options.callbackName
-    }`
+    const defaultOptions = {
+      callbackKey: 'callback',
+      callbackName: 'jsonp_' + Date.now()
+    }
+    const { callbackKey, callbackName } = Object.assign(defaultOptions, options)
+
+    url += `${url.split('?')[1] ? '&' : '?'}${callbackKey}=${callbackName}`
+
     window[callbackName] = function(data) {
       resolve(data)
       setTimeout(() => {
         window[callbackName] = null
       })
     }
+
     loadJS(url).catch(reject)
   })
 }
@@ -370,4 +311,10 @@ export const view = {
 
 if (!process.server) {
   view.bind()
+}
+
+export function disablePagezoom() {
+  document.addEventListener('gesturestart', function(event) {
+    event.preventDefault()
+  })
 }

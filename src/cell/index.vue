@@ -55,33 +55,18 @@ import { getVMParent } from '../utils/shared'
 export default {
   name: 'Cell',
   props: {
+    href: String,
+    to: [String, Object],
+    title: [String, Number],
+    describe: [String, Number],
+    value: [String, Number],
     tag: {
       type: String,
       default: 'div'
     },
-    title: {
-      type: [String, Number],
-      required: false
-    },
-    describe: {
-      type: [String, Number],
-      required: false
-    },
     isLink: {
       type: Boolean,
       default: false
-    },
-    href: {
-      type: String,
-      required: false
-    },
-    to: {
-      type: [String, Object],
-      required: false
-    },
-    value: {
-      type: [String, Number],
-      required: false
     },
     clickable: {
       type: [Boolean, undefined],
@@ -165,7 +150,9 @@ export default {
     width: 100%;
     font-size: 16px;
     line-height: 21px;
+    outline: none;
     background-color: transparent;
+    -webkit-tap-highlight-color: transparent;
     &:disabled {
       background-color: transparent;
     }
@@ -178,6 +165,7 @@ export default {
     line-height: 24px;
     resize: none;
     vertical-align: middle;
+    -webkit-tap-highlight-color: transparent;
     &::placeholder {
       color: var(--textRegular);
     }

@@ -71,7 +71,7 @@
       <h4>图标按钮</h4>
       <VButton type="icon">
         <img
-          src="../../assets/icon-delete.svg"
+          src="../../assets/images/icon-delete.svg"
           style="width:20px;height:20px;"
         />
       </VButton>

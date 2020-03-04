@@ -1,6 +1,6 @@
 <template>
-  <div class="v-picker__column" :class="column.className">
-    <ul class="v-picker__items" ref="column">
+  <div class="v-picker__column" :class="column.className" ref="column">
+    <ul class="v-picker__items" ref="items">
       <li
         class="v-picker__item"
         :class="{
@@ -13,7 +13,6 @@
         {{ getValue(value) }}
       </li>
     </ul>
-    <div class="v-picker__overlay" :data-index="columnIndex"></div>
   </div>
 </template>
 
@@ -25,11 +24,7 @@ export default {
       type: Object,
       default: () => {}
     },
-    columnIndex: Number,
-    itemHeight: {
-      type: Number,
-      default: 40
-    }
+    columnIndex: Number
   },
   data() {
     return {
@@ -42,6 +37,12 @@ export default {
     this.translate = 0
   },
   mounted() {
+    const mainHeight = this.$parent.mainHeight
+
+    if (!mainHeight) {
+      this.$parent.mainHeight = this.$refs.column.offsetHeight
+    }
+
     this.select(this.selectedIndex, 0)
   },
   methods: {
@@ -50,6 +51,8 @@ export default {
 
       const selectedIndex = this.selectedIndex
       const maxIndex = Math.max(this.column.values.length - 1, 0)
+      const columnHeight = this.$parent.mainHeight
+      const itemHeight = this.$parent.itemHeight
 
       index = Math.min(Math.max(index, 0), maxIndex)
 
@@ -60,13 +63,17 @@ export default {
         index = selectedIndex
       }
 
-      this.setTranslate(-(index - 2) * this.itemHeight, duration)
+      this.moveTo(
+        -(itemHeight * index - (columnHeight - itemHeight) / 2),
+        duration
+      )
+
       this.selectedIndex = index
 
       if (index !== selectedIndex && emit) this.$emit('change')
     },
-    setTranslate(translate, duration) {
-      const style = this.$refs.column.style
+    moveTo(translate, duration = 0) {
+      const style = this.$refs.items.style
 
       style.transform = style.webkitTransform = `translate3d(0, ${translate}px, 0)`
       // eslint-disable-next-line prettier/prettier
@@ -81,6 +88,10 @@ export default {
 </script>
 
 <style lang="postcss">
+:root {
+  --itemHeight: 48px;
+}
+
 .v-picker__column {
   position: relative;
   flex: 1;
@@ -99,20 +110,20 @@ export default {
 }
 .v-picker__item {
   padding: 0 6px;
-  height: 40px;
-  line-height: 40px;
+  height: var(--itemHeight);
+  line-height: var(--itemHeight);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
   transition: 0.3s color;
 }
-.v-picker__overlay {
+.v-picker__select {
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 50%;
+  margin-top: calc(var(--itemHeight) / 2 * -1);
   width: 100%;
-  height: 100%;
-  z-index: 2;
+  height: var(--itemHeight);
+  pointer-events: none;
 }
 .v-picker--selected {
   color: var(--textPrimary);

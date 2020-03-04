@@ -471,7 +471,12 @@ ETouch.defaultOptions = {
   touchstartEventOptions: passive,
   touchmoveEventOptions: passive,
   touchendEventOptions: passive,
-  // 移动时是否锁定水平/垂直方向
+  /**
+   * 移动时是否锁定水平/垂直方向，可选值：false|String
+   * false - 不锁定方向
+   * vertical - 锁定垂直方向
+   * horizontal - 锁定水平方向
+   */
   lockDirection: false,
   eventTypes: {
     down: 'down',
@@ -498,12 +503,12 @@ ETouch.defaultOptions = {
   // 快速滑动的阈值
   threshold: 3,
   /**
-   * 缩放原点设置，可选值：
-   * null：不设置原点缩放
-   * true:：以两指中心点为原点进行缩放
-   * {x, y}：以 x,y 为原点进行缩放
+   * 缩放原点设置，可选值：false|true|{x, y}
+   * false - 不设置原点缩放
+   * true - 以两指中心点为原点进行缩放
+   * {x: Number, y: Number} - 以 x,y 为原点进行缩放
    */
-  origin: null,
+  origin: false,
   // 缩放的同时是否可以移动
   zoomMove: true,
   // 获取元素的当前位置的函数

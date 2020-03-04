@@ -27,7 +27,7 @@
       <img
         @click="$toast('删除')"
         slot="right"
-        src="../../assets/icon-delete.svg"
+        src="../../assets/images/icon-delete.svg"
         style="width:20px;height:20px;"
       />
     </Navbar>

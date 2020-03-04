@@ -52,6 +52,10 @@ export default {
     VButton
   },
   props: {
+    title: String,
+    titleColor: String,
+    backIconColor: String,
+    backgroundColor: String,
     fixed: {
       type: Boolean,
       default: false
@@ -59,19 +63,6 @@ export default {
     border: {
       type: Boolean,
       default: true
-    },
-    title: {
-      type: String,
-      required: false
-    },
-    titleColor: {
-      type: String
-    },
-    backIconColor: {
-      type: String
-    },
-    backgroundColor: {
-      type: String
     },
     height: {
       type: [String, Number],

@@ -14,6 +14,7 @@ export default {
   name: 'VSwitch',
   props: {
     value: {
+      type: Boolean,
       required: true
     },
     color: {
@@ -59,6 +60,7 @@ export default {
   transition: background 0.3s, border-color 0.3s;
   cursor: pointer;
   transform: translateZ(0);
+  -webkit-tap-highlight-color: transparent;
 }
 .v-switch__circle {
   position: absolute;

@@ -14,16 +14,11 @@
 export default {
   name: 'Badge',
   props: {
-    value: {
-      type: [Number, String]
-    },
+    value: [Number, String],
+    size: [Number, String],
     type: {
       type: String,
       default: 'default'
-    },
-    size: {
-      type: [String, Number],
-      required: false
     }
   },
   computed: {
@@ -45,6 +40,7 @@ export default {
   border-radius: 20px;
   color: white;
   text-align: center;
+  white-space: nowrap;
 }
 .v-badge__circle {
   width: 8px;

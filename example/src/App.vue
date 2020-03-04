@@ -28,6 +28,7 @@ import AnimatedRoute from 'lvan/route'
 import Gruop from 'lvan/cell/group'
 import Cell from 'lvan/cell'
 import Drawer from 'lvan/drawer'
+import { disablePagezoom } from 'lvan/utils/shared'
 
 export default {
   name: 'App',
@@ -57,53 +58,19 @@ export default {
         return this.$store.state.page.drawerDirection
       }
     }
+  },
+  mounted() {
+    disablePagezoom()
   }
 }
 </script>
 
 <style lang="postcss">
-@import '~lvan/styles/1px.css';
-@import '~lvan/styles/animate.css';
-@import '~lvan/styles/color.css';
-@import '~lvan/styles/skeleton.css';
+@import '~lvan/styles/index.css';
 @import './assets/font/css/fontello.css';
+@import '~normalize.css';
 
-a {
-  text-decoration: none;
-}
-
-a,
-button,
-div,
-input,
-select,
-textarea {
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-  -webkit-tap-highlight-color: transparent !important;
-  outline: none;
-}
-
-html {
-  font-size: 16px;
-  font-family: sans-serif;
-  -webkit-text-size-adjust: 100%;
-}
-
-a,
-img,
-label {
-  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
-}
-
-input:focus {
-  outline: 0;
-}
-
-html,
-body {
-  margin: 0;
-  width: 100%;
-}
+/* app css */
 
 h4 {
   margin: 0;
@@ -112,9 +79,7 @@ h4 {
 }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang SC',
-    'Hiragino Sans GB', 'Heiti SC', 'Microsoft YaHei', 'WenQuanYi Micro Hei',
-    sans-serif;
+  font-family: -apple-system-font, Helvetica Neue, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   word-break: break-all;

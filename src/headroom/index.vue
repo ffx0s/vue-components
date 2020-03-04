@@ -1,16 +1,19 @@
 <template>
   <WithScroll
     rAF
-    class="v-haedroom"
     :class="[
+      'v-haedroom',
       'v-headroom__' + position,
       positionClass,
       toggleClass && transitionClass,
       toggleClass
     ]"
-    :style="[{ height: this.containerHeight + 'px' }, transformFixedStyle]"
-    :onscroll="update"
+    :style="[
+      { height: containerHeight ? containerHeight + 'px' : null },
+      transformFixedStyle
+    ]"
     v-transfer-dom="transfer"
+    @scroll="update"
   >
     <slot />
   </WithScroll>

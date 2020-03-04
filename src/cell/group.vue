@@ -19,10 +19,7 @@ const name = 'Group'
 export default {
   name,
   props: {
-    title: {
-      type: String,
-      required: false
-    },
+    title: String,
     labelWidth: {
       type: [String, Number],
       default: 0
@@ -59,6 +56,7 @@ export default {
 }
 .v-group__cells {
   background-color: #fff;
+  -webkit-tap-highlight-color: transparent;
 }
 .v-group .v-cell:last-child .v-cell__content.v-bd-bottom:after {
   display: none;

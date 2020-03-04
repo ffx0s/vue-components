@@ -48,12 +48,12 @@ export default {
       type: Number,
       default: 10
     },
-    // 滑动的距离，超过这个值切换下一张
+    // 滑动的距离，超过这个值切换下一项
     distance: {
       type: Number,
       default: 30
     },
-    // 上一张下一张临界点的滑动阻力
+    // 第一项和最后一项滑动时的阻力
     friction: {
       type: Number,
       default: 0.2
@@ -78,7 +78,7 @@ export default {
       type: Boolean,
       default: false
     },
-    // 优化模式，设置当前的 swipeItem display:block，其它为 none
+    // 优化模式，设置当前项 display 为 block，其它为 none
     optimization: {
       type: Boolean,
       default: false
@@ -187,7 +187,6 @@ export default {
 
       this.$emit('panend', action)
 
-      if (!action) return
       if (action.restore) return this.slide(this.currentIndex)
       if (action.next) return this.next()
       if (action.prev) return this.prev()
@@ -283,7 +282,7 @@ export default {
       return index >= 0 && index < this.items.length
     },
     getVaildIndex(index) {
-      return Math.max(Math.min(index || 0, this.items.length - 1), 0)
+      return Math.max(Math.min(index, this.items.length - 1), 0)
     },
     getSwipeRect() {
       return (

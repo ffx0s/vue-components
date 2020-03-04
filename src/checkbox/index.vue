@@ -3,7 +3,8 @@
     :is="tag"
     class="v-checkbox"
     :class="{
-      'v-checkbox--disbled': disabled
+      [disbledClass]: disabled,
+      [checkedClass]: checked
     }"
   >
     <span v-if="textAlign === 'left'" class="v-checkbox__text">
@@ -14,7 +15,7 @@
       type="checkbox"
       class="v-checkbox__input"
       :checked="checked"
-      :style="inputStyle"
+      :style="colorStyle"
       :disabled="disabled"
       @change="change($event.target.checked)"
     />
@@ -27,7 +28,6 @@
 
 <script>
 import { getVMParent } from '../utils/shared'
-import { properties } from '../styles/variables'
 
 export default {
   name: 'Checkbox',
@@ -43,7 +43,7 @@ export default {
     },
     color: {
       type: String,
-      default: properties.primary
+      default: ''
     },
     disabled: {
       type: Boolean,
@@ -52,6 +52,14 @@ export default {
     textAlign: {
       type: String,
       default: 'right'
+    },
+    disbledClass: {
+      type: String,
+      default: 'v-checkbox--disbled'
+    },
+    checkedClass: {
+      type: String,
+      default: 'v-checkbox--checked'
     }
   },
   computed: {
@@ -65,10 +73,13 @@ export default {
         this.change(value)
       }
     },
-    inputStyle() {
+    colorStyle() {
+      if (!this.color) return {}
+
       if (this.checked) {
         return { backgroundColor: this.color, borderColor: this.color }
       }
+
       return { backgroundColor: 'transparent' }
     }
   },
@@ -114,8 +125,15 @@ export default {
   vertical-align: middle;
   cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
   & + .v-checkbox {
     margin-left: 15px;
+  }
+}
+.v-checkbox--checked {
+  & .v-checkbox__input {
+    border-color: var(--primary);
+    background-color: var(--primary);
   }
 }
 .v-checkbox--disbled {

@@ -23,7 +23,7 @@
                 @click="showDeleteActionsheet(index)"
               >
                 <img
-                  src="../../assets/icon-delete.svg"
+                  src="../../assets/images/icon-delete.svg"
                   style="width:20px;height:20px;"
                 />
               </VButton>

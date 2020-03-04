@@ -287,6 +287,7 @@ export default {
     },
 
     animate(x, y, scale, options = { time: 450, type: 'easeOutCubic' }) {
+      const index = this.index
       const style = this.getCurrentStyle()
 
       this.inAnimation && this.animation.stop()
@@ -304,7 +305,7 @@ export default {
             duration: 0
           })
 
-          this.setStyle(style, this.index)
+          this.setStyle(style, index)
         },
         stop: () => {
           this.inAnimation = false

@@ -7,21 +7,20 @@ import {
   throttle,
   rAFThrottle,
   addListener,
-  removeListener,
+  removeListener
+} from '../utils/shared'
+
+import {
   setScrollTop,
   getScrollTop,
   getScrollEventTarget
-} from '../utils/shared'
+} from '../utils/scroll'
 
 export default {
   name: 'WithScroll',
   props: {
     rAF: Boolean,
-    wait: Number,
-    onscroll: {
-      type: Function,
-      default: () => {}
-    }
+    wait: Number
   },
   mounted() {
     this.bind()
@@ -54,7 +53,7 @@ export default {
     },
     handleScroll() {
       this.scrollTop = getScrollTop(this.scrollEl)
-      this.onscroll(this.scrollTop)
+      this.$emit('scroll', this.scrollTop)
     },
     setScrollTop(scrollTop) {
       setScrollTop(this.scrollEl, scrollTop)

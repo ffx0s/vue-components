@@ -1,7 +1,7 @@
 <template>
   <div class="v-picker">
     <slot name="toolbar">
-      <div class="v-picker__toolbar v-bd-bottom">
+      <div class="v-picker__toolbar">
         <VButton text type="primary" @click="cancel">
           {{ cancelText }}
         </VButton>
@@ -36,6 +36,7 @@ import Column from './column'
 import Loading from '../loading'
 import VButton from '../button'
 import Delay from '../delay'
+import { view } from '../utils/shared'
 
 export default {
   name: 'Picker',
@@ -82,6 +83,10 @@ export default {
     loadingDelay: {
       type: Number,
       default: 0
+    },
+    itemHeight: {
+      type: Number,
+      default: 48
     }
   },
   data() {
@@ -91,16 +96,12 @@ export default {
     }
   },
   mounted() {
-    this.currentColumnIndex = 0
-
     this.touch = new ETouch({
       el: this.$refs.touchTarget,
-      threshold: this.threshold,
-      lockDirection: ETouch.VERTICAL
+      threshold: this.threshold
     })
       .on('down', this.down)
-      .on('panstart', this.panstart)
-      .on('panup pandown', this.panmove)
+      .on('panmove', this.panmove)
       .on('panend', this.panend)
       .on('tap', this.tap)
   },
@@ -109,30 +110,30 @@ export default {
     this.touch = null
   },
   methods: {
-    down(event) {
+    down(event, { clientX }) {
       ETouch.preventDefault(event)
-      this.currentColumnIndex = +event.target.dataset.index
-    },
-    panstart() {
-      if (this.isEmptyColumn()) return
 
-      const column = this.getCurrentColumn()
+      if (this.isTwoFingers()) return
 
-      column.setTranslate(column.translate, 0)
+      this.currentColumnIndex = Math.floor(
+        clientX / (view.width() / this.columns.length)
+      )
     },
     panmove(event, { vy }) {
-      if (this.isEmptyColumn()) return
+      if (this.isTwoFingers() || this.isEmptyColumn()) return
 
       ETouch.preventDefault(event)
 
       const column = this.getCurrentColumn()
 
-      column.setTranslate(column.translate + vy, 0)
+      column.moveTo(column.translate + vy)
     },
     panend(event, { vy }) {
-      if (this.isEmptyColumn()) return
+      if (this.isTwoFingers() || this.isEmptyColumn()) return
 
       const column = this.getCurrentColumn()
+      const columnHeight = this.mainHeight
+      const itemHeight = this.itemHeight
 
       let translate = column.translate
 
@@ -140,19 +141,34 @@ export default {
         translate += vy * 10
       }
 
-      const selectedIndex = Math.abs(
-        Math.round(
-          Math.min(translate, column.itemHeight * 2) / column.itemHeight - 2
-        )
+      const selectedIndex = Math.round(
+        ((columnHeight - itemHeight) / 2 - translate) / itemHeight
       )
 
       column.select(selectedIndex, this.animationDuration)
     },
-    tap() {
+    tap(event, { clientY }) {
       if (this.isEmptyColumn()) return
 
+      const y = this.mainHeight - (view.height() - clientY)
+      const nums = Math.round(y / this.itemHeight)
+      const mid = Math.round(this.mainHeight / this.itemHeight / 2)
+
+      if (nums === mid) return
+
       const column = this.getCurrentColumn()
-      column.select(column.selectedIndex + 1, this.animationDuration)
+      let selectedIndex = column.selectedIndex
+
+      if (nums < mid) {
+        selectedIndex -= mid - nums
+      } else {
+        selectedIndex += nums - mid
+      }
+
+      column.select(selectedIndex, this.animationDuration)
+    },
+    isTwoFingers() {
+      return this.touch.touchesLength >= 2
     },
     change() {
       const values = this.getValues()
@@ -254,13 +270,18 @@ export default {
 </script>
 
 <style lang="postcss">
+:root {
+  --mainHeight: 300px;
+}
+
 .v-picker {
+  border-radius: 12px 12px 0 0;
   background-color: white;
 }
 .v-picker__main {
   position: relative;
   width: 100%;
-  height: 200px;
+  height: var(--mainHeight);
   overflow: hidden;
 }
 .v-picker__columns {
@@ -278,20 +299,13 @@ export default {
     transparent
   );
 }
-.v-picker__select {
-  position: absolute;
-  top: 50%;
-  margin-top: -20px;
-  width: 100%;
-  height: 40px;
-  pointer-events: none;
-}
 .v-picker__loading {
+  display: flex;
+  align-items: center;
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
-  line-height: 200px;
   z-index: 2;
   color: var(--primary);
   background-color: rgba(255, 255, 255, 0.9);
@@ -300,7 +314,7 @@ export default {
   }
 }
 .v-picker__toolbar {
-  padding: 2px 0;
+  padding: 5px 0 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;

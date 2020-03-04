@@ -92,20 +92,19 @@ export default {
 }
 .v-notice--warning {
   color: var(--warning);
-  background-color: color(var(--warning) alpha(var(--alpha)));
+  background-color: color-mod(var(--warning) alpha(var(--alpha)));
 }
 .v-notice--primary {
-  background-color: var(--primary);
   color: var(--primary);
-  background-color: color(var(--primary) alpha(var(--alpha)));
+  background-color: color-mod(var(--primary) alpha(var(--alpha)));
 }
 .v-notice--success {
   color: var(--success);
-  background-color: color(var(--success) alpha(var(--alpha)));
+  background-color: color-mod(var(--success) alpha(var(--alpha)));
 }
 .v-notice--error {
   color: var(--error);
-  background-color: color(var(--error) alpha(var(--alpha)));
+  background-color: color-mod(var(--error) alpha(var(--alpha)));
 }
 .v-notice__title {
   flex: 1;

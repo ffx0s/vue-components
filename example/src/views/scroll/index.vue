@@ -41,7 +41,7 @@ export default {
 
     this.touch = new ETouch({
       el: this.$refs.scroll,
-      lockDirection: true,
+      lockDirection: ETouch.VERTICAL,
       position: () => this.transform
     })
       .on('down', this.down)

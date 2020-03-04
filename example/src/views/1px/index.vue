@@ -7,7 +7,6 @@
       <div class="px__item v-bd-top-bottom">上下边框</div>
       <div class="px__item v-bd-left">左边框</div>
       <div class="px__item v-bd-right">右边框</div>
-      <div class="px__item v-bd-left-right">左右边框</div>
     </div>
   </div>
 </template>

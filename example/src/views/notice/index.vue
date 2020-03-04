@@ -35,7 +35,7 @@ export default {
   methods: {
     showDetail() {
       this.$modal({
-        body: this.title + '...',
+        content: this.title + '...',
         confirmText: '我已了解'
       })
     }

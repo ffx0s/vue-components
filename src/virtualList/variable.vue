@@ -1,5 +1,5 @@
 <template>
-  <WithScroll :onscroll="handleScroll" :wait="50" ref="withScroll">
+  <WithScroll @scroll="handleScroll" :wait="50" ref="withScroll">
     <component :is="tag" class="v-virtual-variable" :style="style">
       <slot
         :visibleData="visibleData"

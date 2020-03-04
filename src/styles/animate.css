@@ -6,3 +6,13 @@
 .v-fade-leave-to {
   opacity: 0;
 }
+
+.v-slide-right-enter-active,
+.v-slide-right-leave-active {
+  transition: 0.3s;
+}
+.v-slide-right-enter,
+.v-slide-right-leave-to {
+  opacity: 0;
+  transform: translate3d(100%, 0, 0);
+}

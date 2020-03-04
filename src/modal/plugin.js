@@ -21,7 +21,7 @@ let modal
 function Modal(options) {
   if (process.server) return
   if (typeof options === 'string') {
-    options = { body: options }
+    options = { content: options }
   }
 
   options = { ...defaultOptions, ...options }

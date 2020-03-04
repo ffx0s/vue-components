@@ -1,12 +1,9 @@
-const { properties } = require('lvan/styles/variables')
-
 module.exports = {
   plugins: {
-    'postcss-cssnext': {
+    'postcss-preset-env': {
+      stage: 3,
       features: {
-        customProperties: {
-          variables: properties
-        }
+        'nesting-rules': true
       }
     }
   }

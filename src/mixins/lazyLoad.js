@@ -10,22 +10,15 @@ export default {
       loaded: !this.lazy
     }
   },
-  created() {
-    let unwatch = this.$watch(
-      'value',
-      function(show) {
-        if (!this.loaded && show) {
+  watch: {
+    value: {
+      handler: function(show) {
+        if (show && !this.loaded) {
           this.loaded = true
           this.$emit('loaded')
         }
-        if (this.loaded) {
-          setTimeout(() => {
-            unwatch()
-            unwatch = null
-          })
-        }
       },
-      { immediate: true }
-    )
+      immediate: true
+    }
   }
 }

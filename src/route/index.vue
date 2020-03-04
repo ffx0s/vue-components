@@ -2,10 +2,10 @@
   <div class="v-route" :class="{ 'v-route--3d': translate3d }">
     <transition
       :name="transitionName"
-      @afterEnter="afterEnter"
-      @afterLeave="afterLeave"
-      @enterCancelled="enterCancelled"
-      @leaveCancelled="leaveCancelled"
+      @afterEnter="emit('afterEnter', $el)"
+      @afterLeave="emit('afterLeave', $el)"
+      @enterCancelled="emit('enterCancelled', $el)"
+      @leaveCancelled="emit('leaveCancelled', $el)"
     >
       <keep-alive v-bind="$attrs">
         <router-view class="v-route__view" />
@@ -18,7 +18,7 @@
 <script>
 import Vue from 'vue'
 import { fixedSwipeBack, isForward, scroller } from './helpers'
-import { fixedSpringback } from '../utils/shared'
+import { fixedSpringback } from '../utils/scroll'
 
 const pageStatus = {}
 
@@ -42,12 +42,11 @@ export default {
   },
   computed: {
     transitionName() {
-      return this.direction
-        ? 'v-route-' +
-            (this.direction === 'forward'
-              ? `${this.effect}-in`
-              : `${this.effect}-out`)
-        : 'v-route--notransition'
+      const direction = this.direction
+
+      if (!direction) return 'v-route--notransition'
+
+      return `v-route-${this.effect}-${direction === 'forward' ? 'in' : 'out'}`
     }
   },
   created() {
@@ -81,8 +80,8 @@ export default {
   },
   methods: {
     // 页面切换方向控制
-    updateDirection(to, from) {
-      this.direction = isForward(to, from)
+    updateDirection(to) {
+      this.direction = isForward(to)
         ? pageStatus.go
           ? ''
           : 'forward'
@@ -92,18 +91,8 @@ export default {
 
       pageStatus.reset()
     },
-    afterEnter(el) {
-      this.$emit('afterEnter', el)
-    },
-    afterLeave(el) {
-      this.$emit('afterLeave', el)
-    },
-    enterCancelled(el) {
-      this.$emit('enterCancelled', el)
-    },
-    // leaveCancelled 只用于 v-show 中
-    leaveCancelled(el) {
-      this.$emit('leaveCancelled', el)
+    emit(name, el) {
+      this.$emit(name, el)
     },
     getPageScrollData(pagePath) {
       return this.scroller.historyPage[pagePath]

@@ -125,7 +125,7 @@ export default {
   font-weight: 400;
 }
 .v-actionsheet__describe {
-  margin: 0;
+  margin: 4px 0 0;
   color: var(--textRegular);
   font-size: 14px;
 }

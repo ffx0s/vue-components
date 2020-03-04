@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Swipe from 'lvan/swipe/swipe'
+import Swipe from 'lvan/swipe'
 import SwipeItem from 'lvan/swipe/item'
 
 export default {
@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     down(event) {
-      event.preventDefault()
+      event.cancelable && event.preventDefault()
     }
   }
 }
