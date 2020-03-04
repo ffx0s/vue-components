@@ -1,6 +1,9 @@
 {
   "name": "lvan",
-  "version": "0.1.4",
+  "version": "0.1.5",
+  "scripts": {
+    "publish": "npm publish --access public"
+  },
   "description": "Mobile ui components for vue",
   "keywords": [
     "mobile",
