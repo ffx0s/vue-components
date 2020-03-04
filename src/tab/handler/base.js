@@ -1,6 +1,6 @@
-import { getScrollEventTarget } from '../utils/shared'
+import { getScrollEventTarget } from '../../utils/scroll'
 
-export default class BaseHandler {
+export default class Base {
   constructor(tabEl, swipeItems) {
     this.tabEl = tabEl
     this.wrapScrollEl = getScrollEventTarget(tabEl)

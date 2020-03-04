@@ -1,16 +1,12 @@
-import BaseHandler from './baseHandler'
-import {
-  setScrollTop,
-  getScrollTop,
-  addListener,
-  removeListener
-} from '../utils/shared'
-import animate from '../utils/animate'
+import Base from './base'
+import { addListener, removeListener } from '../../utils/shared'
+import { setScrollTop, getScrollTop } from '../../utils/scroll'
+import animate from '../../utils/animate'
 
-export default class NavbarHandler extends BaseHandler {
+export default class Navbar extends Base {
   constructor(tabEl, swipeItems, options) {
     super(tabEl, swipeItems)
-    this.options = Object.assign({}, NavbarHandler.defaultOptions, options)
+    this.options = Object.assign({}, Navbar.defaultOptions, options)
     this.lastScrollTop = 0
     this.action = ''
     this.bind()
@@ -91,7 +87,7 @@ export default class NavbarHandler extends BaseHandler {
   }
 }
 
-NavbarHandler.defaultOptions = {
+Navbar.defaultOptions = {
   offset: 0,
   tabIndex: 0
 }

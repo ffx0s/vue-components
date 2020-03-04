@@ -1,17 +1,12 @@
-import BaseHandler from './baseHandler'
-import {
-  setScrollTop,
-  getScrollTop,
-  addListener,
-  removeListener,
-  rAFThrottle
-} from '../utils/shared'
-import animate from '../utils/animate'
+import Base from './base'
+import { addListener, removeListener, rAFThrottle } from '../../utils/shared'
+import { setScrollTop, getScrollTop } from '../../utils/scroll'
+import animate from '../../utils/animate'
 
-export default class ScrollHandler extends BaseHandler {
+export default class Header extends Base {
   constructor(tabEl, swipeItems, options) {
     super(tabEl, swipeItems)
-    this.options = Object.assign({}, ScrollHandler.defaultOptions, options)
+    this.options = Object.assign({}, Header.defaultOptions, options)
     this.tabIndex = this.options.tabIndex
     this.tabOffsetTop = this.getTabOffsetTop()
     this.tabScrollEnd = true
@@ -234,7 +229,7 @@ export default class ScrollHandler extends BaseHandler {
   }
 }
 
-ScrollHandler.defaultOptions = {
+Header.defaultOptions = {
   offset: 0,
   tabIndex: 0
 }

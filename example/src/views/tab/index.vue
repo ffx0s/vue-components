@@ -10,27 +10,27 @@
         TabView
       </VButton>
     </Navbar>
-    <Tabs v-model="index" navbar>
-      <Tab title="Skeleton" lazy>
+    <Tab v-model="index" navbar>
+      <TabItem title="Skeleton" lazy>
         <SkeletonModule v-model="loading" />
-      </Tab>
-      <Tab title="ImgViewer" lazy>
+      </TabItem>
+      <TabItem title="ImgViewer" lazy>
         <ImageViewerModule />
-      </Tab>
-      <Tab title="InfiniteScroll" lazy>
+      </TabItem>
+      <TabItem title="InfiniteScroll" lazy>
         <InfiniteScrollModule />
-      </Tab>
-      <Tab title="PullRefresh" lazy>
+      </TabItem>
+      <TabItem title="PullRefresh" lazy>
         <PullRefreshModule />
-      </Tab>
-      <Tab title="Swipe" lazy> <SwipeModule /> </Tab>
-    </Tabs>
+      </TabItem>
+      <TabItem title="Swipe" lazy> <SwipeModule /> </TabItem>
+    </Tab>
   </div>
 </template>
 
 <script>
-import Tabs from 'lvan/tab/tabs'
-import Tab from 'lvan/tab/item'
+import Tab from 'lvan/tab'
+import TabItem from 'lvan/tab/item'
 import InfiniteScrollModule from '../infiniteScroll/module'
 import PullRefreshModule from '../pullRefresh/module'
 import SwipeModule from '../swipe/module'
@@ -42,8 +42,8 @@ export default {
   name: 'page-tab',
   mixins: [showModal],
   components: {
-    Tabs,
     Tab,
+    TabItem,
     InfiniteScrollModule,
     PullRefreshModule,
     SwipeModule,

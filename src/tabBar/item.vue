@@ -28,21 +28,15 @@ export default {
   inheritAttrs: false,
   props: {
     title: String,
+    link: String,
+    badge: String,
     tag: {
       type: String,
       default: 'div'
     },
-    link: {
-      type: String,
-      required: false
-    },
     iconClass: {
       type: String,
       default: ''
-    },
-    badge: {
-      type: String,
-      required: false
     }
   },
   data() {
@@ -85,6 +79,8 @@ export default {
   font-size: 12px;
   color: var(--textPrimary);
   cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 .v-tab-bar--active {
   color: var(--primary);

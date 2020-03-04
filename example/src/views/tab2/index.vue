@@ -60,8 +60,8 @@
         </div>
       </div>
 
-      <Tabs v-model="index" header :offset="46" class="tab2-tab v-bd-top">
-        <Tab title="动态" lazy>
+      <Tab v-model="index" header :offset="46" class="tab2-tab v-bd-top">
+        <TabItem title="动态" lazy>
           <div style="height: 30px" v-if="showNotice">
             <Headroom>
               <Notice
@@ -74,23 +74,23 @@
           <div class="tab2-tab__item" v-for="i in nums" :key="i">
             动态 #{{ i }}
           </div>
-        </Tab>
-        <Tab title="专栏" lazy>
+        </TabItem>
+        <TabItem title="专栏" lazy>
           <div class="tab2-tab__item" v-for="i in 13" :key="i">
             专栏 #{{ i }}
           </div>
-        </Tab>
-        <Tab title="直播" lazy>
+        </TabItem>
+        <TabItem title="直播" lazy>
           <div class="tab2-tab__empty">暂无内容</div>
-        </Tab>
-      </Tabs>
+        </TabItem>
+      </Tab>
     </PullRefresh>
   </div>
 </template>
 
 <script>
-import Tabs from 'lvan/tab/tabs'
-import Tab from 'lvan/tab/item'
+import Tab from 'lvan/tab'
+import TabItem from 'lvan/tab/item'
 import Headroom from 'lvan/headroom'
 import PullRefresh from 'lvan/pullRefresh'
 import Notice from 'lvan/notice'
@@ -101,8 +101,8 @@ export default {
   name: 'page-tab2',
   mixins: [showModal],
   components: {
-    Tabs,
     Tab,
+    TabItem,
     Headroom,
     PullRefresh,
     Notice

@@ -33,7 +33,6 @@ import ScrollView from '../scrollView'
 import VNode from '../vnode'
 import ETouch from '../utils/etouch'
 import { view } from '../utils/shared'
-import { properties } from '../styles/variables'
 
 export default {
   name: 'TabNav',
@@ -50,7 +49,7 @@ export default {
     },
     lineColor: {
       type: String,
-      default: properties.primary
+      default: ''
     },
     lineHeight: {
       type: Number,
@@ -78,7 +77,7 @@ export default {
       return {
         width: this.lineWidth + 'px',
         height: this.lineHeight + 'px',
-        backgroundColor: this.lineColor
+        lineColor: this.lineColor
       }
     },
     navStyle() {
@@ -222,5 +221,6 @@ export default {
   margin: 0;
   width: 40px;
   transition-property: transform, width;
+  background-color: var(--primary);
 }
 </style>

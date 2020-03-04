@@ -41,11 +41,11 @@
 <script>
 import TabNav from './nav'
 import VNode from '../vnode'
-import Swipe from '../swipe/swipe'
+import Swipe from '../swipe'
 import SwipeItem from '../swipe/item'
-import NavbarHandler from './navbarHandler'
-import HeaderHandler from './headerHandler'
-import { fixedSpringback } from '../utils/shared'
+import Navbar from './handler/navbar'
+import Header from './handler/header'
+import { fixedSpringback } from '../utils/scroll'
 
 export default {
   name: 'Tab',
@@ -64,12 +64,12 @@ export default {
       type: Number,
       default: 0
     },
-    // tab上面是否有头部导航栏，有的话滑动的时候会隐藏头部导航栏
+    // 是否有头部导航栏，有的话滑动的时候会隐藏头部导航栏
     navbar: {
       type: Boolean,
       default: false
     },
-    // tab上面是否有头部视图
+    // 是否有头部视图
     header: {
       type: Boolean,
       default: false
@@ -100,9 +100,9 @@ export default {
     let Handler
 
     if (this.header) {
-      Handler = HeaderHandler
+      Handler = Header
     } else if (this.navbar) {
-      Handler = NavbarHandler
+      Handler = Navbar
     }
 
     if (Handler) {

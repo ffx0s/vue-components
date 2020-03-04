@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import TabBar from 'lvan/tabBar/tabBar'
+import TabBar from 'lvan/tabBar'
 import TabBarItem from 'lvan/tabBar/item'
 
 export default {
