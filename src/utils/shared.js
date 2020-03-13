@@ -279,6 +279,14 @@ export function rAFThrottle(fn) {
   return throttled
 }
 
+/**
+ * 判断目标元素是否隐藏 (仅判断 display: none，不包含 visibility: hidden)
+ * @param {Element} el 目标元素
+ */
+export function isHidden(el) {
+  return el.offsetParent === null
+}
+
 export const view = {
   _width: undefined,
   _height: undefined,
@@ -297,7 +305,8 @@ export const view = {
     return this._width
   },
   getHeight() {
-    this._height = document.documentElement.clientHeight
+    // ios safari 向上滑动后地址栏和工具栏会隐藏，此时 clientHeight 获取的值不准确，改用 innerHeight
+    this._height = window.innerHeight
     return this._height
   },
   bind() {
