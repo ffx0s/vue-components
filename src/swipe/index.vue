@@ -20,7 +20,13 @@
 
 <script>
 import ETouch from '../utils/etouch'
-import { debounce, toFixed, addListener, removeListener } from '../utils/shared'
+import {
+  debounce,
+  toFixed,
+  addListener,
+  removeListener,
+  isHidden
+} from '../utils/shared'
 
 function directionMap(arr) {
   return {
@@ -219,7 +225,7 @@ export default {
         this.currentIndex = nextIndex
       }
 
-      this.duration = duration || this.animationDuration
+      this.duration = duration || this.swipeRect ? this.animationDuration : 0
       this.translateTo(nextIndex)
     },
     next() {
@@ -375,9 +381,15 @@ export default {
       this.isBindResize = false
     },
     handleResize() {
+      const hidden = isHidden(this.$el)
+
       this.swipeRect = null
-      this.translateTo(this.currentIndex)
-      this.$emit('resize')
+
+      if (!hidden) {
+        this.translateTo(this.currentIndex)
+      }
+
+      this.$emit('resize', hidden)
     }
   }
 }

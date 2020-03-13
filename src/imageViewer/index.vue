@@ -175,6 +175,10 @@ export default {
     this.rafSetStyle = ETouch.rAFThrottle(this.setStyle)
   },
   beforeDestroy() {
+    const body = document.body
+    if (body.__overflow !== undefined) {
+      body.style.overflow = body.__overflow
+    }
     if (this.touch) {
       this.touch.destroy()
       this.touch = null
@@ -215,7 +219,10 @@ export default {
       this.value = false
     },
     getThumbnail(index) {
-      return document.querySelectorAll(this.selector)[index]
+      const selector = this.selector
+      return typeof selector === 'string'
+        ? document.querySelectorAll(selector)[index]
+        : selector[index]
     },
     getCurrentStyle() {
       return this.styles[this.index].style
@@ -287,12 +294,14 @@ export default {
       this.setInitStyle(index)
       this.items[index].error = false
     },
-    resize() {
-      this.items.forEach(item => {
-        item.initStyle = null
+    resize(hidden) {
+      this.styles.forEach(style => {
+        style.initStyle = null
       })
-      this.getInitStyle(this.index)
-      this.validation(null, true)
+
+      if (!hidden) {
+        this.validation(null, true)
+      }
     },
     zoomInAnimation() {
       const index = this.index
@@ -321,15 +330,17 @@ export default {
     zoomOutAnimation() {
       let x, y, scale
       const thumbnail = this.selector && this.getThumbnail(this.index)
+      const viewWidth = view.width()
+      const viewHeight = view.height()
 
       if (thumbnail) {
-        const rect = thumbnail.getBoundingClientRect()
-        x = rect.left
-        y = rect.top
-        scale = rect.width / this.getCurrentStyle().width
+        const { left, top, width } = thumbnail.getBoundingClientRect()
+        x = Math.min(left, viewWidth)
+        y = Math.min(top, viewHeight)
+        scale = width / this.getCurrentStyle().width
       } else {
-        x = view.width() / 2
-        y = view.height() / 2
+        x = viewWidth / 2
+        y = viewHeight / 2
         scale = 0
       }
 
@@ -341,6 +352,9 @@ export default {
       })
     },
     beforeEnter() {
+      const body = document.body
+      body.__overflow = body.style.overflow
+      body.style.overflow = 'hidden'
       this.lock = true
 
       this.zoomInAnimation()
@@ -364,6 +378,8 @@ export default {
       this.showToolbar = false
     },
     afterLeave() {
+      const body = document.body
+      body.style.overflow = body.__overflow
       this.lock = true
     }
   }
@@ -441,7 +457,7 @@ export default {
   height: 40px;
   & span {
     font-size: 14px;
-    color: var(--lightGray);
+    color: #e5e5e5;
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
     letter-spacing: 2px;
   }

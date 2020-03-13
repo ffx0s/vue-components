@@ -84,6 +84,8 @@ export default {
       ETouch.preventDefault(event)
       event.stopPropagation()
 
+      this.center = { x: clientX, y: clientY }
+
       const style = this.getCurrentStyle()
 
       // 根据 checkPosition 判断是否需要切换上一张/下一张
@@ -116,7 +118,6 @@ export default {
           }
 
           this.overlayOpacity *= scaleChanged
-          this.center = { x: clientX, y: clientY }
 
           this.scaleTo(this.center, newScale, false, false)
           this.updateoverlayOpacity(this.overlayOpacity)
