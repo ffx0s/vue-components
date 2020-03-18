@@ -669,7 +669,7 @@
 
 "@csstools/convert-colors@^1.4.0":
   version "1.4.0"
-  resolved "http://r.cnpmjs.org/@csstools/convert-colors/download/@csstools/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
+  resolved "https://r.cnpmjs.org/@csstools/convert-colors/download/@csstools/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha1-rUldxBsS511YjG24uYNPCPoTHrc=
 
 "@hapi/address@2.x.x":
@@ -1456,7 +1456,7 @@ autoprefixer@^9.5.1:
 
 autoprefixer@^9.6.1:
   version "9.7.4"
-  resolved "http://r.cnpmjs.org/autoprefixer/download/autoprefixer-9.7.4.tgz#f8bf3e06707d047f0641d87aee8cfb174b2a5378"
+  resolved "https://r.cnpmjs.org/autoprefixer/download/autoprefixer-9.7.4.tgz#f8bf3e06707d047f0641d87aee8cfb174b2a5378"
   integrity sha1-+L8+BnB9BH8GQdh67oz7F0sqU3g=
   dependencies:
     browserslist "^4.8.3"
@@ -1736,7 +1736,7 @@ browserslist@^4.0.0, browserslist@^4.3.4, browserslist@^4.5.4, browserslist@^4.6
 
 browserslist@^4.6.4, browserslist@^4.8.3:
   version "4.8.6"
-  resolved "http://r.cnpmjs.org/browserslist/download/browserslist-4.8.6.tgz#96406f3f5f0755d272e27a66f4163ca821590a7e"
+  resolved "https://r.cnpmjs.org/browserslist/download/browserslist-4.8.6.tgz#96406f3f5f0755d272e27a66f4163ca821590a7e"
   integrity sha1-lkBvP18HVdJy4npm9BY8qCFZCn4=
   dependencies:
     caniuse-lite "^1.0.30001023"
@@ -1918,7 +1918,7 @@ caniuse-lite@^1.0.0, caniuse-lite@^1.0.30000971, caniuse-lite@^1.0.30000974:
 
 caniuse-lite@^1.0.30000981, caniuse-lite@^1.0.30001020, caniuse-lite@^1.0.30001023:
   version "1.0.30001025"
-  resolved "http://r.cnpmjs.org/caniuse-lite/download/caniuse-lite-1.0.30001025.tgz#30336a8aca7f98618eb3cf38e35184e13d4e5fe6"
+  resolved "https://r.cnpmjs.org/caniuse-lite/download/caniuse-lite-1.0.30001025.tgz#30336a8aca7f98618eb3cf38e35184e13d4e5fe6"
   integrity sha1-MDNqisp/mGGOs88441GE4T1OX+Y=
 
 case-sensitive-paths-webpack-plugin@^2.2.0:
@@ -2407,7 +2407,7 @@ crypto-browserify@^3.11.0:
 
 css-blank-pseudo@^0.1.4:
   version "0.1.4"
-  resolved "http://r.cnpmjs.org/css-blank-pseudo/download/css-blank-pseudo-0.1.4.tgz#dfdefd3254bf8a82027993674ccf35483bfcb3c5"
+  resolved "https://r.cnpmjs.org/css-blank-pseudo/download/css-blank-pseudo-0.1.4.tgz#dfdefd3254bf8a82027993674ccf35483bfcb3c5"
   integrity sha1-3979MlS/ioICeZNnTM81SDv8s8U=
   dependencies:
     postcss "^7.0.5"
@@ -2427,7 +2427,7 @@ css-declaration-sorter@^4.0.1:
 
 css-has-pseudo@^0.10.0:
   version "0.10.0"
-  resolved "http://r.cnpmjs.org/css-has-pseudo/download/css-has-pseudo-0.10.0.tgz#3c642ab34ca242c59c41a125df9105841f6966ee"
+  resolved "https://r.cnpmjs.org/css-has-pseudo/download/css-has-pseudo-0.10.0.tgz#3c642ab34ca242c59c41a125df9105841f6966ee"
   integrity sha1-PGQqs0yiQsWcQaEl35EFhB9pZu4=
   dependencies:
     postcss "^7.0.6"
@@ -2453,7 +2453,7 @@ css-loader@^1.0.1:
 
 css-prefers-color-scheme@^3.1.1:
   version "3.1.1"
-  resolved "http://r.cnpmjs.org/css-prefers-color-scheme/download/css-prefers-color-scheme-3.1.1.tgz#6f830a2714199d4f0d0d0bb8a27916ed65cff1f4"
+  resolved "https://r.cnpmjs.org/css-prefers-color-scheme/download/css-prefers-color-scheme-3.1.1.tgz#6f830a2714199d4f0d0d0bb8a27916ed65cff1f4"
   integrity sha1-b4MKJxQZnU8NDQu4onkW7WXP8fQ=
   dependencies:
     postcss "^7.0.5"
@@ -2525,7 +2525,7 @@ css-what@2.1, css-what@^2.1.2:
 
 cssdb@^4.4.0:
   version "4.4.0"
-  resolved "http://r.cnpmjs.org/cssdb/download/cssdb-4.4.0.tgz#3bf2f2a68c10f5c6a08abd92378331ee803cddb0"
+  resolved "https://r.cnpmjs.org/cssdb/download/cssdb-4.4.0.tgz#3bf2f2a68c10f5c6a08abd92378331ee803cddb0"
   integrity sha1-O/LypowQ9cagir2SN4Mx7oA83bA=
 
 cssesc@^0.1.0:
@@ -2953,7 +2953,7 @@ electron-to-chromium@^1.3.150:
 
 electron-to-chromium@^1.3.341:
   version "1.3.345"
-  resolved "http://r.cnpmjs.org/electron-to-chromium/download/electron-to-chromium-1.3.345.tgz#2569d0d54a64ef0f32a4b7e8c80afa5fe57c5d98"
+  resolved "https://r.cnpmjs.org/electron-to-chromium/download/electron-to-chromium-1.3.345.tgz#2569d0d54a64ef0f32a4b7e8c80afa5fe57c5d98"
   integrity sha1-JWnQ1Upk7w8ypLfoyAr6X+V8XZg=
 
 elliptic@^6.0.0:
@@ -3672,7 +3672,7 @@ follow-redirects@^1.0.0:
 
 for-in@^1.0.2:
   version "1.0.2"
-  resolved "https://registry.npm.taobao.org/for-in/download/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
+  resolved "https://registry.yarnpkg.com/for-in/-/for-in-1.0.2.tgz#81068d295a8142ec0ac726c6e2200c30fb6d5e80"
   integrity sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=
 
 forever-agent@~0.6.1:
@@ -4488,8 +4488,8 @@ is-extendable@^0.1.0, is-extendable@^0.1.1:
 
 is-extendable@^1.0.1:
   version "1.0.1"
-  resolved "https://registry.npm.taobao.org/is-extendable/download/is-extendable-1.0.1.tgz#a7470f9e426733d81bd81e1155264e3a3507cab4"
-  integrity sha1-p0cPnkJnM9gb2B4RVSZOOjUHyrQ=
+  resolved "https://registry.yarnpkg.com/is-extendable/-/is-extendable-1.0.1.tgz#a7470f9e426733d81bd81e1155264e3a3507cab4"
+  integrity sha512-arnXMxT1hhoKo9k1LZdmlNyJdDDfy2v0fXjFlmok4+i8ul/6WlbVge9bhM74OpNPQPMGUToDtz+KXa1PneJxOA==
   dependencies:
     is-plain-object "^2.0.4"
 
@@ -4562,8 +4562,8 @@ is-plain-obj@^1.0.0:
 
 is-plain-object@^2.0.1, is-plain-object@^2.0.3, is-plain-object@^2.0.4:
   version "2.0.4"
-  resolved "https://registry.npm.taobao.org/is-plain-object/download/is-plain-object-2.0.4.tgz#2c163b3fafb1b606d9d17928f05c2a1c38e07677"
-  integrity sha1-LBY7P6+xtgbZ0Xko8FwqHDjgdnc=
+  resolved "https://registry.yarnpkg.com/is-plain-object/-/is-plain-object-2.0.4.tgz#2c163b3fafb1b606d9d17928f05c2a1c38e07677"
+  integrity sha512-h5PpgXkWitc38BBMYawTYMWJHFZJVnBquFE57xFpjB8pJFiF6gZ+bU+WyI/yqXiFR5mdLsgYNaPe8uao6Uv9Og==
   dependencies:
     isobject "^3.0.1"
 
@@ -4637,7 +4637,7 @@ isobject@^2.0.0:
 
 isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
-  resolved "https://registry.npm.taobao.org/isobject/download/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
+  resolved "https://registry.yarnpkg.com/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
   integrity sha1-TkMekrEalzFjaqH5yNHMvP2reN8=
 
 isstream@~0.1.2:
@@ -4910,7 +4910,7 @@ lodash.memoize@^4.1.2:
 
 lodash.template@^4.5.0:
   version "4.5.0"
-  resolved "http://r.cnpmjs.org/lodash.template/download/lodash.template-4.5.0.tgz#f976195cf3f347d0d5f52483569fe8031ccce8ab"
+  resolved "https://r.cnpmjs.org/lodash.template/download/lodash.template-4.5.0.tgz#f976195cf3f347d0d5f52483569fe8031ccce8ab"
   integrity sha1-+XYZXPPzR9DV9SSDVp/oAxzM6Ks=
   dependencies:
     lodash._reinterpolate "^3.0.0"
@@ -5213,9 +5213,9 @@ mississippi@^3.0.0:
     through2 "^2.0.0"
 
 mixin-deep@^1.2.0:
-  version "1.3.1"
-  resolved "https://registry.npm.taobao.org/mixin-deep/download/mixin-deep-1.3.1.tgz#a49e7268dce1a0d9698e45326c5626df3543d0fe"
-  integrity sha1-pJ5yaNzhoNlpjkUybFYm3zVD0P4=
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/mixin-deep/-/mixin-deep-1.3.2.tgz#1120b43dc359a785dce65b55b82e257ccf479566"
+  integrity sha512-WRoDn//mXBiJ1H40rqa3vH0toePwSsGb45iInWlTySa+Uu4k3tYUSxa2v1KqAiLtvlrSzaExqS1gtk96A9zvEA==
   dependencies:
     for-in "^1.0.2"
     is-extendable "^1.0.1"
@@ -5407,7 +5407,7 @@ node-releases@^1.1.23:
 
 node-releases@^1.1.47:
   version "1.1.48"
-  resolved "http://r.cnpmjs.org/node-releases/download/node-releases-1.1.48.tgz#7f647f0c453a0495bcd64cbd4778c26035c2f03a"
+  resolved "https://r.cnpmjs.org/node-releases/download/node-releases-1.1.48.tgz#7f647f0c453a0495bcd64cbd4778c26035c2f03a"
   integrity sha1-f2R/DEU6BJW81ky9R3jCYDXC8Do=
   dependencies:
     semver "^6.3.0"
@@ -5976,7 +5976,7 @@ posix-character-classes@^0.1.0:
 
 postcss-attribute-case-insensitive@^4.0.1:
   version "4.0.1"
-  resolved "http://r.cnpmjs.org/postcss-attribute-case-insensitive/download/postcss-attribute-case-insensitive-4.0.1.tgz#b2a721a0d279c2f9103a36331c88981526428cc7"
+  resolved "https://r.cnpmjs.org/postcss-attribute-case-insensitive/download/postcss-attribute-case-insensitive-4.0.1.tgz#b2a721a0d279c2f9103a36331c88981526428cc7"
   integrity sha1-sqchoNJ5wvkQOjYzHIiYFSZCjMc=
   dependencies:
     postcss "^7.0.2"
@@ -5994,7 +5994,7 @@ postcss-calc@^7.0.1:
 
 postcss-color-functional-notation@^2.0.1:
   version "2.0.1"
-  resolved "http://r.cnpmjs.org/postcss-color-functional-notation/download/postcss-color-functional-notation-2.0.1.tgz#5efd37a88fbabeb00a2966d1e53d98ced93f74e0"
+  resolved "https://r.cnpmjs.org/postcss-color-functional-notation/download/postcss-color-functional-notation-2.0.1.tgz#5efd37a88fbabeb00a2966d1e53d98ced93f74e0"
   integrity sha1-Xv03qI+6vrAKKWbR5T2Yztk/dOA=
   dependencies:
     postcss "^7.0.2"
@@ -6002,7 +6002,7 @@ postcss-color-functional-notation@^2.0.1:
 
 postcss-color-gray@^5.0.0:
   version "5.0.0"
-  resolved "http://r.cnpmjs.org/postcss-color-gray/download/postcss-color-gray-5.0.0.tgz#532a31eb909f8da898ceffe296fdc1f864be8547"
+  resolved "https://r.cnpmjs.org/postcss-color-gray/download/postcss-color-gray-5.0.0.tgz#532a31eb909f8da898ceffe296fdc1f864be8547"
   integrity sha1-Uyox65CfjaiYzv/ilv3B+GS+hUc=
   dependencies:
     "@csstools/convert-colors" "^1.4.0"
@@ -6011,7 +6011,7 @@ postcss-color-gray@^5.0.0:
 
 postcss-color-hex-alpha@^5.0.3:
   version "5.0.3"
-  resolved "http://r.cnpmjs.org/postcss-color-hex-alpha/download/postcss-color-hex-alpha-5.0.3.tgz#a8d9ca4c39d497c9661e374b9c51899ef0f87388"
+  resolved "https://r.cnpmjs.org/postcss-color-hex-alpha/download/postcss-color-hex-alpha-5.0.3.tgz#a8d9ca4c39d497c9661e374b9c51899ef0f87388"
   integrity sha1-qNnKTDnUl8lmHjdLnFGJnvD4c4g=
   dependencies:
     postcss "^7.0.14"
@@ -6019,7 +6019,7 @@ postcss-color-hex-alpha@^5.0.3:
 
 postcss-color-mod-function@^3.0.3:
   version "3.0.3"
-  resolved "http://r.cnpmjs.org/postcss-color-mod-function/download/postcss-color-mod-function-3.0.3.tgz#816ba145ac11cc3cb6baa905a75a49f903e4d31d"
+  resolved "https://r.cnpmjs.org/postcss-color-mod-function/download/postcss-color-mod-function-3.0.3.tgz#816ba145ac11cc3cb6baa905a75a49f903e4d31d"
   integrity sha1-gWuhRawRzDy2uqkFp1pJ+QPk0x0=
   dependencies:
     "@csstools/convert-colors" "^1.4.0"
@@ -6028,7 +6028,7 @@ postcss-color-mod-function@^3.0.3:
 
 postcss-color-rebeccapurple@^4.0.1:
   version "4.0.1"
-  resolved "http://r.cnpmjs.org/postcss-color-rebeccapurple/download/postcss-color-rebeccapurple-4.0.1.tgz#c7a89be872bb74e45b1e3022bfe5748823e6de77"
+  resolved "https://r.cnpmjs.org/postcss-color-rebeccapurple/download/postcss-color-rebeccapurple-4.0.1.tgz#c7a89be872bb74e45b1e3022bfe5748823e6de77"
   integrity sha1-x6ib6HK7dORbHjAiv+V0iCPm3nc=
   dependencies:
     postcss "^7.0.2"
@@ -6055,14 +6055,14 @@ postcss-convert-values@^4.0.1:
 
 postcss-custom-media@^7.0.8:
   version "7.0.8"
-  resolved "http://r.cnpmjs.org/postcss-custom-media/download/postcss-custom-media-7.0.8.tgz#fffd13ffeffad73621be5f387076a28b00294e0c"
+  resolved "https://r.cnpmjs.org/postcss-custom-media/download/postcss-custom-media-7.0.8.tgz#fffd13ffeffad73621be5f387076a28b00294e0c"
   integrity sha1-//0T/+/61zYhvl84cHaiiwApTgw=
   dependencies:
     postcss "^7.0.14"
 
 postcss-custom-properties@^8.0.11:
   version "8.0.11"
-  resolved "http://r.cnpmjs.org/postcss-custom-properties/download/postcss-custom-properties-8.0.11.tgz#2d61772d6e92f22f5e0d52602df8fae46fa30d97"
+  resolved "https://r.cnpmjs.org/postcss-custom-properties/download/postcss-custom-properties-8.0.11.tgz#2d61772d6e92f22f5e0d52602df8fae46fa30d97"
   integrity sha1-LWF3LW6S8i9eDVJgLfj65G+jDZc=
   dependencies:
     postcss "^7.0.17"
@@ -6070,7 +6070,7 @@ postcss-custom-properties@^8.0.11:
 
 postcss-custom-selectors@^5.1.2:
   version "5.1.2"
-  resolved "http://r.cnpmjs.org/postcss-custom-selectors/download/postcss-custom-selectors-5.1.2.tgz#64858c6eb2ecff2fb41d0b28c9dd7b3db4de7fba"
+  resolved "https://r.cnpmjs.org/postcss-custom-selectors/download/postcss-custom-selectors-5.1.2.tgz#64858c6eb2ecff2fb41d0b28c9dd7b3db4de7fba"
   integrity sha1-ZIWMbrLs/y+0HQsoyd17PbTef7o=
   dependencies:
     postcss "^7.0.2"
@@ -6078,7 +6078,7 @@ postcss-custom-selectors@^5.1.2:
 
 postcss-dir-pseudo-class@^5.0.0:
   version "5.0.0"
-  resolved "http://r.cnpmjs.org/postcss-dir-pseudo-class/download/postcss-dir-pseudo-class-5.0.0.tgz#6e3a4177d0edb3abcc85fdb6fbb1c26dabaeaba2"
+  resolved "https://r.cnpmjs.org/postcss-dir-pseudo-class/download/postcss-dir-pseudo-class-5.0.0.tgz#6e3a4177d0edb3abcc85fdb6fbb1c26dabaeaba2"
   integrity sha1-bjpBd9Dts6vMhf22+7HCbauuq6I=
   dependencies:
     postcss "^7.0.2"
@@ -6114,7 +6114,7 @@ postcss-discard-overridden@^4.0.1:
 
 postcss-double-position-gradients@^1.0.0:
   version "1.0.0"
-  resolved "http://r.cnpmjs.org/postcss-double-position-gradients/download/postcss-double-position-gradients-1.0.0.tgz#fc927d52fddc896cb3a2812ebc5df147e110522e"
+  resolved "https://r.cnpmjs.org/postcss-double-position-gradients/download/postcss-double-position-gradients-1.0.0.tgz#fc927d52fddc896cb3a2812ebc5df147e110522e"
   integrity sha1-/JJ9Uv3ciWyzooEuvF3xR+EQUi4=
   dependencies:
     postcss "^7.0.5"
@@ -6122,7 +6122,7 @@ postcss-double-position-gradients@^1.0.0:
 
 postcss-env-function@^2.0.2:
   version "2.0.2"
-  resolved "http://r.cnpmjs.org/postcss-env-function/download/postcss-env-function-2.0.2.tgz#0f3e3d3c57f094a92c2baf4b6241f0b0da5365d7"
+  resolved "https://r.cnpmjs.org/postcss-env-function/download/postcss-env-function-2.0.2.tgz#0f3e3d3c57f094a92c2baf4b6241f0b0da5365d7"
   integrity sha1-Dz49PFfwlKksK69LYkHwsNpTZdc=
   dependencies:
     postcss "^7.0.2"
@@ -6130,35 +6130,35 @@ postcss-env-function@^2.0.2:
 
 postcss-focus-visible@^4.0.0:
   version "4.0.0"
-  resolved "http://r.cnpmjs.org/postcss-focus-visible/download/postcss-focus-visible-4.0.0.tgz#477d107113ade6024b14128317ade2bd1e17046e"
+  resolved "https://r.cnpmjs.org/postcss-focus-visible/download/postcss-focus-visible-4.0.0.tgz#477d107113ade6024b14128317ade2bd1e17046e"
   integrity sha1-R30QcROt5gJLFBKDF63ivR4XBG4=
   dependencies:
     postcss "^7.0.2"
 
 postcss-focus-within@^3.0.0:
   version "3.0.0"
-  resolved "http://r.cnpmjs.org/postcss-focus-within/download/postcss-focus-within-3.0.0.tgz#763b8788596cee9b874c999201cdde80659ef680"
+  resolved "https://r.cnpmjs.org/postcss-focus-within/download/postcss-focus-within-3.0.0.tgz#763b8788596cee9b874c999201cdde80659ef680"
   integrity sha1-djuHiFls7puHTJmSAc3egGWe9oA=
   dependencies:
     postcss "^7.0.2"
 
 postcss-font-variant@^4.0.0:
   version "4.0.0"
-  resolved "http://r.cnpmjs.org/postcss-font-variant/download/postcss-font-variant-4.0.0.tgz#71dd3c6c10a0d846c5eda07803439617bbbabacc"
+  resolved "https://r.cnpmjs.org/postcss-font-variant/download/postcss-font-variant-4.0.0.tgz#71dd3c6c10a0d846c5eda07803439617bbbabacc"
   integrity sha1-cd08bBCg2EbF7aB4A0OWF7u6usw=
   dependencies:
     postcss "^7.0.2"
 
 postcss-gap-properties@^2.0.0:
   version "2.0.0"
-  resolved "http://r.cnpmjs.org/postcss-gap-properties/download/postcss-gap-properties-2.0.0.tgz#431c192ab3ed96a3c3d09f2ff615960f902c1715"
+  resolved "https://r.cnpmjs.org/postcss-gap-properties/download/postcss-gap-properties-2.0.0.tgz#431c192ab3ed96a3c3d09f2ff615960f902c1715"
   integrity sha1-QxwZKrPtlqPD0J8v9hWWD5AsFxU=
   dependencies:
     postcss "^7.0.2"
 
 postcss-image-set-function@^3.0.1:
   version "3.0.1"
-  resolved "http://r.cnpmjs.org/postcss-image-set-function/download/postcss-image-set-function-3.0.1.tgz#28920a2f29945bed4c3198d7df6496d410d3f288"
+  resolved "https://r.cnpmjs.org/postcss-image-set-function/download/postcss-image-set-function-3.0.1.tgz#28920a2f29945bed4c3198d7df6496d410d3f288"
   integrity sha1-KJIKLymUW+1MMZjX32SW1BDT8og=
   dependencies:
     postcss "^7.0.2"
@@ -6166,7 +6166,7 @@ postcss-image-set-function@^3.0.1:
 
 postcss-initial@^3.0.0:
   version "3.0.2"
-  resolved "http://r.cnpmjs.org/postcss-initial/download/postcss-initial-3.0.2.tgz#f018563694b3c16ae8eaabe3c585ac6319637b2d"
+  resolved "https://r.cnpmjs.org/postcss-initial/download/postcss-initial-3.0.2.tgz#f018563694b3c16ae8eaabe3c585ac6319637b2d"
   integrity sha1-8BhWNpSzwWro6qvjxYWsYxljey0=
   dependencies:
     lodash.template "^4.5.0"
@@ -6174,7 +6174,7 @@ postcss-initial@^3.0.0:
 
 postcss-lab-function@^2.0.1:
   version "2.0.1"
-  resolved "http://r.cnpmjs.org/postcss-lab-function/download/postcss-lab-function-2.0.1.tgz#bb51a6856cd12289ab4ae20db1e3821ef13d7d2e"
+  resolved "https://r.cnpmjs.org/postcss-lab-function/download/postcss-lab-function-2.0.1.tgz#bb51a6856cd12289ab4ae20db1e3821ef13d7d2e"
   integrity sha1-u1GmhWzRIomrSuINseOCHvE9fS4=
   dependencies:
     "@csstools/convert-colors" "^1.4.0"
@@ -6201,14 +6201,14 @@ postcss-loader@^3.0.0:
 
 postcss-logical@^3.0.0:
   version "3.0.0"
-  resolved "http://r.cnpmjs.org/postcss-logical/download/postcss-logical-3.0.0.tgz#2495d0f8b82e9f262725f75f9401b34e7b45d5b5"
+  resolved "https://r.cnpmjs.org/postcss-logical/download/postcss-logical-3.0.0.tgz#2495d0f8b82e9f262725f75f9401b34e7b45d5b5"
   integrity sha1-JJXQ+LgunyYnJfdflAGzTntF1bU=
   dependencies:
     postcss "^7.0.2"
 
 postcss-media-minmax@^4.0.0:
   version "4.0.0"
-  resolved "http://r.cnpmjs.org/postcss-media-minmax/download/postcss-media-minmax-4.0.0.tgz#b75bb6cbc217c8ac49433e12f22048814a4f5ed5"
+  resolved "https://r.cnpmjs.org/postcss-media-minmax/download/postcss-media-minmax-4.0.0.tgz#b75bb6cbc217c8ac49433e12f22048814a4f5ed5"
   integrity sha1-t1u2y8IXyKxJQz4S8iBIgUpPXtU=
   dependencies:
     postcss "^7.0.2"
@@ -6308,7 +6308,7 @@ postcss-modules-values@^1.3.0:
 
 postcss-nesting@^7.0.0:
   version "7.0.1"
-  resolved "http://r.cnpmjs.org/postcss-nesting/download/postcss-nesting-7.0.1.tgz#b50ad7b7f0173e5b5e3880c3501344703e04c052"
+  resolved "https://r.cnpmjs.org/postcss-nesting/download/postcss-nesting-7.0.1.tgz#b50ad7b7f0173e5b5e3880c3501344703e04c052"
   integrity sha1-tQrXt/AXPlteOIDDUBNEcD4EwFI=
   dependencies:
     postcss "^7.0.2"
@@ -6405,21 +6405,21 @@ postcss-ordered-values@^4.1.2:
 
 postcss-overflow-shorthand@^2.0.0:
   version "2.0.0"
-  resolved "http://r.cnpmjs.org/postcss-overflow-shorthand/download/postcss-overflow-shorthand-2.0.0.tgz#31ecf350e9c6f6ddc250a78f0c3e111f32dd4c30"
+  resolved "https://r.cnpmjs.org/postcss-overflow-shorthand/download/postcss-overflow-shorthand-2.0.0.tgz#31ecf350e9c6f6ddc250a78f0c3e111f32dd4c30"
   integrity sha1-MezzUOnG9t3CUKePDD4RHzLdTDA=
   dependencies:
     postcss "^7.0.2"
 
 postcss-page-break@^2.0.0:
   version "2.0.0"
-  resolved "http://r.cnpmjs.org/postcss-page-break/download/postcss-page-break-2.0.0.tgz#add52d0e0a528cabe6afee8b46e2abb277df46bf"
+  resolved "https://r.cnpmjs.org/postcss-page-break/download/postcss-page-break-2.0.0.tgz#add52d0e0a528cabe6afee8b46e2abb277df46bf"
   integrity sha1-rdUtDgpSjKvmr+6LRuKrsnffRr8=
   dependencies:
     postcss "^7.0.2"
 
 postcss-place@^4.0.1:
   version "4.0.1"
-  resolved "http://r.cnpmjs.org/postcss-place/download/postcss-place-4.0.1.tgz#e9f39d33d2dc584e46ee1db45adb77ca9d1dcc62"
+  resolved "https://r.cnpmjs.org/postcss-place/download/postcss-place-4.0.1.tgz#e9f39d33d2dc584e46ee1db45adb77ca9d1dcc62"
   integrity sha1-6fOdM9LcWE5G7h20Wtt3yp0dzGI=
   dependencies:
     postcss "^7.0.2"
@@ -6427,7 +6427,7 @@ postcss-place@^4.0.1:
 
 postcss-preset-env@^6.7.0:
   version "6.7.0"
-  resolved "http://r.cnpmjs.org/postcss-preset-env/download/postcss-preset-env-6.7.0.tgz#c34ddacf8f902383b35ad1e030f178f4cdf118a5"
+  resolved "https://r.cnpmjs.org/postcss-preset-env/download/postcss-preset-env-6.7.0.tgz#c34ddacf8f902383b35ad1e030f178f4cdf118a5"
   integrity sha1-w03az4+QI4OzWtHgMPF49M3xGKU=
   dependencies:
     autoprefixer "^9.6.1"
@@ -6470,7 +6470,7 @@ postcss-preset-env@^6.7.0:
 
 postcss-pseudo-class-any-link@^6.0.0:
   version "6.0.0"
-  resolved "http://r.cnpmjs.org/postcss-pseudo-class-any-link/download/postcss-pseudo-class-any-link-6.0.0.tgz#2ed3eed393b3702879dec4a87032b210daeb04d1"
+  resolved "https://r.cnpmjs.org/postcss-pseudo-class-any-link/download/postcss-pseudo-class-any-link-6.0.0.tgz#2ed3eed393b3702879dec4a87032b210daeb04d1"
   integrity sha1-LtPu05OzcCh53sSocDKyENrrBNE=
   dependencies:
     postcss "^7.0.2"
@@ -6498,14 +6498,14 @@ postcss-reduce-transforms@^4.0.2:
 
 postcss-replace-overflow-wrap@^3.0.0:
   version "3.0.0"
-  resolved "http://r.cnpmjs.org/postcss-replace-overflow-wrap/download/postcss-replace-overflow-wrap-3.0.0.tgz#61b360ffdaedca84c7c918d2b0f0d0ea559ab01c"
+  resolved "https://r.cnpmjs.org/postcss-replace-overflow-wrap/download/postcss-replace-overflow-wrap-3.0.0.tgz#61b360ffdaedca84c7c918d2b0f0d0ea559ab01c"
   integrity sha1-YbNg/9rtyoTHyRjSsPDQ6lWasBw=
   dependencies:
     postcss "^7.0.2"
 
 postcss-selector-matches@^4.0.0:
   version "4.0.0"
-  resolved "http://r.cnpmjs.org/postcss-selector-matches/download/postcss-selector-matches-4.0.0.tgz#71c8248f917ba2cc93037c9637ee09c64436fcff"
+  resolved "https://r.cnpmjs.org/postcss-selector-matches/download/postcss-selector-matches-4.0.0.tgz#71c8248f917ba2cc93037c9637ee09c64436fcff"
   integrity sha1-ccgkj5F7osyTA3yWN+4JxkQ2/P8=
   dependencies:
     balanced-match "^1.0.0"
@@ -6513,7 +6513,7 @@ postcss-selector-matches@^4.0.0:
 
 postcss-selector-not@^4.0.0:
   version "4.0.0"
-  resolved "http://r.cnpmjs.org/postcss-selector-not/download/postcss-selector-not-4.0.0.tgz#c68ff7ba96527499e832724a2674d65603b645c0"
+  resolved "https://r.cnpmjs.org/postcss-selector-not/download/postcss-selector-not-4.0.0.tgz#c68ff7ba96527499e832724a2674d65603b645c0"
   integrity sha1-xo/3upZSdJnoMnJKJnTWVgO2RcA=
   dependencies:
     balanced-match "^1.0.0"
@@ -6563,12 +6563,12 @@ postcss-value-parser@^3.0.0, postcss-value-parser@^3.3.0, postcss-value-parser@^
 
 postcss-value-parser@^4.0.2:
   version "4.0.2"
-  resolved "http://r.cnpmjs.org/postcss-value-parser/download/postcss-value-parser-4.0.2.tgz#482282c09a42706d1fc9a069b73f44ec08391dc9"
+  resolved "https://r.cnpmjs.org/postcss-value-parser/download/postcss-value-parser-4.0.2.tgz#482282c09a42706d1fc9a069b73f44ec08391dc9"
   integrity sha1-SCKCwJpCcG0fyaBptz9E7Ag5Hck=
 
 postcss-values-parser@^2.0.0, postcss-values-parser@^2.0.1:
   version "2.0.1"
-  resolved "http://r.cnpmjs.org/postcss-values-parser/download/postcss-values-parser-2.0.1.tgz#da8b472d901da1e205b47bdc98637b9e9e550e5f"
+  resolved "https://r.cnpmjs.org/postcss-values-parser/download/postcss-values-parser-2.0.1.tgz#da8b472d901da1e205b47bdc98637b9e9e550e5f"
   integrity sha1-2otHLZAdoeIFtHvcmGN7np5VDl8=
   dependencies:
     flatten "^1.0.2"
@@ -6595,7 +6595,7 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.16, postcss@^7.0.2
 
 postcss@^7.0.17, postcss@^7.0.26, postcss@^7.0.6:
   version "7.0.26"
-  resolved "http://r.cnpmjs.org/postcss/download/postcss-7.0.26.tgz#5ed615cfcab35ba9bbb82414a4fa88ea10429587"
+  resolved "https://r.cnpmjs.org/postcss/download/postcss-7.0.26.tgz#5ed615cfcab35ba9bbb82414a4fa88ea10429587"
   integrity sha1-XtYVz8qzW6m7uCQUpPqI6hBClYc=
   dependencies:
     chalk "^2.4.2"
@@ -7233,7 +7233,7 @@ semver@^6.0.0, semver@^6.1.1:
 
 semver@^6.3.0:
   version "6.3.0"
-  resolved "http://r.cnpmjs.org/semver/download/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
+  resolved "https://r.cnpmjs.org/semver/download/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha1-7gpkyK9ejO6mdoexM3YeG+y9HT0=
 
 send@0.17.1:
