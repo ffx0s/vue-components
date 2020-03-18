@@ -295,7 +295,11 @@ export default {
       this.inAnimation = true
 
       this.animation = animate({
-        targets: [[style.scale, scale], [style.x, x], [style.y, y]],
+        targets: [
+          [style.scale, scale],
+          [style.x, x],
+          [style.y, y]
+        ],
         time: options.time,
         type: options.type,
         running: target => {
