@@ -22,11 +22,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
-// import Vue from 'vue'
-// import App from './App2.vue'
-
-// new Vue({
-//   // router,
-//   // store,
-//   render: h => h(App)
-// }).$mount('#app')
