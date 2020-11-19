@@ -83,5 +83,6 @@ export default {
 <style lang="postcss">
 .infinite-scroll {
   padding-bottom: 10px;
+  color: var(--textSecondary);
 }
 </style>

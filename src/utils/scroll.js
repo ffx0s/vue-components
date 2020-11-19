@@ -31,9 +31,9 @@ export function getScrollEventTarget(element) {
   return window
 }
 
-// 在页面底部/顶部滚动时，阻止默认事件。可以解决 safari 页面滚动不了的问题。
-export function fixedSpringback(touchTarget) {
-  if (fixedSpringback.isBind) return
+// 解决 safari 页面回弹时无法滚动的问题
+export function noBounce(touchTarget = document.body) {
+  if (noBounce.isBind) return
 
   let lastX = 0
   let lastY = 0
@@ -43,7 +43,8 @@ export function fixedSpringback(touchTarget) {
     lastX = event.touches[0].clientX
     lastY = event.touches[0].clientY
     scroller = getScrollEventTarget(event.target)
-    if (scroller === window) scroller = null
+    if (scroller === window || scroller.hasAttribute('ignore-no-bounce'))
+      scroller = null
   }
 
   function touchmove(event) {
@@ -73,8 +74,8 @@ export function fixedSpringback(touchTarget) {
     lastY = clientY
   }
 
-  addListener(touchTarget, 'touchstart', touchstart)
+  addListener(touchTarget, 'touchstart', touchstart, { passive: false })
   addListener(touchTarget, 'touchmove', touchmove, { passive: false })
 
-  fixedSpringback.isBind = true
+  noBounce.isBind = true
 }

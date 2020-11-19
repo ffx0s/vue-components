@@ -45,7 +45,7 @@ import Swipe from '../swipe'
 import SwipeItem from '../swipe/item'
 import Navbar from './handler/navbar'
 import Header from './handler/header'
-import { fixedSpringback } from '../utils/scroll'
+import { noBounce } from '../utils/scroll'
 
 export default {
   name: 'Tab',
@@ -110,7 +110,7 @@ export default {
         offset: this.offset,
         tabIndex: this.value
       })
-      fixedSpringback(document.body)
+      noBounce()
     }
   },
   beforeDestroy() {
