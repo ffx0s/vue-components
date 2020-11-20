@@ -1,4 +1,4 @@
-import { addListener } from './shared'
+import { addListener, browser } from './shared'
 
 export function getScrollTop(el) {
   if (el && el.nodeType) return el.scrollTop
@@ -33,7 +33,7 @@ export function getScrollEventTarget(element) {
 
 // 解决 safari 页面回弹时无法滚动的问题
 export function noBounce(touchTarget = document.body) {
-  if (noBounce.isBind) return
+  if (!browser().ios || noBounce.isBind) return
 
   let lastX = 0
   let lastY = 0
