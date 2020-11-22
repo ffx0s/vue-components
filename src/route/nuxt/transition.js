@@ -1,16 +1,18 @@
 import { pageState, scroller } from '../helpers'
-import { view } from '../../utils/shared'
 
-export function transition(effect) {
+export function transition(effect = 'ios', fn) {
   return function(to, from) {
-    const _effect = effect || view.width() > 500 ? 'android' : 'ios'
     const direction = pageState.updateDirection(to.fullPath)
-    const transitionName = direction
-      ? `v-route-${_effect}-${direction === 'forward' ? 'in' : 'out'}`
+    const options = fn ? fn({ direction, to, from }) : {}
+
+    effect = options.effect || effect
+
+    const name = direction
+      ? `v-route-${effect}-${direction === 'forward' ? 'in' : 'out'}`
       : `v-route--notransition`
 
     return {
-      name: transitionName,
+      name,
       mode: '',
       beforeEnter(el) {
         requestAnimationFrame(() => {
@@ -19,7 +21,8 @@ export function transition(effect) {
       },
       beforeLeave(el) {
         scroller.saveScrollTop(el, from.fullPath)
-      }
+      },
+      ...options
     }
   }
 }
