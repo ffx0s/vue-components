@@ -63,6 +63,7 @@ export const pageState = {
    * @returns {Object} status
    */
   fixedSwipeBack() {
+    if (!browser().ios) return
     const time = browser().chromeIOS ? 700 : 300
     let timer = null
     let pointX = 0
