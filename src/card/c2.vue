@@ -49,6 +49,7 @@ export default {
 .v-c2 {
   display: flex;
   padding: 10px;
+  color: var(--textPrimary);
   background-color: #fff;
 }
 .v-c2__image {

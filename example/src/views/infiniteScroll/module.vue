@@ -37,8 +37,8 @@ export default {
   },
   created() {
     this.query = {
-      offset: 0,
-      limit: 15
+      page: 0,
+      size: 15
     }
   },
   methods: {
@@ -50,28 +50,28 @@ export default {
             // 加载更多
             this.transitionName = 'item'
             this.items = this.items.concat(records)
-            this.query.offset = query.offset
+            this.query.page = query.page
           } else {
             // 下拉刷新
             this.transitionName = ''
             this.items = records
-            this.query.offset = 1
+            this.query.page = 1
           }
           // 没有数据
           this.empty = !total
           // 是否为最后一页
-          this.finished = query.offset >= pages
+          this.finished = query.page >= pages
         })
         .catch(this.failure)
     },
     load(done) {
       this.fetchData({
         ...this.query,
-        offset: this.query.offset + 1
+        page: this.query.page + 1
       }).then(done)
     },
     refresh(done) {
-      this.fetchData({ ...this.query, offset: 1 }).then(done)
+      this.fetchData({ ...this.query, page: 1 }).then(done)
     },
     failure() {
       this.failed = true
@@ -83,6 +83,6 @@ export default {
 <style lang="postcss">
 .infinite-scroll {
   padding-bottom: 10px;
-  color: var(--textSecondary);
+  color: var(--textRegular);
 }
 </style>
