@@ -20,3 +20,15 @@ export default {
   }
 }
 </script>
+
+<style lang="postcss">
+.v-radio-group {
+  & .v-radio + .v-radio {
+    margin-left: 0;
+  }
+  & > .v-radio {
+    margin-right: 15px;
+    margin-bottom: 15px;
+  }
+}
+</style>
