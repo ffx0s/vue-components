@@ -10,7 +10,7 @@ export function getProducts(query) {
 
 export function getComments(id, query) {
   return request({
-    url: `/products/comments/${id}`,
+    url: `/comments/${id}`,
     method: 'get',
     params: query
   })
