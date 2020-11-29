@@ -74,14 +74,7 @@ export default {
         const file = event.target.files[i]
         const fileIndex = fileLength + i
 
-        this.list.push({
-          ...this.extension,
-          file,
-          progress: 0,
-          uploading: false,
-          error: false
-        })
-        this.requests.push(null)
+        this.add(file)
 
         if (this.immediately) {
           setTimeout(() => {
@@ -166,6 +159,16 @@ export default {
         current.uploading = false
         vm.$emit('abort', req, current, index)
       }
+    },
+    add(file) {
+      this.list.push({
+        ...this.extension,
+        file,
+        progress: 0,
+        uploading: false,
+        error: false
+      })
+      this.requests.push(null)
     },
     remove(index) {
       this.abort(index)
