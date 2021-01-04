@@ -61,6 +61,7 @@ export default {
   cursor: pointer;
   transform: translateZ(0);
   -webkit-tap-highlight-color: transparent;
+  box-sizing: content-box;
 }
 .v-switch__circle {
   position: absolute;
